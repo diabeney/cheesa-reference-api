@@ -1,9 +1,11 @@
 import { Schema, model } from "mongoose";
+import { IGraduate } from "../types";
 
 const GraduateSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
+  password: { type: String, required: true },
   programme: {
     type: String,
     enum: ["Chemical", "Petrochemical"],
@@ -14,4 +16,6 @@ const GraduateSchema = new Schema({
   },
 });
 
-const GruaduateModel = model("Graduate", GraduateSchema);
+const Graduate = model<IGraduate>("Graduate", GraduateSchema);
+
+export default Graduate;

@@ -20,8 +20,11 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": "warn"
+			},
 			"nursery": {
-				"noUnusedImports": "error"
+				"noUnusedImports": "warn"
 			}
 		}
 	}

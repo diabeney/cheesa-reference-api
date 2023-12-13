@@ -1,7 +1,8 @@
 import express from "express";
-import { v1 } from "./versionone";
+import { VERSION_ONE_ROUTER } from "./versionOne";
+
 const router = express.Router();
 
-router.use("/api/v1", v1);
+router.use("/api/v1", VERSION_ONE_ROUTER);
 
 export default router;
