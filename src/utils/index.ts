@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 function validateReqObject<T = object>(
   obj: Partial<T>,
   requiredFields: (keyof T)[]
@@ -39,4 +41,19 @@ const STATUS = {
   },
 };
 
-export { validateReqObject, STATUS };
+function generateTokens(payload: string | object) {
+  const accessToken = jwt.sign(
+    payload,
+    process.env.ACCESS_TOKEN_SECRET as string,
+    { expiresIn: "1m" }
+  );
+  const refreshToken = jwt.sign(
+    payload,
+    process.env.REFRESH_TOKEN_SECRET as string,
+    { expiresIn: "1d" }
+  );
+
+  return { accessToken, refreshToken };
+}
+
+export { validateReqObject, STATUS, generateTokens };

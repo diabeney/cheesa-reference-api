@@ -1,13 +1,14 @@
 import { Schema, model } from "mongoose";
-import { ILecturer } from "../types";
+import { IUser } from "../types";
 
-const LecturerSchema = new Schema({
+const UsersSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  role: { type: String, enum: ["lecturer", "graduate"] },
 });
 
-const Lecturer = model<ILecturer>("Lecturer", LecturerSchema);
+const Users = model<IUser>("Users", UsersSchema);
 
-export default Lecturer;
+export default Users;

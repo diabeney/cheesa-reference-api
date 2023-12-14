@@ -42,37 +42,5 @@ describe("validate request body object", () => {
         invalid: "heug",
       });
     });
-
-    describe("on graduate signup", () => {
-      test("for a valid graduate", () => {
-        expect(
-          validateReqObject(
-            {
-              firstName: "John",
-              lastName: "Doe",
-              email: "test@user.com",
-              password: "user",
-              programme: "Chemical",
-              graduationYear: "2023",
-            },
-            [
-              "email",
-              "firstName",
-              "graduationYear",
-              "lastName",
-              "password",
-              "programme",
-            ]
-          )
-        ).toMatchObject({
-          firstName: "John",
-          lastName: "Doe",
-          email: "test@user.com",
-          password: "user",
-          programme: "Chemical",
-          graduationYear: "2023",
-        });
-      });
-    });
   });
 });

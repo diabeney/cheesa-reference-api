@@ -1,15 +1,12 @@
 export type Programmes = "Petrochemical" | "Chemical";
 
-export interface IGraduate {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+export type IUser = Record<
+  "firstName" | "lastName" | "email" | "password" | "role",
+  string
+>;
+
+export interface IRecommendationRequest {
+  user: Omit<IUser, "password" | "role">;
   programme: Programmes;
   graduationYear: string;
 }
-
-export type ILecturer = Record<
-  "firstName" | "lastName" | "email" | "password",
-  string
->;

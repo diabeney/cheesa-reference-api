@@ -1,22 +1,21 @@
 import { Request, Response } from "express";
-import { IGraduate, ILecturer } from "../types";
-import { validateReqObject } from "../utils";
-import { getGraduateByEmail, createGraduate } from "../db/graduate";
-import { getLecturerByEmail, createLecturer } from "../db/lecturer";
+import { IUser } from "../types";
+import { getUserByEmail, createUser } from "../db/user";
+import { generateTokens, validateReqObject } from "../utils";
+import {} from "../db/user";
 import { STATUS } from "../utils";
 import bcrypt from "bcryptjs";
+import { MongooseError } from "mongoose";
 
-async function graduateSignup(
-  req: Request<unknown, unknown, IGraduate>,
-  res: Response
-) {
+export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
+
+async function SignUp(req: Request<unknown, unknown, IUser>, res: Response) {
   const formObj = validateReqObject(req.body, [
-    "email",
     "firstName",
+    "email",
     "lastName",
-    "graduationYear",
-    "programme",
     "password",
+    "role",
   ]);
 
   if (formObj instanceof Error) {
@@ -24,9 +23,8 @@ async function graduateSignup(
   }
 
   try {
-    const { email, firstName, lastName, graduationYear, programme, password } =
-      formObj;
-    const userExists = await getGraduateByEmail(email);
+    const { email, firstName, lastName, role, password } = formObj;
+    const userExists = await getUserByEmail(email);
 
     if (userExists) {
       return res
@@ -34,67 +32,62 @@ async function graduateSignup(
         .json({ message: "User with email already exists" });
     }
 
-    const SALT_FACTOR = 10;
+    const SALT_FACTOR = await bcrypt.genSalt(10);
 
     const hashedPassword = await bcrypt.hash(password, SALT_FACTOR);
 
-    await createGraduate({
+    await createUser({
       firstName,
       lastName,
       email,
-      graduationYear,
-      programme,
       password: hashedPassword,
+      role,
     });
 
     res.sendStatus(STATUS.CREATED.code);
   } catch (error) {
+    if (error instanceof MongooseError) {
+      res.status(STATUS.SERVER_ERROR.code).json(error.message);
+    }
     console.log(error);
-    res.sendStatus(STATUS.SERVER_ERROR.code);
+    res.sendStatus(500);
   }
 }
 
-async function lecturerSignup(
-  req: Request<unknown, unknown, ILecturer>,
-  res: Response
-) {
-  const formObj = validateReqObject(req.body, [
-    "email",
-    "firstName",
-    "lastName",
-    "password",
-  ]);
+async function login(req: Request, res: Response) {
+  const formObj = validateReqObject<Pick<IUser, "email" | "password">>(
+    req.body,
+    ["email", "password"]
+  );
 
   if (formObj instanceof Error) {
     return res.sendStatus(STATUS.BAD_REQUEST.code);
   }
 
+  const { email, password } = formObj;
   try {
-    const { email, firstName, lastName, password } = formObj;
-    const userExists = await getLecturerByEmail(email);
+    const user = await getUserByEmail(email);
 
-    if (userExists) {
-      return res
-        .status(STATUS.BAD_REQUEST.code)
-        .json({ message: "User with email already exists" });
-    }
+    if (!user) return res.sendStatus(404);
 
-    const SALT_FACTOR = 10;
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
-    const hashedPassword = await bcrypt.hash(password, SALT_FACTOR);
+    if (!isValidPassword) return res.sendStatus(400);
 
-    await createLecturer({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
+    const payload = { id: user._id, email: user.email, role: user.role };
+
+    const { accessToken, refreshToken } = generateTokens(payload);
+
+    res.cookie(CHEESA_REFERNCE_JWT, refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
     });
 
-    res.sendStatus(STATUS.CREATED.code);
+    res.status(200).json({ accessToken });
   } catch (error) {
     console.log(error);
-    res.sendStatus(STATUS.SERVER_ERROR.code);
+    return res.sendStatus(500);
   }
 }
 
-export { graduateSignup, lecturerSignup };
+export { SignUp, login };
