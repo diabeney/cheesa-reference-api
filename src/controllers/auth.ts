@@ -1,15 +1,20 @@
 import { Request, Response } from "express";
 import { IUser } from "../types";
-import { getUserByEmail, createUser } from "../db/user";
+import { getUserByEmail, createUser, getRefreshToken } from "../db/user";
 import { generateTokens, validateReqObject } from "../utils";
-import {} from "../db/user";
 import { STATUS } from "../utils";
 import bcrypt from "bcryptjs";
 import { MongooseError } from "mongoose";
+import { AuthCookies } from "../types";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import { TokenPayload } from "../utils";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
-async function SignUp(req: Request<unknown, unknown, IUser>, res: Response) {
+async function handleSignUp(
+  req: Request<unknown, unknown, IUser>,
+  res: Response
+) {
   const formObj = validateReqObject(req.body, [
     "firstName",
     "email",
@@ -54,7 +59,7 @@ async function SignUp(req: Request<unknown, unknown, IUser>, res: Response) {
   }
 }
 
-async function login(req: Request, res: Response) {
+async function handleLogin(req: Request, res: Response) {
   const formObj = validateReqObject<Pick<IUser, "email" | "password">>(
     req.body,
     ["email", "password"]
@@ -76,11 +81,11 @@ async function login(req: Request, res: Response) {
 
     const payload = { id: user._id, email: user.email, role: user.role };
 
-    const { accessToken, refreshToken } = generateTokens(payload);
+    const { accessToken, refreshToken } = await generateTokens(payload);
 
     res.cookie(CHEESA_REFERNCE_JWT, refreshToken, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
     });
 
     res.status(200).json({ accessToken });
@@ -90,4 +95,44 @@ async function login(req: Request, res: Response) {
   }
 }
 
-export { SignUp, login };
+async function handleRefreshToken(req: Request, res: Response) {
+  const cookies = req.cookies as AuthCookies;
+  const refreshToken = cookies["Cheesa-Reference-JWT"];
+
+  if (!refreshToken) return res.sendStatus(401);
+
+  try {
+    const payload = jwt.decode(refreshToken) as TokenPayload;
+
+    const storedRefreshToken = await getRefreshToken(payload.id);
+
+    if (!storedRefreshToken) return res.sendStatus(401);
+
+    const verifiedPayload =
+      storedRefreshToken.token === refreshToken &&
+      (jwt.verify(
+        storedRefreshToken.token,
+        process.env.REFRESH_TOKEN_SECRET as string
+      ) as TokenPayload);
+
+    if (verifiedPayload === false) return res.sendStatus(403);
+
+    const newAccessToken = jwt.sign(
+      verifiedPayload,
+      process.env.ACCESS_TOKEN_SECRET as string,
+      {
+        expiresIn: "5m",
+      }
+    );
+
+    res.status(200).json({ accessToken: newAccessToken });
+  } catch (error) {
+    if (error instanceof JsonWebTokenError || error instanceof MongooseError) {
+      return res.status(403).json({ message: error.message });
+    }
+
+    res.sendStatus(500);
+  }
+}
+
+export { handleLogin, handleSignUp, handleRefreshToken };

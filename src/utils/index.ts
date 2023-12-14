@@ -1,4 +1,12 @@
 import jwt from "jsonwebtoken";
+import { saveRefreshToken } from "../db/user";
+import { Types } from "mongoose";
+
+export type TokenPayload = {
+  id: Types.ObjectId;
+  email: string;
+  role: string;
+};
 
 function validateReqObject<T = object>(
   obj: Partial<T>,
@@ -41,17 +49,23 @@ const STATUS = {
   },
 };
 
-function generateTokens(payload: string | object) {
+async function generateTokens(payload: TokenPayload) {
   const accessToken = jwt.sign(
     payload,
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: "1m" }
+    { expiresIn: "5m" }
   );
   const refreshToken = jwt.sign(
     payload,
     process.env.REFRESH_TOKEN_SECRET as string,
     { expiresIn: "1d" }
   );
+
+  try {
+    await saveRefreshToken(payload.id, refreshToken);
+  } catch (error) {
+    console.log(error);
+  }
 
   return { accessToken, refreshToken };
 }

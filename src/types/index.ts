@@ -1,3 +1,5 @@
+import { CookieOptions } from "express";
+
 export type Programmes = "Petrochemical" | "Chemical";
 
 export type IUser = Record<
@@ -9,4 +11,8 @@ export interface IRecommendationRequest {
   user: Omit<IUser, "password" | "role">;
   programme: Programmes;
   graduationYear: string;
+}
+
+export interface AuthCookies extends CookieOptions {
+  "Cheesa-Reference-JWT": string;
 }
