@@ -2,9 +2,8 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["src"],
-  format: ["esm"],
+  format: ["cjs"],
   splitting: false,
   target: "esnext",
-  minifySyntax: true,
-  minifyWhitespace: true,
+  minify: true,
 });

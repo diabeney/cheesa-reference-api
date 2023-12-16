@@ -3,16 +3,16 @@ import { CookieOptions } from "express";
 export type Programmes = "Petrochemical" | "Chemical";
 
 export type IUser = Record<
-  "firstName" | "lastName" | "email" | "password" | "role",
-  string
+	"firstName" | "lastName" | "email" | "password" | "role",
+	string
 >;
 
 export interface IRecommendationRequest {
-  user: Omit<IUser, "password" | "role">;
-  programme: Programmes;
-  graduationYear: string;
+	user: Omit<IUser, "password" | "role">;
+	programme: Programmes;
+	graduationYear: string;
 }
 
 export interface AuthCookies extends CookieOptions {
-  "Cheesa-Reference-JWT": string;
+	"Cheesa-Reference-JWT": string;
 }

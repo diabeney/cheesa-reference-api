@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  handleLogin,
-  handleRefreshToken,
-  handleSignUp,
+	handleLogin,
+	handleRefreshToken,
+	handleSignUp,
 } from "../../controllers/auth";
 
 const router = express.Router();

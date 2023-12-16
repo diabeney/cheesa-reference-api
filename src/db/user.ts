@@ -7,8 +7,8 @@ const getUserByEmail = async (email: string) => await Users.findOne({ email });
 const createUser = (userObject: IUser) => new Users(userObject).save();
 
 const getRefreshToken = async (id: Types.ObjectId) =>
-  await RefreshToken.findOne({ userId: id });
+	await RefreshToken.findOne({ userId: id });
 const saveRefreshToken = (userId: Types.ObjectId, token: string) =>
-  new RefreshToken({ userId, token }).save();
+	new RefreshToken({ userId, token }).save();
 
 export { getUserByEmail, createUser, getRefreshToken, saveRefreshToken };
