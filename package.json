@@ -8,7 +8,7 @@
     "format": "npx @biomejs/biome format src --write --json-formatter-enabled=true",
     "dev": "npm run lint && nodemon src/index.ts",
     "test": "vitest",
-    "build": "npm run lint && npm run format && tsup",
+    "build": "tsup",
     "start": "node dist/index.js"
   },
   "husky": {
