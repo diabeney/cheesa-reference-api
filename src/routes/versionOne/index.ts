@@ -8,6 +8,7 @@ router.get("/", (_, res) => res.send("Hello"));
 
 router.use("/auth", AuthRoutes);
 router.use("/users", verifyToken, UserRoutes);
+
 router.get("/posts", verifyToken, (_, res) => {
   res.status(200).json({ posts: ["one", "two", "three"] });
 });

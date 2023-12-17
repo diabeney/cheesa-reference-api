@@ -121,7 +121,7 @@ async function handleRefreshToken(req: Request, res: Response) {
       verifiedPayload,
       process.env.ACCESS_TOKEN_SECRET as string,
       {
-        expiresIn: "5m",
+        expiresIn: "30m",
       }
     );
 
