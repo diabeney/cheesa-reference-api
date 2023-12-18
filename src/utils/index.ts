@@ -1,26 +1,13 @@
 import jwt from "jsonwebtoken";
 import { saveRefreshToken } from "../db/user";
 import { Types } from "mongoose";
+import { z, ZodError, ZodType } from "zod";
 
 export type TokenPayload = {
   id: Types.ObjectId;
   email: string;
   role: string;
 };
-
-function validateReqObject<T = object>(
-  obj: Partial<T>,
-  requiredFields: (keyof T)[]
-) {
-  const isInvalid = requiredFields.some(
-    (field) => Object.keys(obj).indexOf(field as string) === -1 || !obj[field]
-  );
-
-  if (isInvalid) {
-    return new Error("Bad Request");
-  }
-  return obj as T;
-}
 
 const STATUS = {
   CREATED: {
@@ -70,4 +57,40 @@ async function generateTokens(payload: TokenPayload) {
   return { accessToken, refreshToken };
 }
 
-export { validateReqObject, STATUS, generateTokens };
+function validateObject<T = object>(
+  payload: T,
+  shape: ZodType<typeof payload>
+): z.infer<typeof shape> | ZodError {
+  try {
+    const validObj = shape.parse(payload);
+    return validObj;
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return err;
+    }
+    return new ZodError<typeof shape>([]);
+  }
+}
+
+export function ErrorMsg(code: number, message?: string) {
+  switch (code) {
+    case STATUS.BAD_REQUEST.code:
+      return { message: message || STATUS.BAD_REQUEST.message };
+
+    case STATUS.INVALID_CREDENTIALS.code:
+      return { message: message || STATUS.INVALID_CREDENTIALS.message };
+
+    case STATUS.UNAUTHORIZED.code:
+      return { message: message || STATUS.UNAUTHORIZED.message };
+
+    case STATUS.NOT_FOUND.code:
+      return { message: message || STATUS.NOT_FOUND.message };
+    case STATUS.SERVER_ERROR.code:
+      return { message: message || STATUS.SERVER_ERROR.message };
+
+    default:
+      return { message: message || STATUS.SERVER_ERROR.message };
+  }
+}
+
+export { STATUS, generateTokens, validateObject };

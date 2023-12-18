@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { IUser } from "../types/types";
 import { getUserByEmail, createUser, getRefreshToken } from "../db/user";
-import { generateTokens, validateReqObject } from "../utils";
+import { ErrorMsg, generateTokens, validateObject } from "../utils";
 import { STATUS } from "../utils";
 import bcrypt from "bcryptjs";
 import { MongooseError } from "mongoose";
 import { AuthCookies } from "../types/types";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { TokenPayload } from "../utils";
+import { SignUpShape, LoginShape } from "../constants/constants";
+import { ZodError } from "zod";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
@@ -15,16 +17,11 @@ async function handleSignUp(
   req: Request<unknown, unknown, IUser>,
   res: Response
 ) {
-  const formObj = validateReqObject(req.body, [
-    "firstName",
-    "email",
-    "lastName",
-    "password",
-    "role",
-  ]);
+  const formObj = validateObject(req.body, SignUpShape);
 
-  if (formObj instanceof Error) {
-    return res.sendStatus(STATUS.BAD_REQUEST.code);
+  if (formObj instanceof ZodError) {
+    const { message } = formObj.issues[0];
+    return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
   }
 
   try {
@@ -52,32 +49,33 @@ async function handleSignUp(
     res.sendStatus(STATUS.CREATED.code);
   } catch (error) {
     if (error instanceof MongooseError) {
-      res.status(STATUS.SERVER_ERROR.code).json(error.message);
+      res.status(STATUS.SERVER_ERROR.code).json({ message: error.message });
     }
     console.log(error);
-    res.sendStatus(500);
+    res.status(500).json(ErrorMsg(500));
   }
 }
 
-async function handleLogin(req: Request, res: Response) {
-  const formObj = validateReqObject<Pick<IUser, "email" | "password">>(
-    req.body,
-    ["email", "password"]
-  );
+async function handleLogin(
+  req: Request<unknown, unknown, Pick<IUser, "email" | "password">>,
+  res: Response
+) {
+  const formObj = validateObject(req.body, LoginShape);
 
-  if (formObj instanceof Error) {
-    return res.sendStatus(STATUS.BAD_REQUEST.code);
+  if (formObj instanceof ZodError) {
+    const { message } = formObj.issues[0];
+    return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
   }
 
   const { email, password } = formObj;
   try {
     const user = await getUserByEmail(email);
 
-    if (!user) return res.sendStatus(404);
+    if (!user) return res.status(404).json(ErrorMsg(404));
 
     const isValidPassword = await bcrypt.compare(password, user.password);
 
-    if (!isValidPassword) return res.sendStatus(400);
+    if (!isValidPassword) return res.status(401).json(ErrorMsg(401));
 
     const payload = { id: user._id, email: user.email, role: user.role };
 
@@ -91,7 +89,7 @@ async function handleLogin(req: Request, res: Response) {
     res.status(200).json({ accessToken });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(500);
+    return res.status(500).json(ErrorMsg(500));
   }
 }
 
@@ -106,7 +104,7 @@ async function handleRefreshToken(req: Request, res: Response) {
 
     const storedRefreshToken = await getRefreshToken(payload.id);
 
-    if (!storedRefreshToken) return res.sendStatus(401);
+    if (!storedRefreshToken) return res.status(403).json(ErrorMsg(403));
 
     const verifiedPayload =
       storedRefreshToken.token === refreshToken &&
@@ -115,7 +113,7 @@ async function handleRefreshToken(req: Request, res: Response) {
         process.env.REFRESH_TOKEN_SECRET as string
       ) as TokenPayload);
 
-    if (verifiedPayload === false) return res.sendStatus(403);
+    if (verifiedPayload === false) return res.status(403).json(ErrorMsg(403));
 
     const newAccessToken = jwt.sign(
       verifiedPayload,
@@ -131,7 +129,7 @@ async function handleRefreshToken(req: Request, res: Response) {
       return res.status(403).json({ message: error.message });
     }
 
-    res.sendStatus(500);
+    res.status(500).json(ErrorMsg(500));
   }
 }
 

@@ -1,9 +1,9 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/types";
-import { IUser } from "../types/types";
 import { getUserByEmail } from "../db/user";
 import { getUserByRole } from "../db/user";
 import { getAllUsers } from "../db/user";
+import { ErrorMsg } from "../utils";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
   const user = req.userPayload;
@@ -13,7 +13,7 @@ async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
       const { email } = user;
       const foundUser = await getUserByEmail(email);
 
-      if (!foundUser) return res.sendStatus(404);
+      if (!foundUser) return res.status(404).json(ErrorMsg(400));
       const { _id, firstName, lastName, role, email: userEmail } = foundUser;
 
       return res.status(200).json({
@@ -23,12 +23,11 @@ async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
         role,
         email: userEmail,
       });
-    } else {
-      res.sendStatus(401);
     }
+    return res.status(401).json(ErrorMsg(401));
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    res.status(500).json(ErrorMsg(500));
   }
 }
 
