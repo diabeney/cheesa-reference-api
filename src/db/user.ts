@@ -4,6 +4,8 @@ import { Types } from "mongoose";
 import { IUser } from "../types/types";
 
 const getUserByEmail = async (email: string) => await Users.findOne({ email });
+const getLecturerById = async (id: Types.ObjectId) =>
+  await Users.find({ _id: id, role: "lecturer" });
 
 const getUserByRole = async (role: string) =>
   await Users.find({ role }).then((users) =>
@@ -37,4 +39,4 @@ const saveRefreshToken = (userId: Types.ObjectId, token: string) =>
 
 export { getUserByEmail, createUser, getRefreshToken, saveRefreshToken };
 
-export { getUserByRole, getAllUsers };
+export { getUserByRole, getAllUsers, getLecturerById };

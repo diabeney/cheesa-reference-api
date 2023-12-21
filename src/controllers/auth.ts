@@ -31,7 +31,7 @@ async function handleSignUp(
     if (userExists) {
       return res
         .status(STATUS.BAD_REQUEST.code)
-        .json({ message: "User with email already exists" });
+        .json({ message: `User with email ${email} already exists` });
     }
 
     const SALT_FACTOR = await bcrypt.genSalt(10);
@@ -68,6 +68,7 @@ async function handleLogin(
   }
 
   const { email, password } = formObj;
+
   try {
     const user = await getUserByEmail(email);
 

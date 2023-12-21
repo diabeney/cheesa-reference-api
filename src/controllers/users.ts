@@ -38,7 +38,7 @@ async function handleGetUsers(req: AuthRequest, res: Response) {
     if (isEmptyObj) {
       const users = await getAllUsers();
       if (!users) return res.sendStatus(404);
-      return res.status(200).json(users);
+      return res.status(200).json({ results: users });
     }
 
     const role = searchParam.role as string;
@@ -47,7 +47,7 @@ async function handleGetUsers(req: AuthRequest, res: Response) {
 
     if (!lecturers.length) return res.sendStatus(404);
 
-    res.status(200).json(lecturers);
+    res.status(200).json({ results: lecturers });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
