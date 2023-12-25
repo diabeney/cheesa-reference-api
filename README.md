@@ -37,9 +37,11 @@ const BASE_URL = "https://domain.com/api/v1"
      
 **The remaining endpoints require  authorization field**
 
-```json
+```js
 // request header
+{
 "Authorization": "Bearer <token here>"
+}
 ```
 
 ## Users
@@ -50,7 +52,7 @@ _Gets the current logged in user info_
 2. Response
    - Successfull - `200 OK - `
    - ```json
-     "id: "string",
+     "id": "string",
      "firstName": "john",
      "lastName": "doe",
      "email": "johndoe@email.com",
@@ -64,17 +66,17 @@ _Gets all users_
 2. Response
    - Successfull - `200 OK - `
    - ```js
-     {
      results: [
-     {
-     "id: "string",
+      {
+     "id": "string",
      "firstName": "john",
      "lastName": "doe",
      "email": "johndoe@email.com",
-     "role": "lecturer" }
-     }]
+     "role": "lecturer"
+     }
+     ]
      ```
-   - Error - `4XX - {message: "}`
+   - Error - `4XX - {message: "error message here"}`
 ### `GET => /users?role=graduate`
 _Gets all graduates_
 1. Request
@@ -82,17 +84,17 @@ _Gets all graduates_
 2. Response
    - Successfull - `200 OK - `
    - ```js
-     {
+     
      results: [
      {
-     "id: "string",
+     "id": "string",
      "firstName": "john",
      "lastName": "doe",
      "email": "johndoe@email.com",
-     "role": "graduate" }
+     "role": "graduate" 
      }]
      ```
-   - Error - `4XX - {message: "}`
+   - Error - `4XX - {message: "error message here"}`
 ### `GET => /users?role=lecturer`
 _Gets all lecturers_
 1. Request
@@ -100,14 +102,13 @@ _Gets all lecturers_
 2. Response
    - Successfull - `200 OK - `
    - ```js
-     {
      results: [
      {
-     "id: "string",
+     "id": "string",
      "firstName": "john",
      "lastName": "doe",
      "email": "johndoe@email.com",
      "role": "lecturer" }
-     }]
+     ]
      ```
-   - Error - `4XX - {message: "}`
+   - Error - `4XX - {message: "error message here"}`
