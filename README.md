@@ -34,3 +34,80 @@ const BASE_URL = "https://domain.com/api/v1"
 2. Response
    - Successfull - `200 OK - ` `{accessToken: "string"}`
    - Error - `4XX - {message: "Not Authorized}`
+     
+**The remaining endpoints require  authorization field**
+
+```json
+// request header
+"Authorization": "Bearer <token here>"
+```
+
+## Users
+### `GET => /users/me`
+_Gets the current logged in user info_
+1. Request
+   - No request body.
+2. Response
+   - Successfull - `200 OK - `
+   - ```json
+     "id: "string",
+     "firstName": "john",
+     "lastName": "doe",
+     "email": "johndoe@email.com",
+     "role": "lecturer | graduate"
+     ```
+   - Error - `401 - {message: "Not Authorized}`
+### `GET => /users`
+_Gets all users_
+1. Request
+   - No request body.
+2. Response
+   - Successfull - `200 OK - `
+   - ```js
+     {
+     results: [
+     {
+     "id: "string",
+     "firstName": "john",
+     "lastName": "doe",
+     "email": "johndoe@email.com",
+     "role": "lecturer" }
+     }]
+     ```
+   - Error - `4XX - {message: "}`
+### `GET => /users?role=graduate`
+_Gets all graduates_
+1. Request
+   - No request body.
+2. Response
+   - Successfull - `200 OK - `
+   - ```js
+     {
+     results: [
+     {
+     "id: "string",
+     "firstName": "john",
+     "lastName": "doe",
+     "email": "johndoe@email.com",
+     "role": "graduate" }
+     }]
+     ```
+   - Error - `4XX - {message: "}`
+### `GET => /users?role=lecturer`
+_Gets all lecturers_
+1. Request
+   - No request body.
+2. Response
+   - Successfull - `200 OK - `
+   - ```js
+     {
+     results: [
+     {
+     "id: "string",
+     "firstName": "john",
+     "lastName": "doe",
+     "email": "johndoe@email.com",
+     "role": "lecturer" }
+     }]
+     ```
+   - Error - `4XX - {message: "}`
