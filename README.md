@@ -112,3 +112,58 @@ _Gets all lecturers_
      ]
      ```
    - Error - `4XX - {message: "error message here"}`
+  
+   ### `GET => /reference/lecturer/:id`
+_Get a particular lecturer's references_
+1. Request
+   - No request body
+2. Response
+   - Successfull - `200 OK - `
+   - ```js
+     const response = {
+      response: [
+      {
+        id: "string",
+        graduateId: "string",
+        lecturerId: "string",
+          programme: "chemical | petrochemical",
+          graduationYear: "string",
+          referenceNumber: "string",
+          indexNumber: "string",
+          expectedDate: "Date as a string",
+          transactionStatus: "pending | paid",
+          createdAt: "Date as string",
+          accepted: "accepted | declined | null:,
+          status: "not ready | submitted",
+     }
+     ]
+     }
+     ```
+   - Error - `4XX - {message: "error message here"}`
+### `GET => /reference/graduate/:id`
+_Get a particular graduate's references_
+1. Request
+   - No request body
+2. Response
+   - Successfull - `200 OK - `
+   - ```js
+     const response = {
+      response: [
+      {
+        id: "string",
+        graduateId: "string",
+        lecturerId: "string",
+          programme: "chemical | petrochemical",
+          graduationYear: "string",
+          referenceNumber: "string",
+          indexNumber: "string",
+          expectedDate: "Date as a string",
+          transactionStatus: "pending | paid",
+          createdAt: "Date as string",
+          accepted: "accepted | declined | null:,
+          status: "not ready | submitted",
+     }
+     ]
+     }
+     ```
+   - Error - `4XX - {message: "error message here"}`
