@@ -118,7 +118,6 @@ const LecturersReferenceControllers = {
       const lecturer = await getLecturerById(id);
 
       if (!lecturer.length) return res.status(403).json(ErrorMsg(403));
-      console.log(validatedParams);
 
       const { refId, accepted: isAccepted } = validatedParams;
 
