@@ -7,9 +7,10 @@ import { ErrorMsg } from "../utils";
 import { ZodError } from "zod";
 import { RequestReference, updateReferenceById } from "../db/reference";
 import { getLecturerById } from "../db/user";
-import { getReferenceById } from "../db/reference";
+import { getUsersReferenceByRole } from "../db/reference";
 import { RespondToReference } from "../constants/constants";
 import { Types } from "mongoose";
+import { getReferenceById } from "../db/reference";
 import { TokenPayload } from "../utils";
 
 type QueryFields = {
@@ -50,6 +51,22 @@ async function handleRequestReference(
   }
 }
 
+async function handleViewReference(req: Request, res: Response) {
+  const id = req.params.id;
+
+  if (!id) return res.status(400).json(ErrorMsg(400));
+
+  try {
+    const reference = await getReferenceById(id);
+
+    if (reference instanceof Error) return res.status(404).json(ErrorMsg(404));
+    res.status(200).json({ ...reference });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(ErrorMsg(500));
+  }
+}
+
 const GraduatesReferenceControllers = {
   handleGetGradReferences: async (req: Request, res: Response) => {
     const id = req.params.id;
@@ -57,7 +74,7 @@ const GraduatesReferenceControllers = {
     if (!id) return res.status(400).json(ErrorMsg(400));
 
     try {
-      const references = await getReferenceById(id, "graduate");
+      const references = await getUsersReferenceByRole(id, "graduate");
       res.status(200).json({ results: references });
     } catch (err) {
       console.log(err);
@@ -73,7 +90,7 @@ const LecturersReferenceControllers = {
     if (!id) return res.status(400).json(ErrorMsg(400));
 
     try {
-      const references = await getReferenceById(id, "lecturer");
+      const references = await getUsersReferenceByRole(id, "lecturer");
       res.status(200).json({ results: references });
     } catch (err) {
       console.log(err);
@@ -119,6 +136,6 @@ const LecturersReferenceControllers = {
   },
 };
 
-export { handleRequestReference };
+export { handleRequestReference, handleViewReference };
 export { LecturersReferenceControllers as handleLecturers };
 export { GraduatesReferenceControllers as handleGraduates };

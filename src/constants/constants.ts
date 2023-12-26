@@ -24,6 +24,7 @@ const ReferenceShape = z.object({
   indexNumber: z
     .string({ required_error: "Index number is required" })
     .min(7, "Index number should be at least 8 characters"),
+  destination: z.string({ required_error: "Destination is required" }),
   expectedDate: z.string(),
 });
 

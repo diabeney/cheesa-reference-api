@@ -25,6 +25,7 @@ export interface IReferenceRequest {
   referenceNumber: string;
   indexNumber: string;
   expectedDate: string | Date;
+  destination: string;
   transactionStatus?: TransactionStatus;
   status?: "not ready" | "submitted";
   accepted?: "accepted" | "declined" | "null";

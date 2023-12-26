@@ -41,6 +41,10 @@ const ReferenceSchema = new mongoose.Schema({
     default: "not ready",
     enum: ["not ready", "submitted"],
   },
+  destination: {
+    type: String,
+    required: true,
+  },
   transactionStatus: {
     type: String,
     default: "pending",

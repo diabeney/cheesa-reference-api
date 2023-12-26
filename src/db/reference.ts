@@ -1,11 +1,44 @@
 import { Types } from "mongoose";
 import Reference from "../models/reference";
+import Users from "../models/userModel";
 import { IReferenceRequest } from "../types/types";
 
 const RequestReference = async (payload: IReferenceRequest) =>
   await new Reference(payload).save();
 
-const getReferenceById = async (id: string, role: "lecturer" | "graduate") => {
+const getReferenceById = async (id: string) => {
+  const result = await Reference.findOne({ _id: id })
+    .populate({
+      path: "graduateId lecturerId",
+      select: "firstName lastName email",
+      model: Users,
+    })
+    .then((reference) => {
+      if (reference) {
+        return {
+          id: reference._id,
+          graduateInfo: reference.graduateId,
+          lecturer: reference.lecturerId,
+          programme: reference.programme,
+          graduationYear: reference.graduationYear,
+          referenceNumber: reference.referenceNumber,
+          indexNumber: reference.indexNumber,
+          destination: reference.destination,
+          expectedDate: reference.expectedDate,
+          transactionStatus: reference.transactionStatus,
+          createdAt: reference.createdAt,
+          accepted: reference.accepted,
+          status: reference.status,
+        };
+      } else return new Error("Invalid reference id");
+    });
+  return result;
+};
+
+const getUsersReferenceByRole = async (
+  id: string,
+  role: "lecturer" | "graduate"
+) => {
   if (role === "graduate") {
     const result = await Reference.find({ graduateId: id }).then(
       (reference) => {
@@ -17,6 +50,7 @@ const getReferenceById = async (id: string, role: "lecturer" | "graduate") => {
           graduationYear: reference.graduationYear,
           referenceNumber: reference.referenceNumber,
           indexNumber: reference.indexNumber,
+          destination: reference.destination,
           expectedDate: reference.expectedDate,
           transactionStatus: reference.transactionStatus,
           createdAt: reference.createdAt,
@@ -39,6 +73,7 @@ const getReferenceById = async (id: string, role: "lecturer" | "graduate") => {
       indexNumber: reference.indexNumber,
       expectedDate: reference.expectedDate,
       createdAt: reference.createdAt,
+      destination: reference.destination,
       accepted: reference.accepted,
       transactionStatus: reference.transactionStatus,
       status: reference.status,
@@ -52,4 +87,9 @@ const updateReferenceById = async (
   payload: Pick<IReferenceRequest, "accepted">
 ) => await Reference.findOneAndUpdate({ _id: id }, payload, { new: true });
 
-export { RequestReference, getReferenceById, updateReferenceById };
+export {
+  RequestReference,
+  getUsersReferenceByRole,
+  updateReferenceById,
+  getReferenceById,
+};
