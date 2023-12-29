@@ -80,10 +80,13 @@ async function handleLogin(
 
     const payload = { id: user._id, email: user.email, role: user.role };
 
-    const { accessToken, refreshToken } = await generateTokens(payload);
+    const tokens = await generateTokens(payload);
+
+    if (tokens instanceof Error) return res.status(500).json(ErrorMsg(500));
+
+    const { refreshToken, accessToken } = tokens;
 
     res.cookie(CHEESA_REFERNCE_JWT, refreshToken, {
-      httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     });
 
@@ -119,9 +122,6 @@ async function handleRefreshToken(req: Request, res: Response) {
     const newAccessToken = jwt.sign(
       verifiedPayload,
       process.env.ACCESS_TOKEN_SECRET as string,
-      {
-        expiresIn: "30m",
-      }
     );
 
     res.status(200).json({ accessToken: newAccessToken });
@@ -129,6 +129,7 @@ async function handleRefreshToken(req: Request, res: Response) {
     if (error instanceof JsonWebTokenError || error instanceof MongooseError) {
       return res.status(403).json({ message: error.message });
     }
+    console.log(error)
 
     res.status(500).json(ErrorMsg(500));
   }

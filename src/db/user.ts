@@ -34,8 +34,16 @@ const createUser = (userObject: IUser) => new Users(userObject).save();
 const getRefreshToken = async (id: Types.ObjectId) =>
   await RefreshToken.findOne({ userId: id });
 
-const saveRefreshToken = (userId: Types.ObjectId, token: string) =>
-  new RefreshToken({ userId, token }).save();
+const saveRefreshToken = async (userId: Types.ObjectId, token: string) => {
+  try {
+    const oldToken = await RefreshToken.findOneAndDelete({userId})
+    const newToken = new RefreshToken({ userId, token }).save();
+    return;
+  } catch (error) {
+    console.log(error)
+  }
+}
+  
 
 export { getUserByEmail, createUser, getRefreshToken, saveRefreshToken };
 
