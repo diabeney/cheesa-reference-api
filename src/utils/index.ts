@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { saveRefreshToken } from "../db/user";
 import { MongooseError, Types } from "mongoose";
 import { z, ZodError, ZodType } from "zod";
@@ -49,16 +49,15 @@ async function generateTokens(payload: TokenPayload) {
   );
 
   try {
-     saveRefreshToken(payload.id, refreshToken);
+    saveRefreshToken(payload.id, refreshToken);
     return { accessToken, refreshToken };
   } catch (error) {
     if (error instanceof MongooseError) {
       return new Error(error.message);
     }
 
-    return new Error('Internal Server Error')
+    return new Error("Internal Server Error");
   }
-
 }
 
 function validateObject<T = object>(
