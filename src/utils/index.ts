@@ -40,7 +40,7 @@ async function generateTokens(payload: TokenPayload) {
   const accessToken = jwt.sign(
     payload,
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: "30m" }
+    { expiresIn: "2h" }
   );
   const refreshToken = jwt.sign(
     payload,
