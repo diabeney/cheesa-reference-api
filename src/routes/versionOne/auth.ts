@@ -1,14 +1,19 @@
-import express from "express";
+import express from 'express'
 import {
   handleLogin,
   handleRefreshToken,
-  handleSignUp,
-} from "../../controllers/auth";
+  handleSignUp
+} from '../../controllers/auth'
 
-const router = express.Router();
+import { resetPassword } from '../../controllers/resetPassword'
+import { forgotPassword } from '../../controllers/forgotPassword'
 
-router.post("/signup", handleSignUp);
-router.post("/login", handleLogin);
-router.post("/refresh", handleRefreshToken);
+const router = express.Router()
 
-export { router as AuthRoutes };
+router.post('/signup', handleSignUp)
+router.post('/login', handleLogin)
+router.post('/refresh', handleRefreshToken)
+router.post('/forgot-password', forgotPassword)
+router.post('/reset-password', resetPassword)
+
+export { router as AuthRoutes }
