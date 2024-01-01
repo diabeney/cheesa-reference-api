@@ -4,18 +4,18 @@ import { Request, Response } from 'express'
 
 const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { password, resetPasswordToken } = req.body
+    const { password, resetToken } = req.body
 
-    if (!password || !resetPasswordToken)
+    if (!password || !resetToken)
       return res.status(400).json({ message: 'Invalid Request' })
 
-    const resetPasswordTokenHash = crypto
+    const resetPasswordToken = crypto
       .createHash('sha256')
-      .update(resetPasswordToken)
+      .update(resetToken)
       .digest('hex')
 
     const user = await User.findOne({
-      resetPasswordToken: resetPasswordTokenHash,
+      resetPasswordToken,
       resetPasswordExpires: { $gt: Date.now() }
     })
 
