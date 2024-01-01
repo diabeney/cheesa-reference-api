@@ -24,7 +24,7 @@ const forgotPassword = async (req: Request, res: Response) => {
     const dispatchedMessage = sendEmail({
       to: user.email,
       subject: 'Password Reset Request',
-      message: message.html
+      message
     })
 
     if (!dispatchedMessage)
