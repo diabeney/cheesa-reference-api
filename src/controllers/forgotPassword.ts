@@ -33,7 +33,7 @@ const forgotPassword = async (req: Request, res: Response) => {
     await dispatchedMessage
 
     res.status(200).json({
-      message: `Email sent successfully to ${email} with further instructions`
+      message: `Reset link sent successfully to ${email} with further instructions`
     })
   } catch (error: unknown) {
     if (error instanceof Error) {
