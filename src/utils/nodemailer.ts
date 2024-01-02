@@ -3,7 +3,7 @@ import { Options } from '../types/types'
 
 export const sendEmail = async (options: Options) => {
   const SMTP_transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    service: process.env.SMTP_SERVICE,
     port: Number(process.env.SMTP_PORT),
     secure: true,
     auth: {
