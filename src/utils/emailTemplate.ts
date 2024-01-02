@@ -27,7 +27,7 @@ const forgotMessage = (resetUrl: string, user: IUser) => {
 													</div>
 													<div style="padding: 20px; background-color: rgb(255, 255, 255);">
 														<div style="color: rgb(0, 0, 0); text-align: left;">
-															<h2>Hello ${user.firstName}</h2>
+															<h3 style="font-size: ;">Hello ${user.firstName + ' ' + user.lastName},</h3>
 															<h1 style="margin: 1rem 0">Trouble signing in?</h1>
 															<p style="padding-bottom: 16px">We've received a request to reset the password for this user account.</p>
 															<p style="padding-bottom: 16px">
