@@ -39,7 +39,7 @@ const forgotMessage = (resetUrl: string, user: IUser) => {
 															<p style="padding-bottom: 16px">
 																<span>Thanks,</span>
 																<br>
-																	<span style="font-weight: bold;">RefHub support team</span>
+																	<span style="font-weight: bold;">RefHub Support Team</span>
 																</p>
 															</div>
 														</div>
