@@ -35,6 +35,12 @@ const forgotMessage = (resetUrl: string, user: IUser) => {
                           style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block;margin: 0.5rem 0; text-decoration: none">Reset
                           your password</a>
 															</p>
+															<p style="padding-bottom: 16px">If you have any trouble clicking the button above, please copy and paste the URL below into your web browser.
+																<br>
+																<br>
+																	<a href="${resetUrl} target="_blank" style="color: #2B52F5; text-decoration: underline;">${resetUrl}</a>
+																</p>
+															</p>
 															<p style="padding-bottom: 16px">If you didn't ask to reset your password, you can ignore this email.</p>
 															<p style="padding-bottom: 16px">
 																<span>Thanks,</span>
