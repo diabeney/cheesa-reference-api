@@ -2,15 +2,20 @@ require('dotenv').config()
 import https from 'https'
 import { Request, Response } from 'express'
 
+const BY_HUNDRED = 100
+const STATIC_AMOUNT = 30
+
+const TOTAL_AMOUNT = STATIC_AMOUNT * BY_HUNDRED
+
 const payStack = {
   // Handle Payment Controller (Accept Payment)
   handlePayment: async (req: Request, res: Response) => {
     try {
-      const { email, amount } = req.body
+      const { email, quantity } = req.body
       // params from the body
       const params = JSON.stringify({
         email,
-        amount: amount * 100
+        amount: quantity ? quantity * TOTAL_AMOUNT : TOTAL_AMOUNT
       })
       // options
       const options = {
