@@ -294,7 +294,7 @@ const BASE_URL = "https://domain.com/api/v1"
 
 ### `GET => /graduate/:id`
 
-#### _Get references requested by a particular lecturer_
+#### _Get references requested by a particular student_
 
 1. Request
    - No request body.
