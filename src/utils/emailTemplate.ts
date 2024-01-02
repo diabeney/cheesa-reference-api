@@ -1,8 +1,5 @@
 import { IUser } from '../types/types'
 
-const year = new Date()
-const copyright = year.getFullYear()
-
 const forgotMessage = (resetUrl: string, user: IUser) => {
   const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
