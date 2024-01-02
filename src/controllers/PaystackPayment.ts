@@ -14,8 +14,8 @@ const payStack = {
       })
       // options
       const options = {
-        hostname: 'api.paystack.co',
-        port: 443,
+        hostname: process.env.PAYSTACK_HOST,
+        port: process.env.PAYSTACK_PORT,
         path: '/transaction/initialize',
         method: 'POST',
         headers: {
@@ -53,8 +53,8 @@ const payStack = {
     const reference = req.params.reference
     try {
       const options = {
-        hostname: 'api.paystack.co',
-        port: 443,
+        hostname: process.env.PAYSTACK_HOST,
+        port: process.env.PAYSTACK_PORT,
         path: `/transaction/verify/${reference}`,
         method: 'GET',
         headers: {
