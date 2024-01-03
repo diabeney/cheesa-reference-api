@@ -1,6 +1,6 @@
 import { IUser } from '../types/types'
 
-const forgotMessage = (resetUrl: string, user: IUser) => {
+const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
   const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -78,4 +78,4 @@ const forgotMessage = (resetUrl: string, user: IUser) => {
   return html
 }
 
-export { forgotMessage }
+export { forgotPasswordMessage }
