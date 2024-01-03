@@ -1,6 +1,6 @@
 import User from '../models/userModel'
 import { sendEmail } from '../utils/nodemailer'
-import { forgotMessage } from '../utils/emailTemplate'
+import { forgotPasswordMessage } from '../utils/emailTemplate'
 import { Request, Response } from 'express'
 
 const forgotPassword = async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ const forgotPassword = async (req: Request, res: Response) => {
     await user.save()
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`
-    const message = forgotMessage(resetUrl, user)
+    const message = forgotPasswordMessage(resetUrl, user)
 
     const dispatchedMessage = sendEmail({
       to: user.email,
