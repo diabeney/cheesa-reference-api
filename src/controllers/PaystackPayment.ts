@@ -59,7 +59,7 @@ const payStack = {
           })
           .on('error', (error) => {
             console.error(error)
-            return res.status(400).json({ error: 'An error occured' })
+            return res.status(400).json(ErrorMsg(400))
           })
         client_request.write(params)
         client_request.end()
@@ -67,7 +67,7 @@ const payStack = {
     } catch (error) {
       // Handle any errors that occur during the request
       console.error(error)
-      res.status(500).json({ error: 'An error occurred' })
+      res.status(500).json(ErrorMsg(500))
     }
   },
 
@@ -100,14 +100,14 @@ const payStack = {
 
       api_request.on('error', (error) => {
         console.error(error)
-        res.status(500).json({ error: 'An error occurred' })
+        res.status(500).json(ErrorMsg(500))
       })
 
       // End the request object if there is no error
       api_request.end()
     } catch (error) {
       console.error(error)
-      res.status(500).json({ error: 'An error occurred' })
+      res.status(500).json(ErrorMsg(500))
     }
   }
 }
