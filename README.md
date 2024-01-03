@@ -324,7 +324,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `GET => /graduate/:id`
 
-#### _Get references requested by a particular lecturer_
+#### _Get references requested by a particular student_
 
 1. Request
    - No request body.
@@ -506,7 +506,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ## Environment Variables
 
-````env
+```env
    ``` Auth Configs ```
 
    ACCESS_TOKEN_SECRET=
@@ -530,4 +530,4 @@ const BASE_URL = 'https://domain.com/api/v1'
    PAYSTACK_HOST=
    PAYSTACK_PORT=
 
-````
+```
