@@ -35,6 +35,28 @@ const BASE_URL = 'https://domain.com/api/v1'
    - Successfull - `200 OK -` `{accessToken: "string"}`
    - Error - `4XX -` `{message: "error message"}`
 
+### `POST => /forgot-password`
+
+1. Request
+
+   ```json
+      "email": "string"
+   ```
+
+2. Response
+   - Successful - `200 OK -` `{message: Reset link sent successfully to ${email} with further instructions}`
+   - Error - `5XX -` `{message: "error message"}`
+
+### `POST => /reset-password`
+
+1. Request
+   ```json
+      "password": "string"
+   ```
+2. Response
+   - Successful - `200 OK -` `{message: "Password reset successful"}`
+   - Error - `5XX -` `{message: "error message"}`
+
 ### `POST => /refresh`
 
 1. Request
