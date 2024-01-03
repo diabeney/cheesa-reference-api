@@ -12,7 +12,7 @@ router.get('/', (_, res) => res.send('Hello'))
 router.use('/auth', AuthRoutes)
 router.use('/users', verifyToken, UserRoutes)
 router.use('/reference', verifyToken, ReferenceRoutes)
-router.use('/payment', PaymentRoutes)
+router.use('/payment', verifyToken, PaymentRoutes)
 
 // the /posts route is for testing purposes
 router.get('/posts', verifyToken, (_, res) => {
