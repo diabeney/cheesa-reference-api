@@ -1,7 +1,7 @@
 # Reference API
 
 ```js
-const BASE_URL = "https://domain.com/api/v1"
+const BASE_URL = 'https://domain.com/api/v1'
 ```
 
 ## Auth
@@ -16,7 +16,7 @@ const BASE_URL = "https://domain.com/api/v1"
    "password": "string",
      "email": "string",
      "role": "lecturer | graduate"
-     ```
+   ```
 
 2. Response
    - Successfull - `201 Created -` `{message: "string"}`
@@ -28,12 +28,34 @@ const BASE_URL = "https://domain.com/api/v1"
 
    ```json
      "email": "string",
-   "password": "string"   
-     ```
+   "password": "string"
+   ```
 
 2. Response
    - Successfull - `200 OK -` `{accessToken: "string"}`
    - Error - `4XX -` `{message: "error message"}`
+
+### `POST => /forgot-password`
+
+1. Request
+
+   ```json
+      "email": "string"
+   ```
+
+2. Response
+   - Successful - `200 OK -` `{message: Reset link sent successfully to ${email} with further instructions}`
+   - Error - `5XX -` `{message: "error message"}`
+
+### `POST => /reset-password`
+
+1. Request
+   ```json
+      "password": "string"
+   ```
+2. Response
+   - Successful - `200 OK -` `{message: "Password reset successful"}`
+   - Error - `5XX -` `{message: "error message"}`
 
 ### `POST => /refresh`
 
@@ -43,7 +65,7 @@ const BASE_URL = "https://domain.com/api/v1"
    - Successfull - `200 OK -` `{accessToken: "string"}`
    - Error - `4XX - {message: "Not Authorized}`
 
-### The remaining endpoints require  authorization field**
+### The remaining endpoints require authorization field\*\*
 
 ```js
 // request header
@@ -61,15 +83,16 @@ const BASE_URL = "https://domain.com/api/v1"
 1. Request
    - No request body.
 2. Response
+
    - Successfull - `200 OK -`
 
-    ```json
-     "id": "string",
-     "firstName": "john",
-     "lastName": "doe",
-     "email": "johndoe@email.com",
-     "role": "lecturer | graduate"
-     ```
+   ```json
+    "id": "string",
+    "firstName": "john",
+    "lastName": "doe",
+    "email": "johndoe@email.com",
+    "role": "lecturer | graduate"
+   ```
 
    - Error - `401 - {message: "Not Authorized}`
 
@@ -80,19 +103,20 @@ const BASE_URL = "https://domain.com/api/v1"
 1. Request
    - No request body.
 2. Response
+
    - Successfull - `200 OK -`
 
-    ```js
-     results: [
-      {
-     "id": "string",
-     "firstName": "john",
-     "lastName": "doe",
-     "email": "johndoe@email.com",
-     "role": "lecturer"
+   ```js
+   results: [
+     {
+       id: 'string',
+       firstName: 'john',
+       lastName: 'doe',
+       email: 'johndoe@email.com',
+       role: 'lecturer'
      }
-     ]
-     ```
+   ]
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -103,19 +127,20 @@ const BASE_URL = "https://domain.com/api/v1"
 1. Request
    - No request body.
 2. Response
+
    - Successfull - `200 OK -`
 
-    ```js
-     
-     results: [
+   ```js
+   results: [
      {
-     "id": "string",
-     "firstName": "john",
-     "lastName": "doe",
-     "email": "johndoe@email.com",
-     "role": "graduate" 
-     }]
-     ```
+       id: 'string',
+       firstName: 'john',
+       lastName: 'doe',
+       email: 'johndoe@email.com',
+       role: 'graduate'
+     }
+   ]
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -126,18 +151,20 @@ const BASE_URL = "https://domain.com/api/v1"
 1. Request
    - No request body.
 2. Response
+
    - Successfull - `200 OK -`
 
    ```js
-     results: [
+   results: [
      {
-     "id": "string",
-     "firstName": "john",
-     "lastName": "doe",
-     "email": "johndoe@email.com",
-     "role": "lecturer" }
-     ]
-     ```
+       id: 'string',
+       firstName: 'john',
+       lastName: 'doe',
+       email: 'johndoe@email.com',
+       role: 'lecturer'
+     }
+   ]
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -150,24 +177,25 @@ const BASE_URL = "https://domain.com/api/v1"
 1. Request
 
    ```js
-     const requestPayload = {
-     "graduateId": "string",
-     "lecturerId": "strinng",
-     "programme": "chemical | petrochemical",
-     "graduationYear": "2022",
-     "referenceNumber": "string",
-     "indexNumber": "string",
-     "expectedDate": "Date as string",
-     "destination": "string"
-     }
-     ```
+   const requestPayload = {
+     graduateId: 'string',
+     lecturerId: 'strinng',
+     programme: 'chemical | petrochemical',
+     graduationYear: '2022',
+     referenceNumber: 'string',
+     indexNumber: 'string',
+     expectedDate: 'Date as string',
+     destination: 'string'
+   }
+   ```
 
 2. Response
+
    - Successfull - `200 OK -`
 
-    ```js
-     const res = {message: "Successfully created"}
-     ```
+   ```js
+   const res = { message: 'Successfully created' }
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -181,41 +209,40 @@ const BASE_URL = "https://domain.com/api/v1"
    - Request parameter - `id` is the reference's id
 
    ```js
-   const obj = {id: 'string'}
+   const obj = { id: 'string' }
    ```
 
 2. Response
+
    - Successfull - `200 OK -`
 
    ```js
-
-     const res = {
-      "id": "string",
-      "graduateInfo": {
-         "_id": "string",
-         "firstName": "kwadwo",
-         "lastName": "Addo",
-         "email": "user@example.com",
-         },
-      "lecturer": {
-         "_id": "string",
-         "firstName": "Thanos",
-         "lastName": "Youndu",
-         "email": "user@example.com",
-          },
-      "programme": "chemical",
-      "graduationYear": "2024",
-      "referenceNumber": "string",
-      "indexNumber": "string",
-      "destination": "MIT",
-      "expectedDate": "2023-12-18T16:03:01.219Z",
-      "transactionStatus": "pending | paid",
-      "createdAt": "2023-12-18T20:59:00.945Z",
-      "accepted": "null | accepted | declined",
-      "status": "not ready | submitted"
-     }
-
-     ```
+   const res = {
+     id: 'string',
+     graduateInfo: {
+       _id: 'string',
+       firstName: 'kwadwo',
+       lastName: 'Addo',
+       email: 'user@example.com'
+     },
+     lecturer: {
+       _id: 'string',
+       firstName: 'Thanos',
+       lastName: 'Youndu',
+       email: 'user@example.com'
+     },
+     programme: 'chemical',
+     graduationYear: '2024',
+     referenceNumber: 'string',
+     indexNumber: 'string',
+     destination: 'MIT',
+     expectedDate: '2023-12-18T16:03:01.219Z',
+     transactionStatus: 'pending | paid',
+     createdAt: '2023-12-18T20:59:00.945Z',
+     accepted: 'null | accepted | declined',
+     status: 'not ready | submitted'
+   }
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -224,21 +251,24 @@ const BASE_URL = "https://domain.com/api/v1"
 #### _For lectuers to accept or decline requests_
 
 1. Request
+
    - No request body.
    - Request Query parameters
 
    ```js
-    const params = { 
-      refId: "string",
-      accepted: "true"  || "false"}
-    ```
+   const params = {
+     refId: 'string',
+     accepted: 'true' || 'false'
+   }
+   ```
 
 2. Response
+
    - Successfull - `200 OK -`
 
    ```js
-     const res = {message: "Successful"}
-     ```
+   const res = { message: 'Successful' }
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -250,45 +280,45 @@ const BASE_URL = "https://domain.com/api/v1"
    - No request body.
    - Request Parameter - `id` is the lecturer's id
 2. Response
+
    - Successfull - `200 OK -`
 
    ```ts
-
    type Response = {
-        id: string;
-         graduateId: string;
-         lecturerId: string;
-         programme: "chemical" | "petrochemical";
-         graduationYear: string;
-         referenceNumber: string;
-         indexNumber: string;
-         expectedDate: string | Date;
-         destination: string;
-         transactionStatus: "pending" | "paid";
-         status: "not ready" | "submitted";
-         accepted: "accepted" | "declined" | "null";
+     id: string
+     graduateId: string
+     lecturerId: string
+     programme: 'chemical' | 'petrochemical'
+     graduationYear: string
+     referenceNumber: string
+     indexNumber: string
+     expectedDate: string | Date
+     destination: string
+     transactionStatus: 'pending' | 'paid'
+     status: 'not ready' | 'submitted'
+     accepted: 'accepted' | 'declined' | 'null'
    }[]
 
-     const res = {
-      
-      results: [
-         {
-            "id": "string",
-            "lecturerId": "string",
-            "graduateId": "string",
-            "programme": "chemical",
-            "graduationYear": "2024",
-            "referenceNumber": "string",
-            "indexNumber": "string",
-            "destination": "MIT",
-            "expectedDate": "2023-12-18T16:03:01.219Z",
-            "transactionStatus": "pending | paid",
-            "createdAt": "2023-12-18T20:59:00.945Z",
-            "accepted": "null | accepted | declined",
-            "status": "not ready | submitted"  
-               }
-     ] }
-     ```
+   const res = {
+     results: [
+       {
+         id: 'string',
+         lecturerId: 'string',
+         graduateId: 'string',
+         programme: 'chemical',
+         graduationYear: '2024',
+         referenceNumber: 'string',
+         indexNumber: 'string',
+         destination: 'MIT',
+         expectedDate: '2023-12-18T16:03:01.219Z',
+         transactionStatus: 'pending | paid',
+         createdAt: '2023-12-18T20:59:00.945Z',
+         accepted: 'null | accepted | declined',
+         status: 'not ready | submitted'
+       }
+     ]
+   }
+   ```
 
    - Error - `4XX - {message: "error message here"}`
 
@@ -300,44 +330,204 @@ const BASE_URL = "https://domain.com/api/v1"
    - No request body.
    - Request Parameter - `id` is the graduate's id
 2. Response
+
    - Successfull - `200 OK -`
 
    ```ts
-
    type Response = {
-        id: string;
-         graduateId: string;
-         lecturerId: string;
-         programme: "chemical" | "petrochemical";
-         graduationYear: string;
-         referenceNumber: string;
-         indexNumber: string;
-         expectedDate: string | Date;
-         destination: string;
-         transactionStatus: "pending" | "paid";
-         status: "not ready" | "submitted";
-         accepted: "accepted" | "declined" | "null";
+     id: string
+     graduateId: string
+     lecturerId: string
+     programme: 'chemical' | 'petrochemical'
+     graduationYear: string
+     referenceNumber: string
+     indexNumber: string
+     expectedDate: string | Date
+     destination: string
+     transactionStatus: 'pending' | 'paid'
+     status: 'not ready' | 'submitted'
+     accepted: 'accepted' | 'declined' | 'null'
    }[]
 
-     const res = {
-      
-      results: [
-         {
-            "id": "string",
-            "lecturerId": "string",
-            "graduateId": "string",
-            "programme": "chemical",
-            "graduationYear": "2024",
-            "referenceNumber": "string",
-            "indexNumber": "string",
-            "destination": "MIT",
-            "expectedDate": "2023-12-18T16:03:01.219Z",
-            "transactionStatus": "pending | paid",
-            "createdAt": "2023-12-18T20:59:00.945Z",
-            "accepted": "null | accepted | declined",
-            "status": "not ready | submitted"  
-               }
-     ] }
-     ```
+   const res = {
+     results: [
+       {
+         id: 'string',
+         lecturerId: 'string',
+         graduateId: 'string',
+         programme: 'chemical',
+         graduationYear: '2024',
+         referenceNumber: 'string',
+         indexNumber: 'string',
+         destination: 'MIT',
+         expectedDate: '2023-12-18T16:03:01.219Z',
+         transactionStatus: 'pending | paid',
+         createdAt: '2023-12-18T20:59:00.945Z',
+         accepted: 'null | accepted | declined',
+         status: 'not ready | submitted'
+       }
+     ]
+   }
+   ```
 
    - Error - `4XX - {message: "error message here"}`
+
+## Payment
+
+### `POST => /accept-payment`
+
+#### _Accept payments from logged in user_
+
+1. Request
+   - `TOTAL AMOUNT` is hard coded
+   ```js
+   const params = JSON.stringify({
+     amount: quantity
+       ? quantity * TOTAL_AMOUNT
+       : TOTAL_AMOUNT`(quantity is optional)`
+   })
+   ```
+2. Response
+
+   - Successful - `200 OK -`
+
+   ```js
+      {
+         "status": true,
+         "message": "Authorization URL created",
+            "data": {
+            "authorization_url": "https://checkout.paystack.com/0peioxfhpn",
+            "access_code": "0peioxfhpn",
+            "reference": "7PVGX8MEk85tgeEpVDtD"
+         }
+      }
+   ```
+
+   - Error - `5XX - {message: "error message here"}`
+
+### `GET => /verify-payment/:reference`
+
+#### _Confirm the status of a transaction_
+
+1. Request
+   - No request body
+   - Request Query parameters
+   ```js
+   const params = {
+     reference: 'string'
+   }
+   ```
+2. Response
+
+   - Successful - `200 OK -`
+
+   ```js
+      {
+         "status": true,
+         "message": "Verification successful",
+         "data": {
+            "id": 2009945086,
+            "domain": "test",
+            "status": "success",
+            "reference": "7PVGX8MEk85tgeEpVDtD",
+            "amount": 20000,
+            "message": null,
+            "gateway_response": "Successful",
+            "paid_at": "2024-01-03T14:21:32.000Z",
+            "created_at": "2024-01-03T14:20:57.000Z",
+            "channel": "card",
+            "currency": "GHS",
+            "ip_address": "100.64.11.35",
+            "metadata": "",
+            "log": {
+               "start_time": 1660054888,
+               "time_spent": 4,
+               "attempts": 1,
+               "errors": 0,
+               "success": true,
+               "mobile": false,
+               "input": [],
+               "history": [
+               {
+                  "type": "action",
+                  "message": "Attempted to pay with card",
+                  "time": 3
+               },
+               {
+                  "type": "success",
+                  "message": "Successfully paid with card",
+                  "time": 4
+               }
+               ]
+            },
+            "fees": 100,
+            "fees_split": null,
+            "authorization": {
+               "authorization_code": "AUTH_ahisucjkru",
+               "bin": "408408",
+               "last4": "4081",
+               "exp_month": "12",
+               "exp_year": "2030",
+               "channel": "card",
+               "card_type": "visa ",
+               "bank": "TEST BANK",
+               "country_code": "GHA",
+               "brand": "visa",
+               "reusable": true,
+               "signature": "SIG_yEXu7dLBeqG0kU7g95Ke",
+               "account_name": null
+            },
+            "customer": {
+               "id": 89929267,
+               "first_name": null,
+               "last_name": null,
+               "email": "hello@email.com",
+               "customer_code": "CUS_i5yosncbl8h2kvc",
+               "phone": null,
+               "metadata": null,
+               "risk_action": "default",
+               "international_format_phone": null
+            },
+            "plan": null,
+            "split": {},
+            "order_id": null,
+            "paidAt": "2024-01-03T14:21:32.000Z",
+            "createdAt": "2024-01-03T14:20:57.000Z",
+            "requested_amount": 20000,
+            "pos_transaction_data": null,
+            "source": null,
+            "fees_breakdown": null,
+            "transaction_date": "2024-01-03T14:20:57.000Z",
+            "plan_object": {},
+            "subaccount": {}
+         }
+      }
+   ```
+
+## Environment Variables
+
+```env
+   ``` Auth Configs ```
+
+   ACCESS_TOKEN_SECRET=
+   REFRESH_TOKEN_SECRET=
+
+   ``` Nodemailer Configs ```
+
+   SMTP_SERVICE=
+   SMTP_PORT=
+   SMTP_USERNAME=
+   SMTP_PASSWORD=
+   CLIENT_URL=
+
+   ``` Database Configs ```
+
+   MONGO_DB_URI=
+
+   ``` Paystack Configs ```
+
+   PAYSTACK_SECRET_KEY=
+   PAYSTACK_HOST=
+   PAYSTACK_PORT=
+
+```
