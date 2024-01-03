@@ -59,7 +59,7 @@ const payStack = {
           })
           .on('error', (error) => {
             console.error(error)
-            return res.status(400).json(error.message)
+            return res.status(400).json({ error: 'An error occured' })
           })
         client_request.write(params)
         client_request.end()
