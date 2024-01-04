@@ -24,7 +24,7 @@ const PaystackPayments = {
         return res.status(404).json(ErrorMsg(404, 'There are no payments yet!'))
       }
 
-      return res.status(200).json(payments)
+      return res.status(200).json({ payments })
     } catch (error) {
       console.error(error)
       return res.status(500).json(ErrorMsg(500))
