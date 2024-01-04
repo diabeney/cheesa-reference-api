@@ -28,7 +28,7 @@ const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h3>Hello ${user.firstName + ' ' + user.lastName},</h3>
                         <h1 style="margin: 1rem 0">Trouble signing in?</h1>
-                        <p style="padding-bottom: 16px">We've received a request to reset the password for this user account.</p>
+                        <p style="padding-bottom: 16px">We've received a request to reset the password for your account at RefHub. Kindly click on the button below to reset your password.</p>
                         <p style="padding-bottom: 16px">
                           <a href="${resetUrl}" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Reset
                             your password</a>
