@@ -71,7 +71,6 @@ async function handleRequestReference(
 
     try {
       const lecturer = await getLecturerById(validatedObject.lecturerId)
-      console.log(lecturer)
 
       // Checking for the existence of the lecturer assigned
       if (!lecturer) {
