@@ -506,7 +506,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `GET => /:userId`
 
-#### _Get all payment made by a specific user_
+#### _Get all payments made by a specific user_
 
 1. Request
 
@@ -518,15 +518,15 @@ const BASE_URL = 'https://domain.com/api/v1'
    - Successful - `200 OK -`
 
    ```js
-      {
+   {
       "payments": [
          {
-            "_id": "6596cc1c46f6ace751bcab9f",
+            "_id": "string",
             "userId": {
-               "_id": "659436e4e3c413e6e7bccdd8",
+               "_id": "string",
                "email": "user@email.com"
             },
-            "amount": 120,
+            "amount": "number",
             "__v": 0
          }
       ]
