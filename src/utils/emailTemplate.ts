@@ -21,7 +21,7 @@ const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
                   <td style="padding: 40px 0px 0px;">
                     <div style="text-align: center; margin-bottom: 0.5rem;">
                       <div style="display: flex; align-items: center; justify-center; width: 100%; padding: 10px; background: white margin-bottom: ">
-                        <img src="https://ik.imagekit.io/kkldhhslb/refhub_edited__VgDfBku_?updatedAt=1704156192825" alt="Company" style="width:120px">
+                        <img src="https://ik.imagekit.io/kkldhhslb/RefHub_logo_final.png?updatedAt=1704396221616" alt="Company-Logo" style="width:120px">
                       </div>
                     </div>
                     <div style="padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
