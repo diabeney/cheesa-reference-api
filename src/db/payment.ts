@@ -17,6 +17,13 @@ const PaystackPayments = {
         model: Users
       })
 
+      /*  Checking the length of the payments tank
+          to return a reasonable reponse
+      */
+      if (payments.length <= 0) {
+        return res.status(404).json(ErrorMsg(404, 'There are no payments yet!'))
+      }
+
       return res.status(200).json(payments)
     } catch (error) {
       console.error(error)
