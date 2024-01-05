@@ -10,7 +10,7 @@ const getReferenceById = async (id: string) => {
   const result = await Reference.findOne({ _id: id })
     .populate({
       path: 'graduateId lecturerId',
-      select: 'firstName lastName email',
+      select: 'firstName lastName email indexNumber referenceNumber',
       model: Users
     })
     .then((reference) => {
@@ -21,8 +21,6 @@ const getReferenceById = async (id: string) => {
           lecturer: reference.lecturerId,
           programme: reference.programme,
           graduationYear: reference.graduationYear,
-          referenceNumber: reference.referenceNumber,
-          indexNumber: reference.indexNumber,
           destination: reference.destination,
           expectedDate: reference.expectedDate,
           transactionStatus: reference.transactionStatus,
@@ -41,6 +39,11 @@ const getUsersReferenceByRole = async (
 ) => {
   if (role === 'graduate') {
     const result = await Reference.find({ graduateId: id })
+      .populate({
+        path: 'graduateId lecturerId',
+        select: 'indexNumber referenceNumber',
+        model: Users
+      })
       .sort({ createdAt: -1 })
       .then((reference) => {
         return reference.map((reference) => ({
@@ -49,8 +52,6 @@ const getUsersReferenceByRole = async (
           lecturerId: reference.lecturerId,
           programme: reference.programme,
           graduationYear: reference.graduationYear,
-          referenceNumber: reference.referenceNumber,
-          indexNumber: reference.indexNumber,
           destination: reference.destination,
           expectedDate: reference.expectedDate,
           transactionStatus: reference.transactionStatus,
@@ -63,6 +64,11 @@ const getUsersReferenceByRole = async (
   }
 
   const result = await Reference.find({ lecturerId: id })
+    .populate({
+      path: 'lecturerId graduateId',
+      select: 'referenceNumber indexNumber',
+      model: Users
+    })
     .sort({ createdAt: -1 })
     .then((reference) => {
       return reference.map((reference) => ({
@@ -71,8 +77,6 @@ const getUsersReferenceByRole = async (
         lecturerId: reference.lecturerId,
         programme: reference.programme,
         graduationYear: reference.graduationYear,
-        referenceNumber: reference.referenceNumber,
-        indexNumber: reference.indexNumber,
         expectedDate: reference.expectedDate,
         createdAt: reference.createdAt,
         destination: reference.destination,
