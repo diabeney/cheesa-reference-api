@@ -1,6 +1,7 @@
 import User from '../models/userModel'
 import crypto from 'crypto'
 import { Request, Response } from 'express'
+import bcrypt from 'bcryptjs'
 
 const resetPassword = async (req: Request, res: Response) => {
   try {
@@ -22,7 +23,11 @@ const resetPassword = async (req: Request, res: Response) => {
     if (!user)
       return res.status(400).json({ message: 'Invalid Token or Expired' })
 
-    user.password = password
+    // Hash password before saving to database
+    const SALT_FACTOR = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, SALT_FACTOR)
+
+    user.password = hashedPassword
     user.resetPasswordToken = undefined
     user.resetPasswordExpires = undefined
 
