@@ -374,6 +374,58 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ## Payments
 
+### `GET => /`
+
+#### _Get all payments made including the total amounts_
+
+1. Request
+
+   - No request body.
+
+2. Response
+
+   - Successful - `200 OK -`
+
+   ```ts
+   export interface Main {
+     allPayments: AllPayment[]
+     totalAmount: number
+   }
+
+   export interface AllPayment {
+     _id: string
+     userId: string
+     amount: number
+     createdAt?: Date
+     updatedAt?: Date
+     __v: number
+   }
+   ```
+
+   ```json
+   {
+     "allPayments": [
+       {
+         "_id": "string",
+         "userId": "string",
+         "amount": 300,
+         "createdAt": "2024-01-04T22:32:45.522Z",
+         "updatedAt": "2024-01-04T22:32:45.522Z",
+         "__v": 0
+       },
+       {
+         "_id": "string",
+         "userId": "string",
+         "amount": 120,
+         "createdAt": "2024-01-04T22:32:45.522Z",
+         "updatedAt": "2024-01-04T22:32:45.522Z",
+         "__v": 0
+       }
+     ],
+     "totalAmount": 420
+   }
+   ```
+
 ### `POST => /accept-payment`
 
 #### _Accept payments from logged in user_
