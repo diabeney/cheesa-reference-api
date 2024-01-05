@@ -19,14 +19,6 @@ const ReferenceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  referenceNumber: {
-    type: String,
-    required: true
-  },
-  indexNumber: {
-    type: String,
-    required: true
-  },
   expectedDate: {
     type: Date,
     required: true
