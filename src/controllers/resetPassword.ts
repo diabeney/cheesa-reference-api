@@ -15,7 +15,7 @@ const resetPassword = async (req: Request, res: Response) => {
       .digest('hex')
 
     const user = await User.findOne({
-      resetPasswordToken,
+      resetPasswordToken: resetToken,
       resetPasswordExpires: { $gt: Date.now() }
     })
 
