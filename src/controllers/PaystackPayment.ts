@@ -4,7 +4,9 @@ import { Request, Response } from 'express'
 import { getUserByEmail } from '../db/user'
 import { AuthRequest } from '../types/types'
 import { ErrorMsg } from '../utils'
-import { TOTAL_AMOUNT } from '../constants/constants'
+import { TOTAL_AMOUNT, STATIC_AMOUNT } from '../constants/constants'
+import Payments from '../models/paymentModel'
+import Users from '../models/userModel'
 
 const payStack = {
   // Handle Payment Controller (Accept Payment)
@@ -17,14 +19,14 @@ const payStack = {
           logged in successfully
       */
       if (user) {
-        const { email } = user
+        const { email, id } = user
         const foundUser = await getUserByEmail(email)
 
         if (!foundUser) return res.status(404).json(ErrorMsg(400))
 
         //Get logged in user email if found
         const { email: logged_in_user_email } = foundUser
-        console.log(logged_in_user_email)
+
         //Get quantity from req.body
         const { quantity } = req.body
 
@@ -52,8 +54,12 @@ const payStack = {
             api_response.on('data', (chunk) => {
               data += chunk
             })
-            api_response.on('end', () => {
-              console.log(JSON.parse(data))
+            api_response.on('end', async () => {
+              // Save payment to database if successful
+              await new Payments({
+                userId: id,
+                amount: quantity ? quantity * STATIC_AMOUNT : STATIC_AMOUNT
+              }).save()
               return res.status(200).json(data)
             })
           })

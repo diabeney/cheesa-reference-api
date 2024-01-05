@@ -42,5 +42,6 @@ export {
   LoginShape,
   ReferenceShape,
   RespondToReference,
-  TOTAL_AMOUNT
+  TOTAL_AMOUNT,
+  STATIC_AMOUNT
 }

@@ -191,7 +191,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
    ```js
    const res = { message: 'Successfully created' }
@@ -214,7 +214,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
    ```js
    const res = {
@@ -264,7 +264,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
    ```js
    const res = { message: 'Successful' }
@@ -331,7 +331,7 @@ const BASE_URL = 'https://domain.com/api/v1'
    - Request Parameter - `id` is the graduate's id
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
    ```ts
    type Response = {
@@ -372,7 +372,59 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Error - `4XX - {message: "error message here"}`
 
-## Payment
+## Payments
+
+### `GET => /`
+
+#### _Get all payments made including the total amounts_
+
+1. Request
+
+   - No request body.
+
+2. Response
+
+   - Successful - `200 OK -`
+
+   ```ts
+   export interface Main {
+     allPayments: AllPayment[]
+     totalAmount: number
+   }
+
+   export interface AllPayment {
+     _id: string
+     userId: string
+     amount: number
+     createdAt?: Date
+     updatedAt?: Date
+     __v: number
+   }
+   ```
+
+   ```json
+   {
+     "allPayments": [
+       {
+         "_id": "string",
+         "userId": "string",
+         "amount": 300,
+         "createdAt": "2024-01-04T22:32:45.522Z",
+         "updatedAt": "2024-01-04T22:32:45.522Z",
+         "__v": 0
+       },
+       {
+         "_id": "string",
+         "userId": "string",
+         "amount": 120,
+         "createdAt": "2024-01-04T22:32:45.522Z",
+         "updatedAt": "2024-01-04T22:32:45.522Z",
+         "__v": 0
+       }
+     ],
+     "totalAmount": 420
+   }
+   ```
 
 ### `POST => /accept-payment`
 
@@ -391,16 +443,16 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```js
-      {
-         "status": true,
-         "message": "Authorization URL created",
-            "data": {
-            "authorization_url": "https://checkout.paystack.com/0peioxfhpn",
-            "access_code": "0peioxfhpn",
-            "reference": "7PVGX8MEk85tgeEpVDtD"
-         }
-      }
+   ```json
+   {
+     "status": true,
+     "message": "Authorization URL created",
+     "data": {
+       "authorization_url": "https://checkout.paystack.com/0peioxfhpn",
+       "access_code": "0peioxfhpn",
+       "reference": "7PVGX8MEk85tgeEpVDtD"
+     }
+   }
    ```
 
    - Error - `5XX - {message: "error message here"}`
@@ -421,92 +473,121 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
+   ```json
+   {
+     "status": true,
+     "message": "Verification successful",
+     "data": {
+       "id": 2009945086,
+       "domain": "test",
+       "status": "success",
+       "reference": "7PVGX8MEk85tgeEpVDtD",
+       "amount": 20000,
+       "message": null,
+       "gateway_response": "Successful",
+       "paid_at": "2024-01-03T14:21:32.000Z",
+       "created_at": "2024-01-03T14:20:57.000Z",
+       "channel": "card",
+       "currency": "GHS",
+       "ip_address": "100.64.11.35",
+       "metadata": "",
+       "log": {
+         "start_time": 1660054888,
+         "time_spent": 4,
+         "attempts": 1,
+         "errors": 0,
+         "success": true,
+         "mobile": false,
+         "input": [],
+         "history": [
+           {
+             "type": "action",
+             "message": "Attempted to pay with card",
+             "time": 3
+           },
+           {
+             "type": "success",
+             "message": "Successfully paid with card",
+             "time": 4
+           }
+         ]
+       },
+       "fees": 100,
+       "fees_split": null,
+       "authorization": {
+         "authorization_code": "AUTH_ahisucjkru",
+         "bin": "408408",
+         "last4": "4081",
+         "exp_month": "12",
+         "exp_year": "2030",
+         "channel": "card",
+         "card_type": "visa ",
+         "bank": "TEST BANK",
+         "country_code": "GHA",
+         "brand": "visa",
+         "reusable": true,
+         "signature": "SIG_yEXu7dLBeqG0kU7g95Ke",
+         "account_name": null
+       },
+       "customer": {
+         "id": 89929267,
+         "first_name": null,
+         "last_name": null,
+         "email": "hello@email.com",
+         "customer_code": "CUS_i5yosncbl8h2kvc",
+         "phone": null,
+         "metadata": null,
+         "risk_action": "default",
+         "international_format_phone": null
+       },
+       "plan": null,
+       "split": {},
+       "order_id": null,
+       "paidAt": "2024-01-03T14:21:32.000Z",
+       "createdAt": "2024-01-03T14:20:57.000Z",
+       "requested_amount": 20000,
+       "pos_transaction_data": null,
+       "source": null,
+       "fees_breakdown": null,
+       "transaction_date": "2024-01-03T14:20:57.000Z",
+       "plan_object": {},
+       "subaccount": {}
+     }
+   }
+   ```
+
+### `GET => /:userId`
+
+#### _Get all payments made by a specific user_
+
+1. Request
+
+   - No request body.
+   - Request Parameter - `userId` is the user's id
+
+2. Response
+
+   - Successful - `200 OK -`
+
    ```js
-      {
-         "status": true,
-         "message": "Verification successful",
-         "data": {
-            "id": 2009945086,
-            "domain": "test",
-            "status": "success",
-            "reference": "7PVGX8MEk85tgeEpVDtD",
-            "amount": 20000,
-            "message": null,
-            "gateway_response": "Successful",
-            "paid_at": "2024-01-03T14:21:32.000Z",
-            "created_at": "2024-01-03T14:20:57.000Z",
-            "channel": "card",
-            "currency": "GHS",
-            "ip_address": "100.64.11.35",
-            "metadata": "",
-            "log": {
-               "start_time": 1660054888,
-               "time_spent": 4,
-               "attempts": 1,
-               "errors": 0,
-               "success": true,
-               "mobile": false,
-               "input": [],
-               "history": [
-               {
-                  "type": "action",
-                  "message": "Attempted to pay with card",
-                  "time": 3
-               },
-               {
-                  "type": "success",
-                  "message": "Successfully paid with card",
-                  "time": 4
-               }
-               ]
+   {
+      "payments": [
+         {
+            "_id": "string",
+            "userId": {
+               "_id": "string",
+               "email": "user@email.com"
             },
-            "fees": 100,
-            "fees_split": null,
-            "authorization": {
-               "authorization_code": "AUTH_ahisucjkru",
-               "bin": "408408",
-               "last4": "4081",
-               "exp_month": "12",
-               "exp_year": "2030",
-               "channel": "card",
-               "card_type": "visa ",
-               "bank": "TEST BANK",
-               "country_code": "GHA",
-               "brand": "visa",
-               "reusable": true,
-               "signature": "SIG_yEXu7dLBeqG0kU7g95Ke",
-               "account_name": null
-            },
-            "customer": {
-               "id": 89929267,
-               "first_name": null,
-               "last_name": null,
-               "email": "hello@email.com",
-               "customer_code": "CUS_i5yosncbl8h2kvc",
-               "phone": null,
-               "metadata": null,
-               "risk_action": "default",
-               "international_format_phone": null
-            },
-            "plan": null,
-            "split": {},
-            "order_id": null,
-            "paidAt": "2024-01-03T14:21:32.000Z",
-            "createdAt": "2024-01-03T14:20:57.000Z",
-            "requested_amount": 20000,
-            "pos_transaction_data": null,
-            "source": null,
-            "fees_breakdown": null,
-            "transaction_date": "2024-01-03T14:20:57.000Z",
-            "plan_object": {},
-            "subaccount": {}
+            "amount": "number",
+            "__v": 0
          }
-      }
+      ]
+   }
    ```
 
 ## Environment Variables
 
-```env
+````env
    ``` Auth Configs ```
 
    ACCESS_TOKEN_SECRET=
@@ -530,4 +611,4 @@ const BASE_URL = 'https://domain.com/api/v1'
    PAYSTACK_HOST=
    PAYSTACK_PORT=
 
-```
+````
