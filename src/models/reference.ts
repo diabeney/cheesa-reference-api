@@ -19,16 +19,14 @@ const ReferenceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   destination: {
     type: String,
-    required: true,
+    required: true
   },
   expectedDate: {
     type: String,
-    required: true,
+    required: true
   },
-
   accepted: {
     type: String,
     default: "null",

@@ -102,7 +102,8 @@ const BASE_URL = 'https://domain.com/api/v1'
     "firstName": "john",
     "lastName": "doe",
     "email": "johndoe@email.com",
-    "role": "lecturer | graduate"
+    "role": "lecturer | graduate",
+    "isVerified": true | false
    ```
 
    - Error - `401 - {message: "Not Authorized}`
@@ -124,7 +125,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'lecturer'
+       role: 'lecturer',
+        isVerified: true | false
      }
    ]
    ```
@@ -148,7 +150,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'graduate'
+       role: 'graduate',
+        isVerified: true | false
      }
    ]
    ```
@@ -172,7 +175,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'lecturer'
+       role: 'lecturer',
+       isVerified: true | false
      }
    ]
    ```
@@ -254,13 +258,8 @@ const BASE_URL = 'https://domain.com/api/v1'
      },
      "programme": "string",
      "graduationYear": "string",
-     "requests": [
-       {
-         "destination": "string",
-         "expectedDate": "string | Date",
-         "_id": "string"
-       }
-     ],
+      "destination": "string",
+      "expectedDate": "string | Date",
      "transactionStatus": "pending",
      "createdAt": "2024-01-06T00:09:55.417Z",
      "accepted": "null",
@@ -316,13 +315,8 @@ const BASE_URL = 'https://domain.com/api/v1'
      graduationYear: string
      referenceNumber: string
      indexNumber: string
-     requests: [
-       {
-         destination: 'string'
-         expectedDate: 'string' | 'Date'
-         _id: 'string'
-       }
-     ]
+      destination: string,
+      expectedDate: 'string' | 'Date',
      transactionStatus: 'pending' | 'paid'
      status: 'not ready' | 'submitted'
      accepted: 'accepted' | 'declined' | 'null'
@@ -343,13 +337,8 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical' | 'petrochemical',
          graduationYear: 'string',
-         requests: [
-           {
-             destination: 'string',
+          destination: 'string',
              expectedDate: 'string' | 'Date',
-             _id: 'string'
-           }
-         ],
          createdAt: '2024-01-06T00:09:55.417Z',
          accepted: 'null',
          transactionStatus: 'pending',
@@ -368,13 +357,8 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical' | 'petrochemical',
          graduationYear: 'string',
-         requests: [
-           {
-             destination: 'string',
-             expectedDate: 'string' | 'Date',
-             _id: 'string'
-           }
-         ],
+          destination: 'string',
+          expectedDate: 'string' | 'Date',
          createdAt: '2024-01-06T00:09:54.873Z',
          accepted: 'null',
          transactionStatus: 'pending',
@@ -406,13 +390,8 @@ const BASE_URL = 'https://domain.com/api/v1'
      graduationYear: string
      referenceNumber: string
      indexNumber: string
-     requests: [
-       {
-         destination: 'string'
-         expectedDate: 'string' | 'Date'
-         _id: 'string'
-       }
-     ]
+     destination: string,
+     expectedDate: 'string' | 'Date',
      transactionStatus: 'pending' | 'paid'
      status: 'not ready' | 'submitted'
      accepted: 'accepted' | 'declined' | 'null'
@@ -433,13 +412,8 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical | petrochemical',
          graduationYear: 'string',
-         requests: [
-           {
-             destination: 'string',
-             expectedDate: 'string | Date',
-             _id: 'string'
-           }
-         ],
+          destination: 'string',
+          expectedDate: 'string | Date',
          transactionStatus: 'pending',
          createdAt: '2024-01-06T00:09:55.417Z',
          accepted: 'null',
@@ -458,13 +432,8 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical | petrochemical',
          graduationYear: 'string',
-         requests: [
-           {
-             destination: 'string',
-             expectedDate: 'string | Date',
-             _id: 'string'
-           }
-         ],
+          destination: 'string',
+          expectedDate: 'string | Date',
          transactionStatus: 'pending',
          createdAt: '2024-01-06T00:09:54.873Z',
          accepted: 'null',
