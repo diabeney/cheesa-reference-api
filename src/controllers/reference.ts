@@ -23,79 +23,62 @@ interface AuthQueryRequest
 }
 
 async function handleRequestReference(
-  req: Request<
-    unknown,
-    unknown,
-    { quantity: number; data: Omit<IReferenceRequest, 'status'>[] }
-  >,
+  req: Request<unknown, unknown, Omit<IReferenceRequest, 'status'>>,
   res: Response
 ) {
-  /*  Retrieve the quantity and actual data 
-      from the request body 
-  */
-  const { quantity, data } = req.body
+  //  validate the reference
+  const referenceObject = ReferenceShape.parse(req.body)
 
-  /*
-  Validate the incoming data to check 
-  if it's strictly an array or also check for the type of quantity 
-  if it's strictly a number
-*/
-  if (!Array.isArray(data) || typeof quantity !== 'number') {
-    return res
-      .status(STATUS.BAD_REQUEST.code)
-      .json(ErrorMsg(400, 'Expected an array of objects and a quantity'))
+  const {
+    quantity,
+    lecturerId,
+    graduateId,
+    programme,
+    graduationYear,
+    requests
+  } = referenceObject
+
+  if (referenceObject instanceof ZodError) {
+    const { message } = referenceObject.issues[0]
+    return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message))
   }
 
-  /*
-  Here compares the length of the data to the value of quantity specified
-  to ensure they match
-*/
-  if (data.length !== quantity) {
-    return res
-      .status(STATUS.BAD_REQUEST.code)
-      .json(ErrorMsg(400, 'Quantity does not match the number of objects'))
-  }
+  try {
+    const lecturer = await getLecturerById(referenceObject.lecturerId)
 
-  // Array constructors to retrieve data
-  const successfulSaves = []
+    if (!lecturer) return res.status(STATUS.NOT_FOUND.code).json(ErrorMsg(404))
 
-  //Iterate through the array based on the quantity
-  for (let i = 0; i < quantity; i++) {
-    const referenceObject = data[i]
-    const validatedObject = validateObject(referenceObject, ReferenceShape)
-
-    if (validatedObject instanceof ZodError) {
-      const { message } = validatedObject.issues[0]
-      return res.status(400).json({ error: message })
-    }
-
-    try {
-      const lecturer = await getLecturerById(validatedObject.lecturerId)
-
-      // Checking for the existence of the lecturer assigned
-      if (!lecturer) {
-        return res.status(404).json({ error: 'Lecturer not found' })
+    // Create a reference for each request
+    for (let i = 0; i < quantity; i++) {
+      const request = requests[i]
+      if (!request) {
+        return res
+          .status(400)
+          .json({ error: `Request ${i + 1} not found in the payload` })
       }
 
-      // Payloads to send to the database
+      const { destination, expectedDate } = request
+
       const payload = {
-        ...validatedObject,
-        expectedDate: new Date(validatedObject.expectedDate)
-      }
+        graduateId,
+        lecturerId,
+        programme,
+        graduationYear,
+        requests: [
+          {
+            destination,
+            expectedDate: new Date(expectedDate)
+          }
+        ]
+      } as Omit<IReferenceRequest, 'status'>
 
       const _ = await RequestReference(payload)
-
-      // Storing payloads into the array
-      successfulSaves.push(payload)
-    } catch (err) {
-      console.log(err)
-      res.status(500).json(ErrorMsg(500))
     }
+    res.status(201).json({ message: 'Successfully created reference' })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(ErrorMsg(500))
   }
-
-  res.status(201).json({
-    message: `Successfully created ${successfulSaves.length} references`
-  })
 }
 
 async function handleViewReference(req: Request, res: Response) {
