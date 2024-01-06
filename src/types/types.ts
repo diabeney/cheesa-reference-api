@@ -31,7 +31,8 @@ export interface IReferenceRequest {
   lecturerId: Types.ObjectId
   programme: Programmes
   graduationYear: string
-  requests: IRequest[]
+  destination: string
+  expectedDate: string | Date
   transactionStatus?: TransactionStatus
   status?: 'not ready' | 'submitted'
   accepted?: 'accepted' | 'declined' | 'null'
