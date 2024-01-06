@@ -6,52 +6,60 @@ import { getAllUsers } from "../db/user";
 import { ErrorMsg } from "../utils";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
-  const user = req.userPayload;
+	const user = req.userPayload;
 
-  try {
-    if (user) {
-      const { email } = user;
-      const foundUser = await getUserByEmail(email);
+	try {
+		if (user) {
+			const { email } = user;
+			const foundUser = await getUserByEmail(email);
 
-      if (!foundUser) return res.status(404).json(ErrorMsg(400));
-      const { _id, firstName, lastName, role, email: userEmail } = foundUser;
+			if (!foundUser) return res.status(404).json(ErrorMsg(400));
+			const {
+				_id,
+				firstName,
+				lastName,
+				role,
+				email: userEmail,
+				isVerified,
+			} = foundUser;
 
-      return res.status(200).json({
-        id: _id,
-        firstName,
-        lastName,
-        role,
-        email: userEmail,
-      });
-    }
-    return res.status(401).json(ErrorMsg(401));
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(ErrorMsg(500));
-  }
+			return res.status(200).json({
+				id: _id,
+				firstName,
+				lastName,
+				role,
+				email: userEmail,
+				isVerified,
+			});
+		}
+		return res.status(401).json(ErrorMsg(401));
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(ErrorMsg(500));
+	}
 }
 
 async function handleGetUsers(req: AuthRequest, res: Response) {
-  const searchParam = req.query;
-  const isEmptyObj = Object.keys(searchParam).length === 0;
-  try {
-    if (isEmptyObj) {
-      const users = await getAllUsers();
-      if (!users) return res.sendStatus(404);
-      return res.status(200).json({ results: users });
-    }
+	const searchParam = req.query;
+	const isEmptyObj = Object.keys(searchParam).length === 0;
+	try {
+		if (isEmptyObj) {
+			const users = await getAllUsers();
+			if (!users) return res.sendStatus(404);
+			return res.status(200).json({ results: users });
+		}
 
-    const role = searchParam.role as string;
+		const role = searchParam.role as string;
 
-    const lecturers = await getUserByRole(role);
+		const lecturers = await getUserByRole(role);
 
-    if (!lecturers.length) return res.sendStatus(404);
+		if (!lecturers.length) return res.sendStatus(404);
 
-    res.status(200).json({ results: lecturers });
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
+		res.status(200).json({ results: lecturers });
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
 }
 
 export { handleGetLoggedInUser, handleGetUsers };
