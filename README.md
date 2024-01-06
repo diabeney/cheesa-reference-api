@@ -102,7 +102,8 @@ const BASE_URL = 'https://domain.com/api/v1'
     "firstName": "john",
     "lastName": "doe",
     "email": "johndoe@email.com",
-    "role": "lecturer | graduate"
+    "role": "lecturer | graduate",
+    "isVerified": true | false
    ```
 
    - Error - `401 - {message: "Not Authorized}`
@@ -124,7 +125,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'lecturer'
+       role: 'lecturer',
+        isVerified: true | false
      }
    ]
    ```
@@ -148,7 +150,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'graduate'
+       role: 'graduate',
+        isVerified: true | false
      }
    ]
    ```
@@ -172,7 +175,8 @@ const BASE_URL = 'https://domain.com/api/v1'
        firstName: 'john',
        lastName: 'doe',
        email: 'johndoe@email.com',
-       role: 'lecturer'
+       role: 'lecturer',
+       isVerified: true | false
      }
    ]
    ```
