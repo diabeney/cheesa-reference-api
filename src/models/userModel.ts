@@ -8,8 +8,11 @@ const UsersSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['lecturer', 'graduate'] },
+  referenceNumber: { type: String, required: true },
+  indexNumber: { type: String, required: false },
   resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date }
+  resetPasswordExpires: { type: Date },
+  isVerified: { type: Boolean, default: false }
 })
 
 UsersSchema.methods.getResetPasswordToken = function () {
