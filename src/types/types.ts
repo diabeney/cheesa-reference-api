@@ -21,10 +21,7 @@ export type IUser = {
   indexNumber?: string;
 };
 
-export interface IRequest {
-  destination: string;
-  expectedDate: string | Date;
-}
+
 export interface IReferenceRequest {
   id?: Types.ObjectId
   graduateId: Types.ObjectId
@@ -36,7 +33,6 @@ export interface IReferenceRequest {
   transactionStatus?: TransactionStatus
   status?: 'not ready' | 'submitted'
   accepted?: 'accepted' | 'declined' | 'null'
-  quantity: number
 }
 
 export interface AuthCookies extends CookieOptions {
