@@ -8,24 +8,37 @@ const SignUpShape = z.object({
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters' }),
-  role: z.enum(['lecturer', 'graduate'])
+  role: z.enum(['lecturer', 'graduate']),
+  referenceNumber: z
+    .string({ required_error: 'Reference Number is required' })
+    .min(8, 'Reference should be at least 8 characters'),
+  indexNumber: z
+    .string()
+    .min(7, 'Index number should be at least 8 characters')
+    .optional()
 })
 
 const LoginShape = SignUpShape.pick({ email: true, password: true })
 
+// Define the scheme for a single request
+const requestSchema = z.object({
+  destination: z.string({
+    required_error: 'Destination is required'
+  }),
+  expectedDate: z.string({
+    required_error: 'Expected Date is required'
+  })
+})
+
+// Refactor the schema for the payload or reference
+// shape to include the request schema
 const ReferenceShape = z.object({
   graduateId: z.custom<Types.ObjectId>(),
   lecturerId: z.custom<Types.ObjectId>(),
   programme: z.enum(['chemical', 'petrochemical']),
   graduationYear: z.string({ required_error: 'Graduation Year is required' }),
-  referenceNumber: z
-    .string({ required_error: 'Reference Number is required' })
-    .min(8, 'Reference should be at least 8 characters'),
-  indexNumber: z
-    .string({ required_error: 'Index number is required' })
-    .min(7, 'Index number should be at least 8 characters'),
-  destination: z.string({ required_error: 'Destination is required' }),
-  expectedDate: z.string()
+  requests: z.array(requestSchema).min(1, 'At least one request is required'),
+  quantity: z.number().int().min(1)
 })
 
 const RespondToReference = z.object({

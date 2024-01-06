@@ -19,18 +19,18 @@ const ReferenceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  referenceNumber: {
-    type: String,
-    required: true
-  },
-  indexNumber: {
-    type: String,
-    required: true
-  },
-  expectedDate: {
-    type: Date,
-    required: true
-  },
+  requests: [
+    {
+      destination: {
+        type: String,
+        required: true
+      },
+      expectedDate: {
+        type: String,
+        required: true
+      }
+    }
+  ],
   accepted: {
     type: String,
     default: 'null',
@@ -40,10 +40,6 @@ const ReferenceSchema = new mongoose.Schema({
     type: String,
     default: 'not ready',
     enum: ['not ready', 'submitted']
-  },
-  destination: {
-    type: String,
-    required: true
   },
   transactionStatus: {
     type: String,

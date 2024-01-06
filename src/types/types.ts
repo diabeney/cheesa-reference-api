@@ -11,24 +11,31 @@ export type Transaction = {
 }
 export type Programmes = 'petrochemical' | 'chemical'
 
-export type IUser = Record<
-  'firstName' | 'lastName' | 'email' | 'password' | 'role',
-  string
->
+export type IUser = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  role: string
+  referenceNumber: string
+  indexNumber?: string
+}
 
+export interface IRequest {
+  destination: string
+  expectedDate: string | Date
+}
 export interface IReferenceRequest {
   id?: Types.ObjectId
   graduateId: Types.ObjectId
   lecturerId: Types.ObjectId
   programme: Programmes
   graduationYear: string
-  referenceNumber: string
-  indexNumber: string
-  expectedDate: string | Date
-  destination: string
+  requests: IRequest[]
   transactionStatus?: TransactionStatus
   status?: 'not ready' | 'submitted'
   accepted?: 'accepted' | 'declined' | 'null'
+  quantity: number
 }
 
 export interface AuthCookies extends CookieOptions {

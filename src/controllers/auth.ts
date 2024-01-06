@@ -10,6 +10,10 @@ import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import { TokenPayload } from '../utils'
 import { SignUpShape, LoginShape } from '../constants/constants'
 import { ZodError } from 'zod'
+import crypto from 'crypto'
+import Verification from '../models/verificationModel'
+import { EmailVerificationMessage } from '../utils/emailTemplate'
+import { sendVerificationEmail } from '../utils/sendVerificationEmail'
 
 export const CHEESA_REFERNCE_JWT = 'Cheesa-Reference-JWT'
 
@@ -25,7 +29,16 @@ async function handleSignUp(
   }
 
   try {
-    const { email, firstName, lastName, role, password } = formObj
+    const {
+      email,
+      firstName,
+      lastName,
+      role,
+      password,
+      referenceNumber,
+      indexNumber
+    } = formObj
+
     const userExists = await getUserByEmail(email)
 
     if (userExists) {
@@ -38,21 +51,45 @@ async function handleSignUp(
 
     const hashedPassword = await bcrypt.hash(password, SALT_FACTOR)
 
-    await createUser({
+    const user = await createUser({
       firstName,
       lastName,
       email,
       password: hashedPassword,
-      role
+      role,
+      referenceNumber,
+      indexNumber
     })
 
-    res.status(201).json(ErrorMsg(201, 'User created successfully'))
+    // Generate a unique verification token
+    const token = crypto.randomBytes(64).toString('hex')
+
+    // Create verification token document
+    await Verification.create({ token, userId: user._id })
+
+    // Create verification URL
+    const verificationURL = `${process.env.CLIENT_URL}/verify/${token}`
+    const message = EmailVerificationMessage(verificationURL, user)
+
+    const dispatchedMessage = sendVerificationEmail({
+      to: user.email,
+      subject: 'Email Verification',
+      message
+    })
+
+    if (!dispatchedMessage) return res.status(500).json(ErrorMsg(500))
+
+    await dispatchedMessage
+
+    res
+      .status(200)
+      .json(ErrorMsg(200, `Verification email sent to ${user.email}`))
   } catch (error) {
     if (error instanceof MongooseError) {
       res.status(500).json(ErrorMsg(500))
     }
     console.log(error)
-    res.status(500).json(ErrorMsg(500))
+    res.status(500).json(ErrorMsg(500, 'Error creating an account'))
   }
 }
 

@@ -51,10 +51,21 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 1. Request
    ```json
-      "password": "string"
+      "password": "string",
    ```
 2. Response
    - Successful - `200 OK -` `{message: "Password reset successful"}`
+   - Error - `5XX -` `{message: "error message"}`
+
+### `GET => /verify/:token`
+
+1. Request
+
+   - No request body
+   - Request parameter - `token` is the token sent to the user's email
+
+2. Response
+   - Successful - `200 OK -` `{message: "Account verified successfully"}`
    - Error - `5XX -` `{message: "error message"}`
 
 ### `POST => /refresh`
@@ -178,14 +189,21 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    ```js
    const requestPayload = {
+     quantity: number,
+     lecturerId: 'string',
      graduateId: 'string',
-     lecturerId: 'strinng',
-     programme: 'chemical | petrochemical',
-     graduationYear: '2022',
-     referenceNumber: 'string',
-     indexNumber: 'string',
-     expectedDate: 'Date as string',
-     destination: 'string'
+     programme: 'chemical' | 'petrochemical',
+     graduationYear: 'string',
+     requests: [
+       {
+         destination: 'string',
+         expectedDate: 'string' | 'Date'
+       },
+       {
+         destination: 'Georgia Tech',
+         expectedDate: 'string' | 'Date'
+       }
+     ]
    }
    ```
 
@@ -216,31 +234,37 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```js
-   const res = {
-     id: 'string',
-     graduateInfo: {
-       _id: 'string',
-       firstName: 'kwadwo',
-       lastName: 'Addo',
-       email: 'user@example.com'
+   ```json
+   {
+     "id": "string",
+     "graduateInfo": {
+       "_id": "string",
+       "firstName": "Code",
+       "lastName": "Concept",
+       "email": "example@email.com",
+       "referenceNumber": "string",
+       "indexNumber": "string"
      },
-     lecturer: {
-       _id: 'string',
-       firstName: 'Thanos',
-       lastName: 'Youndu',
-       email: 'user@example.com'
+     "lecturer": {
+       "_id": "string",
+       "firstName": "Dr. Thanos",
+       "lastName": "Doe",
+       "email": "example@email.com",
+       "referenceNumber": "string"
      },
-     programme: 'chemical',
-     graduationYear: '2024',
-     referenceNumber: 'string',
-     indexNumber: 'string',
-     destination: 'MIT',
-     expectedDate: '2023-12-18T16:03:01.219Z',
-     transactionStatus: 'pending | paid',
-     createdAt: '2023-12-18T20:59:00.945Z',
-     accepted: 'null | accepted | declined',
-     status: 'not ready | submitted'
+     "programme": "string",
+     "graduationYear": "string",
+     "requests": [
+       {
+         "destination": "string",
+         "expectedDate": "string | Date",
+         "_id": "string"
+       }
+     ],
+     "transactionStatus": "pending",
+     "createdAt": "2024-01-06T00:09:55.417Z",
+     "accepted": "null",
+     "status": "not ready"
    }
    ```
 
@@ -292,8 +316,13 @@ const BASE_URL = 'https://domain.com/api/v1'
      graduationYear: string
      referenceNumber: string
      indexNumber: string
-     expectedDate: string | Date
-     destination: string
+     requests: [
+       {
+         destination: 'string'
+         expectedDate: 'string' | 'Date'
+         _id: 'string'
+       }
+     ]
      transactionStatus: 'pending' | 'paid'
      status: 'not ready' | 'submitted'
      accepted: 'accepted' | 'declined' | 'null'
@@ -303,18 +332,53 @@ const BASE_URL = 'https://domain.com/api/v1'
      results: [
        {
          id: 'string',
-         lecturerId: 'string',
-         graduateId: 'string',
-         programme: 'chemical',
-         graduationYear: '2024',
-         referenceNumber: 'string',
-         indexNumber: 'string',
-         destination: 'MIT',
-         expectedDate: '2023-12-18T16:03:01.219Z',
-         transactionStatus: 'pending | paid',
-         createdAt: '2023-12-18T20:59:00.945Z',
-         accepted: 'null | accepted | declined',
-         status: 'not ready | submitted'
+         graduateId: {
+           _id: 'string',
+           referenceNumber: 'string',
+           indexNumber: 'string'
+         },
+         lecturerId: {
+           _id: 'string',
+           referenceNumber: 'string'
+         },
+         programme: 'chemical' | 'petrochemical',
+         graduationYear: 'string',
+         requests: [
+           {
+             destination: 'string',
+             expectedDate: 'string' | 'Date',
+             _id: 'string'
+           }
+         ],
+         createdAt: '2024-01-06T00:09:55.417Z',
+         accepted: 'null',
+         transactionStatus: 'pending',
+         status: 'not ready'
+       },
+       {
+         id: 'string',
+         graduateId: {
+           _id: 'string',
+           referenceNumber: 'string',
+           indexNumber: 'string'
+         },
+         lecturerId: {
+           _id: 'string',
+           referenceNumber: 'string'
+         },
+         programme: 'chemical' | 'petrochemical',
+         graduationYear: 'string',
+         requests: [
+           {
+             destination: 'string',
+             expectedDate: 'string' | 'Date',
+             _id: 'string'
+           }
+         ],
+         createdAt: '2024-01-06T00:09:54.873Z',
+         accepted: 'null',
+         transactionStatus: 'pending',
+         status: 'not ready'
        }
      ]
    }
@@ -342,8 +406,13 @@ const BASE_URL = 'https://domain.com/api/v1'
      graduationYear: string
      referenceNumber: string
      indexNumber: string
-     expectedDate: string | Date
-     destination: string
+     requests: [
+       {
+         destination: 'string'
+         expectedDate: 'string' | 'Date'
+         _id: 'string'
+       }
+     ]
      transactionStatus: 'pending' | 'paid'
      status: 'not ready' | 'submitted'
      accepted: 'accepted' | 'declined' | 'null'
@@ -353,18 +422,53 @@ const BASE_URL = 'https://domain.com/api/v1'
      results: [
        {
          id: 'string',
-         lecturerId: 'string',
-         graduateId: 'string',
-         programme: 'chemical',
-         graduationYear: '2024',
-         referenceNumber: 'string',
-         indexNumber: 'string',
-         destination: 'MIT',
-         expectedDate: '2023-12-18T16:03:01.219Z',
-         transactionStatus: 'pending | paid',
-         createdAt: '2023-12-18T20:59:00.945Z',
-         accepted: 'null | accepted | declined',
-         status: 'not ready | submitted'
+         graduateId: {
+           _id: 'string',
+           referenceNumber: 'string',
+           indexNumber: 'string'
+         },
+         lecturerId: {
+           _id: 'string',
+           referenceNumber: 'string'
+         },
+         programme: 'chemical | petrochemical',
+         graduationYear: 'string',
+         requests: [
+           {
+             destination: 'string',
+             expectedDate: 'string | Date',
+             _id: 'string'
+           }
+         ],
+         transactionStatus: 'pending',
+         createdAt: '2024-01-06T00:09:55.417Z',
+         accepted: 'null',
+         status: 'not ready'
+       },
+       {
+         id: '65989a525160cstringeb0c99fe6b7',
+         graduateId: {
+           _id: 'string',
+           referenceNumber: 'string',
+           indexNumber: 'string'
+         },
+         lecturerId: {
+           _id: 'string',
+           referenceNumber: 'string'
+         },
+         programme: 'chemical | petrochemical',
+         graduationYear: 'string',
+         requests: [
+           {
+             destination: 'string',
+             expectedDate: 'string | Date',
+             _id: 'string'
+           }
+         ],
+         transactionStatus: 'pending',
+         createdAt: '2024-01-06T00:09:54.873Z',
+         accepted: 'null',
+         status: 'not ready'
        }
      ]
    }
