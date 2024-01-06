@@ -1,29 +1,29 @@
-import { CookieOptions, Request } from 'express'
-import { TokenPayload } from '../utils'
-import { Types } from 'mongoose'
+import { CookieOptions, Request } from "express";
+import { TokenPayload } from "../utils";
+import { Types } from "mongoose";
 
-export type TransactionStatus = 'pending' | 'paid'
+export type TransactionStatus = "pending" | "paid";
 
 export type Transaction = {
-  id: string
-  dateInitatiad: Date
-  status: TransactionStatus
-}
-export type Programmes = 'petrochemical' | 'chemical'
+  id: string;
+  dateInitatiad: Date;
+  status: TransactionStatus;
+};
+export type Programmes = "petrochemical" | "chemical";
 
 export type IUser = {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  role: string
-  referenceNumber: string
-  indexNumber?: string
-}
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string;
+  referenceNumber: string;
+  indexNumber?: string;
+};
 
 export interface IRequest {
-  destination: string
-  expectedDate: string | Date
+  destination: string;
+  expectedDate: string | Date;
 }
 export interface IReferenceRequest {
   id?: Types.ObjectId
@@ -40,15 +40,15 @@ export interface IReferenceRequest {
 }
 
 export interface AuthCookies extends CookieOptions {
-  'Cheesa-Reference-JWT': string
+  "Cheesa-Reference-JWT": string;
 }
 
 export interface AuthRequest extends Request {
-  userPayload?: TokenPayload
+  userPayload?: TokenPayload;
 }
 
 export type Options = {
-  to: string
-  subject: string
-  message: string
-}
+  to: string;
+  subject: string;
+  message: string;
+};
