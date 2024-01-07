@@ -22,7 +22,6 @@ export type IUser = {
 	referenceNumber: string;
 	indexNumber?: string;
 	isVerified?: boolean;
-	getResetPasswordToken: () => resetToken;
 	resetPasswordToken?: resetToken;
 	resetPasswordExpires?: Date;
 };
