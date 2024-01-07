@@ -37,8 +37,16 @@ const ReferenceShape = z.object({
   lecturerId: z.custom<Types.ObjectId>(),
   programme: z.enum(["chemical", "petrochemical"]),
   graduationYear: z.string({ required_error: "Graduation Year is required" }),
-  requests: z.array(requestSchema).min(1, "At least one request is required"),
-  quantity: z.number().int().min(1),
+  requests: z
+    .array(requestSchema, {
+      invalid_type_error: "Invalid request type received for 'requests'",
+      required_error: "Requests field is required",
+    })
+    .min(1, "At least one request is required"),
+  quantity: z
+    .number({ required_error: "Quantity is required" })
+    .int()
+    .min(1, "At least 1 request is required"),
 });
 
 const RespondToReference = z.object({
