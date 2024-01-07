@@ -183,5 +183,5 @@ async function handleRefreshToken(req: Request, res: Response) {
 		res.status(500).json(ErrorMsg(500));
 	}
 
-
+}
 export { handleLogin, handleSignUp, handleRefreshToken };
