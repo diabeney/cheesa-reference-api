@@ -37,8 +37,8 @@ const getRefreshToken = async (id: Types.ObjectId) =>
 
 const saveRefreshToken = async (userId: Types.ObjectId, token: string) => {
   try {
-    const oldToken = await RefreshToken.findOneAndDelete({ userId });
-    const newToken = new RefreshToken({ userId, token }).save();
+    const _ = await RefreshToken.findOneAndDelete({ userId });
+    const __ = new RefreshToken({ userId, token }).save();
     return;
   } catch (error) {
     console.log(error);
