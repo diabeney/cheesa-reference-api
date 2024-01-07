@@ -15,6 +15,7 @@ const getUserByRole = async (role: string) =>
       lastName: user.lastName,
       email: user.email,
       role: user.role,
+      isVerified: user.isVerified,
     }))
   );
 

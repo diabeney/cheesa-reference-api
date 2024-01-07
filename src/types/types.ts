@@ -5,49 +5,51 @@ import { Types } from "mongoose";
 export type TransactionStatus = "pending" | "paid";
 
 export type Transaction = {
-  id: string;
-  dateInitatiad: Date;
-  status: TransactionStatus;
+	id: string;
+	dateInitatiad: Date;
+	status: TransactionStatus;
 };
 export type Programmes = "petrochemical" | "chemical";
 
+export type resetToken = string;
+
 export type IUser = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  role: string;
-  referenceNumber: string;
-  indexNumber?: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	role: string;
+	referenceNumber: string;
+	indexNumber?: string;
+	isVerified?: boolean;
+	getResetPasswordToken: () => resetToken;
+	resetPasswordToken?: resetToken;
+	resetPasswordExpires?: Date;
 };
 
-export interface IRequest {
-  destination: string;
-  expectedDate: string | Date;
-}
 export interface IReferenceRequest {
-  id?: Types.ObjectId;
-  graduateId: Types.ObjectId;
-  lecturerId: Types.ObjectId;
-  programme: Programmes;
-  graduationYear: string;
-  expectedDate: string | Date;
-  destination: string;
-  transactionStatus?: TransactionStatus;
-  status?: "not ready" | "submitted";
-  accepted?: "accepted" | "declined" | "null";
+	id?: Types.ObjectId;
+	graduateId: Types.ObjectId;
+	lecturerId: Types.ObjectId;
+	programme: Programmes;
+	graduationYear: string;
+	destination: string;
+	expectedDate: string | Date;
+	transactionStatus?: TransactionStatus;
+	status?: "not ready" | "submitted";
+	accepted?: "accepted" | "declined" | "null";
 }
 
 export interface AuthCookies extends CookieOptions {
-  "Cheesa-Reference-JWT": string;
+	"Cheesa-Reference-JWT": string;
 }
 
 export interface AuthRequest extends Request {
-  userPayload?: TokenPayload;
+	userPayload?: TokenPayload;
 }
 
 export type Options = {
-  to: string;
-  subject: string;
-  message: string;
+	to: string;
+	subject: string;
+	message: string;
 };
