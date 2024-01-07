@@ -11,6 +11,8 @@ export type Transaction = {
 };
 export type Programmes = "petrochemical" | "chemical";
 
+export type resetToken = string;
+
 export type IUser = {
 	firstName: string;
 	lastName: string;
@@ -20,6 +22,9 @@ export type IUser = {
 	referenceNumber: string;
 	indexNumber?: string;
 	isVerified?: boolean;
+	getResetPasswordToken: () => resetToken;
+	resetPasswordToken?: resetToken;
+	resetPasswordExpires?: Date;
 };
 
 export interface IReferenceRequest {
