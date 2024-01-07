@@ -43,6 +43,11 @@ async function handleRequestReference(
     requests,
   } = formObj;
 
+  if (quantity !== requests.length)
+    return res
+      .status(400)
+      .json(ErrorMsg(400, "Number of requests does not match quantity"));
+
   try {
     const lecturer = await getLecturerById(lecturerId);
 
