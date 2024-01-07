@@ -15,6 +15,6 @@ router.post('/login', handleLogin)
 router.post('/refresh', handleRefreshToken)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password', resetPassword)
-router.get('/verify/:token', verifyEmailToken)
+router.get('/verify-email/:token', verifyEmailToken)
 
 export { router as AuthRoutes }
