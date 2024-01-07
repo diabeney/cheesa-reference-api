@@ -18,7 +18,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 
 		await foundUser.save();
 
-		const resetUrl = `${process.env.CLIENT_URL}/reset-password/?token=${resetToken}`;
+		const resetUrl = `${process.env.CLIENT_URL_LIVE}/reset-password/?token=${resetToken}`;
 		const message = forgotPasswordMessage(resetUrl, foundUser);
 
 		const dispatchedMessage = sendResetPasswordEmail({

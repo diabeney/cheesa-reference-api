@@ -14,18 +14,17 @@ export type Programmes = "petrochemical" | "chemical";
 export type resetToken = string;
 
 export type IUser = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  role: string;
-  referenceNumber: string;
-  indexNumber?: string;
-  isVerified?: boolean;
-  getResetPasswordToken: () => resetToken;
-  resetPasswordToken?: resetToken;
-  resetPasswordExpires?: Date;
-};
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	role: string;
+	referenceNumber: string;
+	indexNumber?: string;
+	isVerified?: boolean;
+	resetPasswordToken?: resetToken;
+	resetPasswordExpires?: Date;
+}
 
 export interface RequestReference {
   quantity: number;
