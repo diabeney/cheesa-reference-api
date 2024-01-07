@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import router from "./routes/router";
+import { corsOptions } from "./utils";
 
 const app = express();
 
 dotenv.config();
 app.use(json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(router);
 
