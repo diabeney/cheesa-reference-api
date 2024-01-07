@@ -30,7 +30,7 @@ const getAllUsers = async () =>
     }))
   );
 
-const createUser = (userObject: IUser) => new Users(userObject).save();
+const createUser = (userObject: Partial<IUser>) => new Users(userObject).save();
 
 const getRefreshToken = async (id: Types.ObjectId) =>
   await RefreshToken.findOne({ userId: id });
