@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { saveRefreshToken } from "../db/user";
 import { MongooseError, Types } from "mongoose";
 import { z, ZodError, ZodType } from "zod";
+import { type CorsOptions } from "cors";
 
 export type TokenPayload = {
   id: Types.ObjectId;
@@ -95,5 +96,20 @@ export function ErrorMsg(code: number, message?: string) {
       return { message: message || STATUS.SERVER_ERROR.message };
   }
 }
+
+const allowedOrigins = [
+  "https://cheesa-reference-web.vercel.app",
+  "http://localhost:3000",
+];
+const corsOptions: CorsOptions = {
+  origin: (origin, cb) => {
+    if (allowedOrigins.indexOf(origin as string) !== -1 || !origin) {
+      return cb(null, true);
+    }
+    cb(new Error("Not allowed by cors"), false);
+  },
+};
+
+export { corsOptions };
 
 export { STATUS, generateTokens, validateObject };

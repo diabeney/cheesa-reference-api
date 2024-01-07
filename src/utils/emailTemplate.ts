@@ -1,4 +1,4 @@
-import { IUser } from '../types/types'
+import { IUser } from "../types/types";
 
 const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
   const html = `
@@ -26,7 +26,7 @@ const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
                     </div>
                     <div style="padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
-                        <h3>Hello ${user.firstName + ' ' + user.lastName},</h3>
+                        <h3>Hello ${`${user.firstName} ${user.lastName}`},</h3>
                         <h1 style="margin: 1rem 0">Trouble signing in?</h1>
                         <p style="padding-bottom: 16px">We've received a request to reset the password for your account at RefHub. Kindly click on the button below to reset your password.</p>
                         <p style="padding-bottom: 16px">
@@ -75,9 +75,9 @@ const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
     </table>
   </body>
 
-</html>`
-  return html
-}
+</html>`;
+  return html;
+};
 
 const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
   const html = `
@@ -103,7 +103,7 @@ const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
                     </div>
                     <div style="padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
-                        <h3>Hello ${user.firstName + ' ' + user.lastName},</h3>
+                        <h3>Hello ${`${user.firstName} ${user.lastName}`},</h3>
                         <h1 style="margin: 1rem 0">Verify your Email</h1>
                         <p style="padding-bottom: 16px">Please click on button below to verify your email address: </p>
                         <p style="padding-bottom: 16px">
@@ -144,8 +144,8 @@ const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
     </table>
   </body>
 
-</html>`
-  return html
-}
+</html>`;
+  return html;
+};
 
-export { forgotPasswordMessage, EmailVerificationMessage }
+export { forgotPasswordMessage, EmailVerificationMessage };
