@@ -98,7 +98,7 @@ export function ErrorMsg(code: number, message?: string) {
 }
 
 const allowedOrigins = [
-  "https://cheesa-reference-web.vercel.app/",
+  "https://cheesa-reference-web.vercel.app",
   "http://localhost:3000",
 ];
 const corsOptions: CorsOptions = {
