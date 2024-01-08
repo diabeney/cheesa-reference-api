@@ -27,6 +27,7 @@ const getAllUsers = async () =>
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      isVerified: user.isVerified
     }))
   );
 
