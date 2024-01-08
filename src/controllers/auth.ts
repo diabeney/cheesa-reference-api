@@ -68,7 +68,7 @@ async function handleSignUp(
 		await Verification.create({ token, userId: user._id });
 
 		// Create verification URL
-		const verificationURL = `${process.env.CLIENT_URL_LOCAL}/verify-email/${token}`;
+		const verificationURL = `${process.env.CLIENT_URL_LIVE}/verify-email/${token}`;
 		const message = EmailVerificationMessage(verificationURL, user);
 
 		const dispatchedMessage = sendVerificationEmail({
