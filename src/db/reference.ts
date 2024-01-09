@@ -12,7 +12,7 @@ const getReferenceById = async (id: string) => {
       path: "graduateId lecturerId",
       select: "firstName lastName email indexNumber referenceNumber",
       model: Users,
-    })
+    }).sort({ _id: -1 })
     .then((reference) => {
       if (reference) {
         return {
@@ -44,7 +44,7 @@ const getUsersReferenceByRole = async (
         select: "indexNumber referenceNumber",
         model: Users,
       })
-      .sort({ createdAt: -1 })
+      .sort({ _id: -1 })
       .then((reference) => {
         return reference.map((reference) => ({
           id: reference._id,
@@ -69,7 +69,7 @@ const getUsersReferenceByRole = async (
       select: "referenceNumber indexNumber firstName lastName",
       model: Users,
     })
-    .sort({ createdAt: -1 })
+    .sort({ _id: -1 })
     .then((reference) => {
       return reference.map((reference) => ({
         id: reference._id,
