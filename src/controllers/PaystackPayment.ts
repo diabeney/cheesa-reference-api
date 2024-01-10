@@ -7,6 +7,7 @@ import { ErrorMsg } from '../utils'
 import { TOTAL_AMOUNT, STATIC_AMOUNT } from '../constants/constants'
 import Payments from '../models/paymentModel'
 import Users from '../models/userModel'
+import Reference from '../models/reference'
 
 const payStack = {
   // Handle Payment Controller (Accept Payment)
@@ -28,13 +29,13 @@ const payStack = {
         const { email: logged_in_user_email } = foundUser
 
         //Get quantity from req.body
-        const { quantity } = req.body
+        const { amount } = req.body
 
         // params from the body
 
         const params = JSON.stringify({
           email: logged_in_user_email,
-          amount: quantity ? quantity * TOTAL_AMOUNT : TOTAL_AMOUNT
+          amount: amount * 100,
         })
         // options
         const options = {
@@ -47,6 +48,8 @@ const payStack = {
             'Content-Type': 'application/json'
           }
         }
+
+
         // client request
         const client_request = https
           .request(options, (api_response) => {
@@ -54,13 +57,32 @@ const payStack = {
             api_response.on('data', (chunk) => {
               data += chunk
             })
+
+            
             api_response.on('end', async () => {
-              // Save payment to database if successful
-              await new Payments({
-                userId: id,
-                amount: quantity ? quantity * STATIC_AMOUNT : STATIC_AMOUNT
-              }).save()
-              return res.status(200).json(data)
+              try {
+                  
+                  // Find the reference associated with the user and update its transaction status
+                 const updatedReference = await Reference.updateOne(
+                    { graduateId: id, accepted: 'accepted', transactionStatus: 'pending'},
+                    { $set: { transactionStatus: 'paid' } },
+                    { new: true }
+                  );
+
+                  const newPayment = new Payments({
+                    userId: id,
+                    amount: amount,
+                  })
+
+                  // Save payment to the database
+                  await newPayment.save()
+
+                  return res.status(200).json(data)
+              
+              } catch (error) {
+                console.log(error)
+                return res.status(400).json(ErrorMsg(400))
+              }
             })
           })
           .on('error', (error) => {
