@@ -49,7 +49,6 @@ const payStack = {
           }
         }
 
-
         // client request
         const client_request = https
           .request(options, (api_response) => {
@@ -58,7 +57,6 @@ const payStack = {
               data += chunk
             })
 
-            
             api_response.on('end', async () => {
               try {
                   
