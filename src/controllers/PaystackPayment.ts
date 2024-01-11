@@ -6,7 +6,6 @@ import { AuthRequest } from '../types/types'
 import { ErrorMsg } from '../utils'
 import { TOTAL_AMOUNT, STATIC_AMOUNT } from '../constants/constants'
 import Payments from '../models/paymentModel'
-import Users from '../models/userModel'
 import Reference from '../models/reference'
 
 const payStack = {
@@ -27,15 +26,11 @@ const payStack = {
 
         //Get logged in user email if found
         const { email: logged_in_user_email } = foundUser
-
-        //Get quantity from req.body
-        const { amount } = req.body
-
         // params from the body
 
         const params = JSON.stringify({
           email: logged_in_user_email,
-          amount: amount * 100,
+          amount: TOTAL_AMOUNT,
         })
         // options
         const options = {
@@ -69,7 +64,7 @@ const payStack = {
 
                   const newPayment = new Payments({
                     userId: id,
-                    amount: amount,
+                    amount: STATIC_AMOUNT,
                   })
 
                   // Save payment to the database
