@@ -656,32 +656,3 @@ const BASE_URL = 'https://domain.com/api/v1'
          }
       ]
    }
-   ```
-
-## Environment Variables
-
-````env
-   ``` Auth Configs ```
-
-   ACCESS_TOKEN_SECRET=
-   REFRESH_TOKEN_SECRET=
-
-   ``` Nodemailer Configs ```
-
-   SMTP_SERVICE=
-   SMTP_PORT=
-   SMTP_USERNAME=
-   SMTP_PASSWORD=
-   CLIENT_URL=
-
-   ``` Database Configs ```
-
-   MONGO_DB_URI=
-
-   ``` Paystack Configs ```
-
-   PAYSTACK_SECRET_KEY=
-   PAYSTACK_HOST=
-   PAYSTACK_PORT=
-
-````
