@@ -1,4 +1,4 @@
-import { sendResetPasswordEmail } from "../utils/sendResetPasswordEmail";
+import { sendResetPasswordEmail } from "../utils/sendEmail";
 import { forgotPasswordMessage } from "../utils/emailTemplate";
 import { Request, Response } from "express";
 import { getUserByEmail } from "../db/user";

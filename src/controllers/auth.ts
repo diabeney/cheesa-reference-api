@@ -13,7 +13,7 @@ import { ZodError } from "zod";
 import crypto from "crypto";
 import Verification from "../models/verificationModel";
 import { EmailVerificationMessage } from "../utils/emailTemplate";
-import { sendVerificationEmail } from "../utils/sendVerificationEmail";
+import { sendVerificationEmail } from "../utils/sendEmail";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
