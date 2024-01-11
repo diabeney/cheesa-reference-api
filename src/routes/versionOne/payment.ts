@@ -4,7 +4,7 @@ import { getAllPayments, getPaymentsByUserId } from '../../db/payment'
 
 const router = express.Router()
 
-router.post('/accept-payment', handlePayment)
+router.get('/accept-payment', handlePayment)
 router.get('/verify-payment/:reference', verifyPayment)
 router.get('/:userId', getPaymentsByUserId)
 router.get('/', getAllPayments)
