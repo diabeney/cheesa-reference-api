@@ -11,6 +11,10 @@ const PaymentSchema = new Schema(
     amount: {
       type: Number,
       required: true
+    },
+    referenceId: {
+      type: String,
+      default: '',
     }
   },
   {
