@@ -2,13 +2,16 @@ import { Request, Response } from 'express'
 import Payments from '../models/paymentModel'
 import Users from '../models/userModel'
 import { ErrorMsg } from '../utils'
+import mongoose from 'mongoose'
 
 const PaystackPayments = {
   // Get all Payments by specific user by id
   getPaymentsByUserId: async (req: Request, res: Response) => {
     const { userId } = req.params
 
-    if (!userId) return res.status(400).json(ErrorMsg(400))
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
 
     try {
       const payments = await Payments.find({ userId })
@@ -54,7 +57,27 @@ const PaystackPayments = {
       console.error(error)
       return res.status(500).json(ErrorMsg(500))
     }
+  },
+  // Get Payment reference id from the payment collection
+  getPaymentReferenceId: async (req: Request, res: Response) => {
+    const { userId } = req.params
+
+     // Check if userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
+    try {
+      const payment = await Payments.findOne({ userId })
+
+      if (!payment) return res.status(404).json(ErrorMsg(404))
+
+      return res.status(200).json({ referenceId: payment.referenceId })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json(ErrorMsg(500))
+    }
   }
 }
 
-export const { getPaymentsByUserId, getAllPayments } = PaystackPayments
+export const { getPaymentsByUserId, getAllPayments, getPaymentReferenceId } = PaystackPayments
