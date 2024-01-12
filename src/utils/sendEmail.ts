@@ -29,5 +29,18 @@ const sendVerificationEmail = async (options: Options) => {
 }
 
 
+const VerifyPaymentEmail = async (options: Options) => {
+  const transporter = nodemailerTransporter()
 
-export { sendResetPasswordEmail, sendVerificationEmail }
+  const message = {
+    from: `REFHUB <${process.env.SMTP_USERNAME}>`,
+    to: options.to,
+    subject: options.subject,
+    html: options.message
+  }
+
+  await transporter.sendMail(message)
+}
+
+
+export { sendResetPasswordEmail, sendVerificationEmail, VerifyPaymentEmail }
