@@ -7,6 +7,9 @@ import { ErrorMsg } from '../utils'
 import { TOTAL_AMOUNT, STATIC_AMOUNT } from '../constants/constants'
 import Payments from '../models/paymentModel'
 import Reference from '../models/reference'
+import { VerifyPaymentEmail } from '../utils/sendEmail'
+import Users from '../models/userModel'
+import { LecturerPaymentConfirmationMessage, PaymentVerificationMessage } from '../utils/emailTemplate'
 
 const payStack = {
   // Handle Payment Controller (Accept Payment)
@@ -31,6 +34,7 @@ const payStack = {
         const params = JSON.stringify({
           email: logged_in_user_email,
           amount: TOTAL_AMOUNT,
+          callback_url: "https://cheesa-reference-web.vercel.app/app/student/reference/verify-payment"
         })
         // options
         const options = {
@@ -54,7 +58,15 @@ const payStack = {
 
             api_response.on('end', async () => {
               try {
-                  
+                  const { status, data: paymentData } = JSON.parse(data)
+                  if (status === false) {
+                    return res.status(400).json(ErrorMsg(400))
+                  }
+                  // Extract the reference from the payment and save into db
+                  const { reference } = paymentData
+                  console.log(reference)
+                                                     
+
                   // Find the reference associated with the user and update its transaction status
                  const updatedReference = await Reference.updateOne(
                     { graduateId: id, accepted: 'accepted', transactionStatus: 'pending'},
@@ -65,6 +77,7 @@ const payStack = {
                   const newPayment = new Payments({
                     userId: id,
                     amount: STATIC_AMOUNT,
+                    referenceId: reference
                   })
 
                   // Save payment to the database
@@ -93,8 +106,13 @@ const payStack = {
   },
 
   // Verify Payment Controller
-  verifyPayment: async (req: Request, res: Response) => {
+  verifyPayment: async (req: AuthRequest, res: Response) => {
     const reference = req.params.reference
+    const user = req.userPayload
+
+    if (!user) return res.status(404).json(ErrorMsg(404))
+
+    const {id} = user
     try {
       const options = {
         hostname: process.env.PAYSTACK_HOST,
@@ -113,9 +131,75 @@ const payStack = {
           data += chunk
         })
 
-        api_response.on('end', () => {
-          console.log(JSON.parse(data))
-          return res.status(200).json(data)
+        api_response.on('end', async () => {
+
+        // Payment confirmation details
+        const { status, data: paymentData } = JSON.parse(data)
+
+        // Check if payment was successful
+        if (status === false) {
+          return res.status(400).json(ErrorMsg(400))
+        }
+        // Extract the data we need from the payment data
+        const {id: paymentId, domain, status: newStatus, gateway_response, paid_at, channel, amount  } = paymentData
+
+        // Get the email from the payment data
+        const { customer: { email } } = paymentData
+
+        // Get Lecturer Email associated with a particular reference requested by a graduate
+        const reference = await Reference.findOne({
+          graduateId: id,
+          accepted: 'accepted',
+          transactionStatus: 'paid'
+        }).populate({
+          path: 'lecturerId',
+          select: 'firstName lastName email',
+          model: Users
+        })
+        
+
+        // Extract lecturer's email
+        const lecturerInfo ={
+          email: reference?.lecturerId.email,
+          firstName: reference?.lecturerId.firstName,
+          lastName: reference?.lecturerId.lastName
+        }
+
+        let PaymentResponse = {
+          paymentId,
+          domain,
+          newStatus,
+          gateway_response,
+          paid_at,
+          channel,
+          amount
+        }
+
+        // Send Email
+        const verificationInfo = PaymentVerificationMessage(PaymentResponse, lecturerInfo)
+        const dispatchedMessage =  VerifyPaymentEmail({
+          to: email,
+          subject: 'Payment Verification from RefHub',
+          message: verificationInfo
+
+        })
+
+        // Send Email to the lecturer
+        const paymentConfirmation = LecturerPaymentConfirmationMessage(PaymentResponse, lecturerInfo)
+        const dispatchedMessageToLecturer =  VerifyPaymentEmail({
+          to: lecturerInfo.email,
+          subject: 'Payment Notification from RefHub',
+          message: paymentConfirmation
+        });
+        
+        if (!dispatchedMessage) return res.status(500).json(ErrorMsg(500))
+        await dispatchedMessage
+
+        if (!dispatchedMessageToLecturer) return res.status(500).json(ErrorMsg(500))
+        await dispatchedMessageToLecturer
+
+        console.log('Email sent successfully')
+        return res.status(200).json(data)
         })
       })
 
