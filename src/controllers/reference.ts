@@ -22,6 +22,10 @@ interface AuthQueryRequest
 }
 
 import { RequestReference as RefReqObject } from "../types/types";
+import { sendIsAccptedEmail } from "../utils/sendEmail";
+import Users from "../models/userModel";
+import { isAcceptedMessage } from "../utils/emailTemplate";
+import Reference from "../models/reference";
 
 async function handleRequestReference(
   req: Request<unknown, unknown, RefReqObject>,
@@ -143,6 +147,17 @@ const LecturersReferenceControllers = {
 
       const lecturer = await getLecturerById(id);
 
+      const reference = await Reference.findOne({
+        _id: validatedParams.refId,
+        lecturerId: id,
+      }).populate({
+        path: "graduateId",
+        select: "email",
+        model: Users
+      })
+
+      if(!reference) return res.status(403).json(ErrorMsg(403))
+
       if (!lecturer) return res.status(403).json(ErrorMsg(403));
 
       const { refId, accepted: isAccepted } = validatedParams;
@@ -153,6 +168,22 @@ const LecturersReferenceControllers = {
 
       const _ = await updateReferenceById(refId, updatePayload);
 
+      // Get Graduate Email
+      // const graduateEmail = graduate.graduateId.email
+      if(isAccepted === "true"){
+        // Send email to graduate
+        const dispatachedMessages = sendIsAccptedEmail({
+          to: reference.graduateId.email,
+          subject: "Reference Acceptance from REFHUB",
+          message: isAcceptedMessage()
+        })
+
+        if(!dispatachedMessages) return res.status(500).json(ErrorMsg(500))
+
+        await dispatachedMessages
+
+        console.log("Email sent to graduate")
+      }
       res.status(200).json({ message: "Successful" });
     } catch (err) {
       console.log(err);
