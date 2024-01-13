@@ -272,7 +272,7 @@ const LecturerPaymentConfirmationMessage = (paymentDetails: PaymentResponse, lec
                         <h3>Hello ${`${lecturer.firstName} ${lecturer.lastName}`},</h3>
                         <h1 style="margin: 1rem 0">Payment Confirmed!</h1>
                         <p style="padding-bottom: 16px">A payment has been made by a student for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> by you on the student dashboard.</p>
-                        <strong style="padding-bottom: 16px">Here are the details of your payment:</strong>
+                        <strong style="padding-bottom: 16px">Here are the details of the transaction:</strong>
                           <ul style="padding-bottom: 16px; list-style: none;">
                               <li><strong>Payment Id:</strong> ${paymentDetails.paymentId}</li>
                               <li><strong>Payment Status:</strong> ${paymentDetails.gateway_response}</li>
