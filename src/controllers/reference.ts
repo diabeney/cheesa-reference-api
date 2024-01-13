@@ -169,12 +169,11 @@ const LecturersReferenceControllers = {
       const _ = await updateReferenceById(refId, updatePayload);
 
       // Get Graduate Email
-      // const graduateEmail = graduate.graduateId.email
       if(isAccepted === "true"){
         // Send email to graduate
         const dispatachedMessages = sendIsAccptedEmail({
           to: reference.graduateId.email,
-          subject: "Reference Acceptance from REFHUB",
+          subject: "Acceptance Notice from REFHUB",
           message: isAcceptedMessage()
         })
 
@@ -191,6 +190,8 @@ const LecturersReferenceControllers = {
     }
   },
 };
+
+const handleSubmitReference = async (req: Request, res: Response) => {};
 
 export { handleRequestReference, handleViewReference };
 export { LecturersReferenceControllers as handleLecturers };
