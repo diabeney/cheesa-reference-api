@@ -65,23 +65,6 @@ const payStack = {
                   // Extract the reference from the payment and save into db
                   const { reference } = paymentData
                   console.log(reference)
-                                                     
-
-                  // Find the reference associated with the user and update its transaction status
-                 const updatedReference = await Reference.updateOne(
-                    { graduateId: id, accepted: 'accepted', transactionStatus: 'pending'},
-                    { $set: { transactionStatus: 'paid' } },
-                    { new: true }
-                  );
-
-                  const newPayment = new Payments({
-                    userId: id,
-                    amount: STATIC_AMOUNT,
-                    referenceId: reference
-                  })
-
-                  // Save payment to the database
-                  await newPayment.save()
 
                   return res.status(200).json(data)
               
@@ -143,6 +126,23 @@ const payStack = {
         // Extract the data we need from the payment data
         const {id: paymentId, domain, status: newStatus, gateway_response, paid_at, channel, amount  } = paymentData
 
+        if(gateway_response === 'Approved'){
+          // Save payment to the database
+          const newPayment = new Payments({
+            userId: id,
+            amount: STATIC_AMOUNT,
+          })
+
+          await newPayment.save()
+
+        // Find the reference associated with the user and update its transaction status
+          const updatedReference = await Reference.updateOne(
+            { graduateId: id, accepted: 'accepted', transactionStatus: 'pending'},
+            { $set: { transactionStatus: 'paid' } },
+            { new: true }
+          );
+        }
+
         // Get the email from the payment data
         const { customer: { email } } = paymentData
 
@@ -157,7 +157,6 @@ const payStack = {
           model: Users
         })
         
-
         // Extract lecturer's email
         const lecturerInfo ={
           email: reference?.lecturerId.email,
