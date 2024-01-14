@@ -1,26 +1,29 @@
 import { IUser } from "../types/types";
 
 type PaymentResponse = {
-  paymentId: string;
-  domain: string;
-  gateway_response: string;
-  newStatus: string;
-  paid_at: Date;
-  channel: string;
-  amount: number;
+	paymentId: string;
+	domain: string;
+	gateway_response: string;
+	newStatus: string;
+	paid_at: Date;
+	channel: string;
+	amount: number;
 };
 
 type lecturerInfo = {
-  email: string;
-  firstName: string;
-  lastName: string;
+	email: string;
+	firstName: string;
+	lastName: string;
 };
 
-const formatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
+const formatter = new Intl.DateTimeFormat("en-US", {
+	day: "2-digit",
+	month: "2-digit",
+	year: "numeric",
+});
 
 const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
-  const html = `
+	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -95,11 +98,11 @@ const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
   </body>
 
 </html>`;
-  return html;
+	return html;
 };
 
 const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
-  const html = `
+	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -164,11 +167,14 @@ const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
   </body>
 
 </html>`;
-  return html;
+	return html;
 };
 
-const PaymentVerificationMessage = (paymentDetails: PaymentResponse, lecturer: lecturerInfo  ) => {
-  const html = `
+const PaymentVerificationMessage = (
+	paymentDetails: PaymentResponse,
+	lecturer: lecturerInfo,
+) => {
+	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -197,11 +203,21 @@ const PaymentVerificationMessage = (paymentDetails: PaymentResponse, lecturer: l
                         <p style="padding-bottom: 16px">Your payment has successfully been verified, kindly go to your dashboard to monitor your request status.</p>
                         <strong style="padding-bottom: 16px">Here are the details of your payment:</strong>
                           <div style="padding-bottom: 16px; list-style: none;">
-                              <p><strong>Payment Id:</strong> ${paymentDetails.paymentId}</p>
-                              <p><strong>Payment Status:</strong> ${paymentDetails.gateway_response}</p>
-                              <p><strong>Payment Amount:</strong> GHS ${paymentDetails.amount / 100}.00</p>
-                              <p><strong>Payment Date:</strong> ${formatter.format(new Date(paymentDetails.paid_at))}</p>
-                              <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${paymentDetails.channel}</p>
+                              <p><strong>Payment Id:</strong> ${
+																paymentDetails.paymentId
+															}</p>
+                              <p><strong>Payment Status:</strong> ${
+																paymentDetails.gateway_response
+															}</p>
+                              <p><strong>Payment Amount:</strong> GHS ${
+																paymentDetails.amount / 100
+															}.00</p>
+                              <p><strong>Payment Date:</strong> ${formatter.format(
+																new Date(paymentDetails.paid_at),
+															)}</p>
+                              <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${
+																paymentDetails.channel
+															}</p>
                           </div>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
@@ -239,12 +255,15 @@ const PaymentVerificationMessage = (paymentDetails: PaymentResponse, lecturer: l
     </table>
   </body>
 
-</html>`
-          return html
-}
+</html>`;
+	return html;
+};
 
-const LecturerPaymentConfirmationMessage = (paymentDetails: PaymentResponse, lecturer: lecturerInfo  ) => {
-  const html =`
+const LecturerPaymentConfirmationMessage = (
+	paymentDetails: PaymentResponse,
+	lecturer: lecturerInfo,
+) => {
+	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -274,11 +293,21 @@ const LecturerPaymentConfirmationMessage = (paymentDetails: PaymentResponse, lec
                         <p style="padding-bottom: 16px">A payment has been made by a student for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> by you on the student dashboard.</p>
                         <strong style="padding-bottom: 16px">Here are the details of the transaction:</strong>
                           <div style="padding-bottom: 16px; list-style: none;">
-                              <p><strong>Payment Id:</strong> ${paymentDetails.paymentId}</p>
-                              <p><strong>Payment Status:</strong> ${paymentDetails.gateway_response}</p>
-                              <p><strong>Payment Amount:</strong> GHS ${paymentDetails.amount / 100}.00</p>
-                              <p><strong>Payment Date:</strong> ${formatter.format(new Date(paymentDetails.paid_at))}</p>
-                              <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${paymentDetails.channel}</p>
+                              <p><strong>Payment Id:</strong> ${
+																paymentDetails.paymentId
+															}</p>
+                              <p><strong>Payment Status:</strong> ${
+																paymentDetails.gateway_response
+															}</p>
+                              <p><strong>Payment Amount:</strong> GHS ${
+																paymentDetails.amount / 100
+															}.00</p>
+                              <p><strong>Payment Date:</strong> ${formatter.format(
+																new Date(paymentDetails.paid_at),
+															)}</p>
+                              <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${
+																paymentDetails.channel
+															}</p>
                           </div>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
@@ -316,12 +345,12 @@ const LecturerPaymentConfirmationMessage = (paymentDetails: PaymentResponse, lec
     </table>
   </body>
 
-</html>`
-      return html
-}
+</html>`;
+	return html;
+};
 
 const isAcceptedMessage = () => {
-  const html = `
+	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -387,12 +416,12 @@ const isAcceptedMessage = () => {
   </body>
 
 </html>
-  `
-   return html
-}
+  `;
+	return html;
+};
 
 const isRejectedMessage = () => {
-  const html = `
+	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -457,12 +486,12 @@ const isRejectedMessage = () => {
   </body>
 
 </html>
-   `
-   return html
-}
+   `;
+	return html;
+};
 
 const isSubmittedMessage = () => {
-  const html = `
+	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -528,12 +557,12 @@ const isSubmittedMessage = () => {
   </body>
 
 </html>
-  `
-    return html
-}
+  `;
+	return html;
+};
 
 const requestReferenceMessage = (lecturer: lecturerInfo) => {
-     const html = `
+	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
@@ -598,7 +627,16 @@ const requestReferenceMessage = (lecturer: lecturerInfo) => {
   </body>
 
 </html>
-  `
-    return html
-}
-export { forgotPasswordMessage, EmailVerificationMessage, PaymentVerificationMessage, LecturerPaymentConfirmationMessage, isAcceptedMessage, isRejectedMessage, isSubmittedMessage, requestReferenceMessage };
+  `;
+	return html;
+};
+export {
+	forgotPasswordMessage,
+	EmailVerificationMessage,
+	PaymentVerificationMessage,
+	LecturerPaymentConfirmationMessage,
+	isAcceptedMessage,
+	isRejectedMessage,
+	isSubmittedMessage,
+	requestReferenceMessage,
+};
