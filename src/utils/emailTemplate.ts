@@ -347,7 +347,7 @@ const isAcceptedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Acceptance Notice</h1>
-                        <h3>Hello,</h3>
+                        <h3>Hello there,</h3>
                         <p style="padding-bottom: 16px">The request you made for a recommendation letter to be sent to your selected institution has been <strong>ACCEPTED</strong>, so kindly visit your dashboard to make payment.</p>
                           
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
@@ -398,7 +398,7 @@ const isRejectedMessage = () => {
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceptance Notice</title>
+    <title>Declination Notice</title>
   </head>
 
   <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
@@ -418,12 +418,12 @@ const isRejectedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Decline Notice</h1>
-                        <h3>Hello,</h3>
+                        <h3>Hello there,</h3>
                         <p style="padding-bottom: 16px">Sorry!😢 The request you made for a recommendation letter to be sent to your selected institution has been <strong>DECLINED</strong> by the assigned lecturer.</p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
                         <p style="padding-bottom: 16px">
-                          <span>Thanks,</span>
+                          <span>Best Regards,</span>
                           <br>
                           <span style="font-weight: bold;">RefHub Support Team</span>
                         </p>
@@ -468,7 +468,7 @@ const isSubmittedMessage = () => {
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceptance Notice</title>
+    <title>Submission Notice</title>
   </head>
 
   <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
@@ -488,7 +488,7 @@ const isSubmittedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Submission Notice</h1>
-                        <h3>Hello,</h3>
+                        <h3>Hello there,</h3>
                         <p style="padding-bottom: 16px"><strong>Woohoo!🎊 Congrats on your successful recommendation submission!</strong></p>
                         <p style="padding-bottom: 16px">Your request just got the green light! The assigned lecturer has sent off your recommendation to your chosen institution, ready to champion your amazing potential.</p>
                          <p style="padding-bottom: 16px"> We wish you the best of luck in your future endeavors!</p>
