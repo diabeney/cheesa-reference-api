@@ -13,7 +13,7 @@ import {
 import { RequestReference as RefReqObject } from "../types/types";
 import { sendIsAccptedEmail, submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
-import { isAcceptedMessage } from "../utils/emailTemplate";
+import { isAcceptedMessage, isRejectedMessage, isSubmittedMessage } from "../utils/emailTemplate";
 import Reference from "../models/reference";
 
 type QueryFields = {
@@ -182,7 +182,17 @@ const LecturersReferenceControllers = {
 
         await dispatachedMessages
 
-        console.log("Email sent to graduate")
+      }else if(isAccepted === "false"){
+        // Send email to graduate
+        const dispatachedMessages = sendIsAccptedEmail({
+          to: reference.graduateId.email,
+          subject: "Decline Notice from REFHUB",
+          message: isRejectedMessage()
+        })
+
+        if(!dispatachedMessages) return res.status(500).json(ErrorMsg(500))
+
+        await dispatachedMessages
       }
       res.status(200).json({ message: "Successful" });
     } catch (err) {
@@ -235,22 +245,19 @@ const LecturersReferenceControllers = {
 
     const updated = await Reference.findByIdAndUpdate(refId, updatePayload);
 
-    console.log(updated)
-
     // Get Graduate Email
     if(isSubmitted === "true"){
       // Send email to graduate
       const dispatchedMessages = submitRequestEmail({
         to: reference.graduateId.email,
         subject: "Submission Notice from REFHUB",
-        message: 'Your reference has been submitted successfully.'
+        message: isSubmittedMessage()
       })
 
       if(!dispatchedMessages) return res.status(500).json(ErrorMsg(500))
 
       await dispatchedMessages
 
-      console.log("Email sent to graduate")
     }
     res.status(200).json({ message: "Successful" });
   } catch (err) {
