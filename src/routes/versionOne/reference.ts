@@ -11,5 +11,5 @@ router.get("/:id", handleViewReference);
 router.post("/lecturer", handleLecturers.handleRespondRequest);
 router.get("/lecturer/:id", handleLecturers.handleGetLecturerReferences);
 router.get("/graduate/:id", handleGraduates.handleGetGradReferences);
-
+router.post("/submitted", handleLecturers.handleSubmitRequest);
 export { router as ReferenceRoutes };
