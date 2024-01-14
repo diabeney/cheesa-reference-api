@@ -1,4 +1,4 @@
-import { sendResetPasswordEmail } from "../utils/sendEmail";
+import { submitRequestEmail } from "../utils/sendEmail";
 import { forgotPasswordMessage } from "../utils/emailTemplate";
 import { Request, Response } from "express";
 import { getUserByEmail } from "../db/user";
@@ -21,7 +21,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 		const resetUrl = `${process.env.CLIENT_URL_LIVE}/reset-password/?token=${resetToken}`;
 		const message = forgotPasswordMessage(resetUrl, foundUser);
 
-		const dispatchedMessage = sendResetPasswordEmail({
+		const dispatchedMessage = submitRequestEmail({
 			to: foundUser.email,
 			subject: "Password Reset Request",
 			message,

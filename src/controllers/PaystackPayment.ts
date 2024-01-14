@@ -7,9 +7,9 @@ import { ErrorMsg } from '../utils'
 import { TOTAL_AMOUNT, STATIC_AMOUNT } from '../constants/constants'
 import Payments from '../models/paymentModel'
 import Reference from '../models/reference'
-import { VerifyPaymentEmail } from '../utils/sendEmail'
 import Users from '../models/userModel'
 import { LecturerPaymentConfirmationMessage, PaymentVerificationMessage } from '../utils/emailTemplate'
+import { submitRequestEmail } from '../utils/sendEmail'
 
 const payStack = {
   // Handle Payment Controller (Accept Payment)
@@ -176,7 +176,7 @@ const payStack = {
 
         // Send Email
         const verificationInfo = PaymentVerificationMessage(PaymentResponse, lecturerInfo)
-        const dispatchedMessage =  VerifyPaymentEmail({
+        const dispatchedMessage =  submitRequestEmail({
           to: email,
           subject: 'Payment Verification from RefHub',
           message: verificationInfo
@@ -185,7 +185,7 @@ const payStack = {
 
         // Send Email to the lecturer
         const paymentConfirmation = LecturerPaymentConfirmationMessage(PaymentResponse, lecturerInfo)
-        const dispatchedMessageToLecturer =  VerifyPaymentEmail({
+        const dispatchedMessageToLecturer =  submitRequestEmail({
           to: lecturerInfo.email,
           subject: 'Payment Notification from RefHub',
           message: paymentConfirmation
@@ -197,7 +197,6 @@ const payStack = {
         if (!dispatchedMessageToLecturer) return res.status(500).json(ErrorMsg(500))
         await dispatchedMessageToLecturer
 
-        console.log('Email sent successfully')
         return res.status(200).json(data)
         })
       })

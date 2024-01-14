@@ -11,7 +11,7 @@ import {
   updateReferenceById,
 } from "../db/reference";
 import { RequestReference as RefReqObject } from "../types/types";
-import { sendIsAccptedEmail, submitRequestEmail } from "../utils/sendEmail";
+import {  submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
 import { isAcceptedMessage, isRejectedMessage, isSubmittedMessage } from "../utils/emailTemplate";
 import Reference from "../models/reference";
@@ -172,7 +172,7 @@ const LecturersReferenceControllers = {
       // Get Graduate Email
       if(isAccepted === "true"){
         // Send email to graduate
-        const dispatachedMessages = sendIsAccptedEmail({
+        const dispatachedMessages = submitRequestEmail({
           to: reference.graduateId.email,
           subject: "Acceptance Notice from REFHUB",
           message: isAcceptedMessage()
@@ -184,7 +184,7 @@ const LecturersReferenceControllers = {
 
       }else if(isAccepted === "false"){
         // Send email to graduate
-        const dispatachedMessages = sendIsAccptedEmail({
+        const dispatachedMessages = submitRequestEmail({
           to: reference.graduateId.email,
           subject: "Decline Notice from REFHUB",
           message: isRejectedMessage()

@@ -13,7 +13,7 @@ import { ZodError } from "zod";
 import crypto from "crypto";
 import Verification from "../models/verificationModel";
 import { EmailVerificationMessage } from "../utils/emailTemplate";
-import { sendVerificationEmail } from "../utils/sendEmail";
+import {  submitRequestEmail } from "../utils/sendEmail";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
@@ -71,7 +71,7 @@ async function handleSignUp(
 		const verificationURL = `${process.env.CLIENT_URL_LIVE}/verify-email/${token}`;
 		const message = EmailVerificationMessage(verificationURL, user);
 
-		const dispatchedMessage = sendVerificationEmail({
+		const dispatchedMessage = submitRequestEmail({
 			to: user.email,
 			subject: "Email Verification",
 			message,
