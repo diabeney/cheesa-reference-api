@@ -54,6 +54,11 @@ const RespondToReference = z.object({
   accepted: z.string(),
 });
 
+const submitRequestedReference = z.object({
+  refId: z.custom<Types.ObjectId>(),
+  status: z.string(),
+})
+
 const BY_HUNDRED = 100;
 const STATIC_AMOUNT = 30;
 const TOTAL_AMOUNT = STATIC_AMOUNT * BY_HUNDRED;
@@ -63,6 +68,7 @@ export {
   LoginShape,
   ReferenceShape,
   RespondToReference,
+  submitRequestedReference,
   TOTAL_AMOUNT,
   STATIC_AMOUNT,
 };
