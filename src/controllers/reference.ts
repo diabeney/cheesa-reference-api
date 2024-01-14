@@ -13,7 +13,7 @@ import {
 import { RequestReference as RefReqObject } from "../types/types";
 import {  submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
-import { isAcceptedMessage, isRejectedMessage, isSubmittedMessage } from "../utils/emailTemplate";
+import { isAcceptedMessage, isRejectedMessage, isSubmittedMessage, requestReferenceMessage } from "../utils/emailTemplate";
 import Reference from "../models/reference";
 
 type QueryFields = {
@@ -74,6 +74,21 @@ async function handleRequestReference(
       };
 
       const _ = await RequestReference(payload);
+
+
+      const message = requestReferenceMessage(lecturer)
+        // Send email to lecturer that a request is made
+        const dispatchedMessages = submitRequestEmail({
+          to: lecturer.email,
+          subject: "Request Notice from REFHUB",
+          message
+      })
+
+      if(!dispatchedMessages) return res.status(500).json(ErrorMsg(500))
+
+      await dispatchedMessages
+
+
     }
     res.status(201).json({ message: "Successfully created reference" });
   } catch (err) {
