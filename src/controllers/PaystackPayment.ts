@@ -146,7 +146,7 @@ const payStack = {
 						await newPayment.save();
 
 						// Find the reference associated with the user and update its transaction status
-						const updatedReference = await Reference.updateOne(
+						await Reference.updateOne(
 							{
 								graduateId: id,
 								accepted: "accepted",
@@ -168,7 +168,7 @@ const payStack = {
 						accepted: "accepted",
 						transactionStatus: "paid",
 					}).populate({
-						path: "lecturerId",
+						path: "lecturerId graduateId",
 						select: "firstName lastName email",
 						model: Users,
 					});
@@ -176,11 +176,16 @@ const payStack = {
 					// Extract lecturer's email
 					const lecturerInfo = {
 						email: reference?.lecturerId.email,
-						firstName: reference?.lecturerId.firstName,
-						lastName: reference?.lecturerId.lastName,
+						name: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
 					};
 
-					let PaymentResponse = {
+					// Graduate info
+					const graduateInfo = {
+						email: reference?.graduateId.email,
+						name: `${reference?.graduateId.firstName} ${reference?.graduateId.lastName}`,
+					};
+
+					const PaymentResponse = {
 						paymentId,
 						domain,
 						newStatus,
@@ -193,7 +198,7 @@ const payStack = {
 					// Send Email
 					const verificationInfo = PaymentVerificationMessage(
 						PaymentResponse,
-						lecturerInfo,
+						graduateInfo,
 					);
 					const dispatchedMessage = submitRequestEmail({
 						to: email,

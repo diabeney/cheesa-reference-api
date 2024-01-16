@@ -1,4 +1,6 @@
+import { Types } from "mongoose";
 import { IUser } from "../types/types";
+import { format } from "date-fns";
 
 type PaymentResponse = {
 	paymentId: string;
@@ -10,17 +12,22 @@ type PaymentResponse = {
 	amount: number;
 };
 
-type lecturerInfo = {
-	email: string;
-	firstName: string;
-	lastName: string;
+type lecturer = {
+	name: string;
 };
 
-const formatter = new Intl.DateTimeFormat("en-US", {
-	day: "2-digit",
-	month: "2-digit",
-	year: "numeric",
-});
+type PaymentInfo = {
+	name: string;
+	email: string;
+};
+
+type refDetails = {
+	id: Types.ObjectId;
+	name: string;
+	destination: string;
+	status: string;
+	dueDate: string;
+};
 
 const forgotPasswordMessage = (resetUrl: string, user: IUser) => {
 	const html = `
@@ -172,7 +179,7 @@ const EmailVerificationMessage = (verificationUrl: string, user: IUser) => {
 
 const PaymentVerificationMessage = (
 	paymentDetails: PaymentResponse,
-	lecturer: lecturerInfo,
+	user: PaymentInfo,
 ) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -200,6 +207,7 @@ const PaymentVerificationMessage = (
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Payment Verified!</h1>
+                        <p>Hello ${user.name},</p>
                         <p style="padding-bottom: 16px">Your payment has successfully been verified, kindly go to your dashboard to monitor your request status.</p>
                         <strong style="padding-bottom: 16px">Here are the details of your payment:</strong>
                           <div style="padding-bottom: 16px; list-style: none;">
@@ -212,8 +220,9 @@ const PaymentVerificationMessage = (
                               <p><strong>Payment Amount:</strong> GHS ${
 																paymentDetails.amount / 100
 															}.00</p>
-                              <p><strong>Payment Date:</strong> ${formatter.format(
+                              <p><strong>Payment Date:</strong> ${format(
 																new Date(paymentDetails.paid_at),
+																"dd/MM/yyyy",
 															)}</p>
                               <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${
 																paymentDetails.channel
@@ -261,7 +270,7 @@ const PaymentVerificationMessage = (
 
 const LecturerPaymentConfirmationMessage = (
 	paymentDetails: PaymentResponse,
-	lecturer: lecturerInfo,
+	lecturer: PaymentInfo,
 ) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -288,7 +297,7 @@ const LecturerPaymentConfirmationMessage = (
                     </div>
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
-                        <h3>Hello ${`${lecturer.firstName} ${lecturer.lastName}`},</h3>
+                        <p>Hello ${lecturer.name},</p>
                         <h1 style="margin: 1rem 0">Payment Confirmed!</h1>
                         <p style="padding-bottom: 16px">A payment has been made by a student for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> by you on the student dashboard.</p>
                         <strong style="padding-bottom: 16px">Here are the details of the transaction:</strong>
@@ -302,8 +311,9 @@ const LecturerPaymentConfirmationMessage = (
                               <p><strong>Payment Amount:</strong> GHS ${
 																paymentDetails.amount / 100
 															}.00</p>
-                              <p><strong>Payment Date:</strong> ${formatter.format(
+                              <p><strong>Payment Date:</strong> ${format(
 																new Date(paymentDetails.paid_at),
+																"dd/MM/yyyy",
 															)}</p>
                               <p style="text-transform: capitalize"><strong>Payment Method:</strong> ${
 																paymentDetails.channel
@@ -349,7 +359,7 @@ const LecturerPaymentConfirmationMessage = (
 	return html;
 };
 
-const isAcceptedMessage = () => {
+const isAcceptedMessage = (user: IUser) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -376,7 +386,7 @@ const isAcceptedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Acceptance Notice</h1>
-                        <h3>Hello there,</h3>
+                        <h3>Hello ${user},</h3>
                         <p style="padding-bottom: 16px">The request you made for a recommendation letter to be sent to your selected institution has been <strong>ACCEPTED</strong>, so kindly visit your dashboard to make payment.</p>
                           
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
@@ -420,7 +430,7 @@ const isAcceptedMessage = () => {
 	return html;
 };
 
-const isRejectedMessage = () => {
+const isRejectedMessage = (user: IUser) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -447,7 +457,7 @@ const isRejectedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Decline Notice</h1>
-                        <h3>Hello there,</h3>
+                        <h3>Hello ${user},</h3>
                         <p style="padding-bottom: 16px">Sorry!😢 The request you made for a recommendation letter to be sent to your selected institution has been <strong>DECLINED</strong> by the assigned lecturer.</p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
@@ -490,7 +500,7 @@ const isRejectedMessage = () => {
 	return html;
 };
 
-const isSubmittedMessage = () => {
+const isSubmittedMessage = (user: IUser) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -517,7 +527,7 @@ const isSubmittedMessage = () => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Submission Notice</h1>
-                        <h3>Hello there,</h3>
+                        <h3>Hello ${user},</h3>
                         <p style="padding-bottom: 16px"><strong>Woohoo!🎊 Congrats on your successful recommendation submission!</strong></p>
                         <p style="padding-bottom: 16px">Your request just got the green light! The assigned lecturer has sent off your recommendation to your chosen institution, ready to champion your amazing potential.</p>
                          <p style="padding-bottom: 16px"> We wish you the best of luck in your future endeavors!</p>
@@ -561,7 +571,7 @@ const isSubmittedMessage = () => {
 	return html;
 };
 
-const requestReferenceMessage = (lecturer: lecturerInfo) => {
+const requestReferenceMessage = (lecturer: IUser) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -630,6 +640,97 @@ const requestReferenceMessage = (lecturer: lecturerInfo) => {
   `;
 	return html;
 };
+
+const requestReminderMessage = (
+	referenceDetails: refDetails,
+	lectuerInfo: lecturer,
+) => {
+	const html = `
+    <html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Reminder</title>
+  </head>
+
+  <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(239, 239, 239);">
+      <tbody>
+        <tr>
+          <td align="center" style="padding: 1rem; vertical-align: top; width: 100%;">
+            <table role="presentation" style="max-width:700px; border-collapse: collapse; border: 0px; border-spacing: 0px; text-align: left;">
+              <tbody>
+                <tr>
+                  <td style="padding: 40px 0px 0px;">
+                    <div style="text-align: center; margin-bottom: 0.5rem;">
+                      <div style="display: flex; align-items: center; justify-center; width: 100%; padding: 10px; background: white margin-bottom: ">
+                        <img src="https://ik.imagekit.io/kkldhhslb/RefHub_logo_final.png?updatedAt=1704396221616" alt="Company-Logo" style="width:120px">
+                      </div>
+                    </div>
+                    <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
+                      <div style="color: rgb(46, 46, 46); text-align: left;">
+                        <h1 style="margin: 1rem 0">Request Reminder</h1>
+                        <p>Dear ${lectuerInfo.name} </p>
+                        <p style="padding-bottom: 16px">This is a reminder that you have been requested to submit a reference for <strong>${
+													referenceDetails.name
+												}</strong>.</p>
+                        <strong style="padding-bottom: 16px">Please find below some details regarding the request:</strong>
+                          <div style="padding-bottom: 16px; list-style: none;">
+                              <p><strong>Reference Id:</strong> ${
+																referenceDetails.id
+															}</p>
+                              <p style="text-transform: capitalize"><strong>Reference Status:</strong> ${
+																referenceDetails.status
+															}</p>
+                              <p><strong>Destination:</strong> ${
+																referenceDetails.destination
+															}</p>
+                              <p><strong>Due Date:</strong> ${format(
+																referenceDetails.dueDate,
+																"EEEE",
+															)}</p>
+                          </div>
+                         <p style="padding-bottom: 16px">Please log in to your dashboard to submit the reference.</p>
+                        </p>
+                        <p style="padding-bottom: 16px">
+                          <span>Thanks,</span>
+                          <br>
+                          <span style="font-weight: bold;">RefHub Support Team</span>
+                        </p>
+                      </div>
+                    </div>
+                    <div style="color: rgb(153, 153, 153); text-align: center; padding: 1rem;">
+                      <p>
+                       <span>&copy; ${new Date().getFullYear()} RefHub. All rights reserved.</span>
+                       <br>
+                        <span>A dedicated Platform to assist Graduates.</span>
+                        <br>
+                        <span> <a href="https://knust.edu.gh" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: inherit">KNUST</a>, Kumasi-Ghana</span>
+                      </p>
+                       <small style="padding-bottom: 16px;">
+                         Proudly built by the engineers at 
+                        <span style="font-weight: 700;">
+                         <a href="#" target="_blank" rel="noopener noreferrer"  style="text-decoration: none; color: inherit">
+                          InteliTech Inc.
+                         </a>
+                        </span>
+                      </small>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+
+</html>
+  `;
+	return html;
+};
 export {
 	forgotPasswordMessage,
 	EmailVerificationMessage,
@@ -639,4 +740,5 @@ export {
 	isRejectedMessage,
 	isSubmittedMessage,
 	requestReferenceMessage,
+	requestReminderMessage,
 };

@@ -173,7 +173,7 @@ const LecturersReferenceControllers = {
 				lecturerId: id,
 			}).populate({
 				path: "graduateId",
-				select: "email",
+				select: "email firstName",
 				model: Users,
 			});
 
@@ -191,11 +191,13 @@ const LecturersReferenceControllers = {
 
 			// Get Graduate Email
 			if (isAccepted === "true") {
-				// Send email to graduate
+				// Send email to
+				const firstName = reference?.graduateId.firstName;
+				const message = isAcceptedMessage(firstName);
 				const dispatachedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Acceptance Notice from REFHUB",
-					message: isAcceptedMessage(),
+					message,
 				});
 
 				if (!dispatachedMessages) return res.status(500).json(ErrorMsg(500));
@@ -203,10 +205,12 @@ const LecturersReferenceControllers = {
 				await dispatachedMessages;
 			} else if (isAccepted === "false") {
 				// Send email to graduate
+				const firstName = reference?.graduateId.firstName;
+				const message = isRejectedMessage(firstName);
 				const dispatachedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Decline Notice from REFHUB",
-					message: isRejectedMessage(),
+					message,
 				});
 
 				if (!dispatachedMessages) return res.status(500).json(ErrorMsg(500));
@@ -249,7 +253,7 @@ const LecturersReferenceControllers = {
 				lecturerId: id,
 			}).populate({
 				path: "graduateId",
-				select: "email",
+				select: "email firstName",
 				model: Users,
 			});
 
@@ -267,15 +271,17 @@ const LecturersReferenceControllers = {
 				status: isSubmitted === "true" ? "submitted" : "not ready",
 			} as { status: "submitted" | "not ready" };
 
-			const updated = await Reference.findByIdAndUpdate(refId, updatePayload);
+			await Reference.findByIdAndUpdate(refId, updatePayload);
 
 			// Get Graduate Email
 			if (isSubmitted === "true") {
 				// Send email to graduate
+				const firstName = reference?.graduateId.firstName;
+				const message = isSubmittedMessage(firstName);
 				const dispatchedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Submission Notice from REFHUB",
-					message: isSubmittedMessage(),
+					message,
 				});
 
 				if (!dispatchedMessages) return res.status(500).json(ErrorMsg(500));
