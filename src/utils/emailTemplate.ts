@@ -359,7 +359,7 @@ const LecturerPaymentConfirmationMessage = (
 	return html;
 };
 
-const isAcceptedMessage = (user: IUser) => {
+const isAcceptedMessage = (user: string) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -430,7 +430,7 @@ const isAcceptedMessage = (user: IUser) => {
 	return html;
 };
 
-const isRejectedMessage = (user: IUser) => {
+const isRejectedMessage = (user: string) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -500,7 +500,7 @@ const isRejectedMessage = (user: IUser) => {
 	return html;
 };
 
-const isSubmittedMessage = (user: IUser) => {
+const isSubmittedMessage = (user: string) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
