@@ -1,6 +1,6 @@
 require("dotenv").config();
 import https from "https";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { getUserByEmail } from "../db/user";
 import { AuthRequest } from "../types/types";
 import { ErrorMsg } from "../utils";
@@ -25,7 +25,7 @@ const payStack = {
           logged in successfully
       */
 			if (user) {
-				const { email, id } = user;
+				const { email } = user;
 				const foundUser = await getUserByEmail(email);
 
 				if (!foundUser) return res.status(404).json(ErrorMsg(400));
