@@ -61,3 +61,20 @@ export type Options = {
 	subject: string;
 	message: string;
 };
+
+export type ReferenceResponse = {
+	destination: string;
+	status: string;
+	_id: Types.ObjectId;
+	expectedDate: string;
+	lecturerId: {
+		firstName: string;
+		lastName: string;
+		email: string;
+	};
+	graduateId: {
+		firstName: string;
+		lastName: string;
+		email: string;
+	};
+};

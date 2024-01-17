@@ -14,7 +14,10 @@ import {
 	RequestReference,
 	updateReferenceById,
 } from "../db/reference";
-import { RequestReference as RefReqObject } from "../types/types";
+import {
+	RequestReference as RefReqObject,
+	ReferenceResponse,
+} from "../types/types";
 import { submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
 import {
@@ -168,7 +171,7 @@ const LecturersReferenceControllers = {
 
 			const lecturer = await getLecturerById(id);
 
-			const reference = await Reference.findOne({
+			const reference = await Reference.findOne<ReferenceResponse>({
 				_id: validatedParams.refId,
 				lecturerId: id,
 			}).populate({
@@ -248,7 +251,7 @@ const LecturersReferenceControllers = {
 
 			if (!lecturer) return res.status(403).json(ErrorMsg(403));
 
-			const reference = await Reference.findOne({
+			const reference = await Reference.findOne<ReferenceResponse>({
 				_id: validatedParams.refId,
 				lecturerId: id,
 			}).populate({
