@@ -175,8 +175,8 @@ const LecturersReferenceControllers = {
 				_id: validatedParams.refId,
 				lecturerId: id,
 			}).populate({
-				path: "graduateId",
-				select: "email firstName",
+				path: "graduateId lecturerId",
+				select: "email firstName lastName destination",
 				model: Users,
 			});
 
@@ -195,8 +195,12 @@ const LecturersReferenceControllers = {
 			// Get Graduate Email
 			if (isAccepted === "true") {
 				// Send email to
-				const firstName = reference?.graduateId.firstName;
-				const message = isAcceptedMessage(firstName);
+				const messagePayload = {
+					graduateName: `${reference?.graduateId.firstName} ${reference?.graduateId.lastName}`,
+					lecturerName: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
+					destination: reference.destination,
+				};
+				const message = isAcceptedMessage(messagePayload);
 				const dispatachedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Acceptance Notice from REFHUB",
@@ -208,8 +212,12 @@ const LecturersReferenceControllers = {
 				await dispatachedMessages;
 			} else if (isAccepted === "false") {
 				// Send email to graduate
-				const firstName = reference?.graduateId.firstName;
-				const message = isRejectedMessage(firstName);
+				const messagePayload = {
+					graduateName: `${reference?.graduateId.firstName} ${reference?.graduateId.lastName}`,
+					lecturerName: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
+					destination: reference.destination,
+				};
+				const message = isRejectedMessage(messagePayload);
 				const dispatachedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Decline Notice from REFHUB",
@@ -255,8 +263,8 @@ const LecturersReferenceControllers = {
 				_id: validatedParams.refId,
 				lecturerId: id,
 			}).populate({
-				path: "graduateId",
-				select: "email firstName",
+				path: "graduateId lecturerId",
+				select: "email firstName lastName destination",
 				model: Users,
 			});
 
@@ -279,8 +287,12 @@ const LecturersReferenceControllers = {
 			// Get Graduate Email
 			if (isSubmitted === "true") {
 				// Send email to graduate
-				const firstName = reference?.graduateId.firstName;
-				const message = isSubmittedMessage(firstName);
+				const messagePayload = {
+					graduateName: `${reference?.graduateId.firstName} ${reference?.graduateId.lastName}`,
+					lecturerName: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
+					destination: reference.destination,
+				};
+				const message = isSubmittedMessage(messagePayload);
 				const dispatchedMessages = submitRequestEmail({
 					to: reference.graduateId.email,
 					subject: "Submission Notice from REFHUB",

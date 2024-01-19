@@ -28,6 +28,12 @@ type Payloads = {
 	expectedDate: Date;
 };
 
+type MessageProps = {
+	graduateName: string;
+	lecturerName: string;
+	destination: string;
+};
+
 type refDetails = {
 	id: Types.ObjectId;
 	name: string;
@@ -366,7 +372,7 @@ const LecturerPaymentConfirmationMessage = (
 	return html;
 };
 
-const isAcceptedMessage = (user: string) => {
+const isAcceptedMessage = (payloads: MessageProps) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -393,8 +399,12 @@ const isAcceptedMessage = (user: string) => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Acceptance Notice</h1>
-                        <h3>Hello ${user},</h3>
-                        <p style="padding-bottom: 16px">The request you made for a recommendation letter to be sent to your selected institution has been <strong>ACCEPTED</strong>, so kindly visit your dashboard to make payment.</p>
+                        <h3>Hello ${payloads.graduateName},</h3>
+                        <p style="padding-bottom: 16px;">The request you made for a recommendation letter to be sent to <strong style="text-transform: capitalize;">${
+													payloads.destination
+												}</strong> has been <strong>ACCEPTED</strong> by your assigned lecturer, <strong>${
+													payloads.lecturerName
+												}</strong>, so kindly visit your dashboard to make payment.</p>
                           
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
@@ -437,7 +447,7 @@ const isAcceptedMessage = (user: string) => {
 	return html;
 };
 
-const isRejectedMessage = (user: string) => {
+const isRejectedMessage = (payloads: MessageProps) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -464,8 +474,12 @@ const isRejectedMessage = (user: string) => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Decline Notice</h1>
-                        <h3>Hello ${user},</h3>
-                        <p style="padding-bottom: 16px">Sorry!😢 The request you made for a recommendation letter to be sent to your selected institution has been <strong>DECLINED</strong> by the assigned lecturer.</p>
+                        <h3>Hello ${payloads.graduateName},</h3>
+                        <p style="padding-bottom: 16px">Sorry!😢 The request you made for a recommendation letter to be sent to <strong style="text-transform: capitalize;">${
+													payloads.destination
+												}</strong> has been <strong>DECLINED</strong> by the assigned lecturer, <strong>${
+													payloads.lecturerName
+												}</strong>.</p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -507,7 +521,7 @@ const isRejectedMessage = (user: string) => {
 	return html;
 };
 
-const isSubmittedMessage = (user: string) => {
+const isSubmittedMessage = (payloads: MessageProps) => {
 	const html = `
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -534,9 +548,13 @@ const isSubmittedMessage = (user: string) => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Submission Notice</h1>
-                        <h3>Hello ${user},</h3>
+                        <h3>Hello ${payloads.graduateName},</h3>
                         <p style="padding-bottom: 16px"><strong>Woohoo!🎊 Congrats on your successful recommendation submission!</strong></p>
-                        <p style="padding-bottom: 16px">Your request just got the green light! The assigned lecturer has sent off your recommendation to your chosen institution, ready to champion your amazing potential.</p>
+                        <p style="padding-bottom: 16px">Your request just got the green light! The assigned lecturer, <strong>${
+													payloads.lecturerName
+												}</strong> has sent off your recommendation to <strong style="text-transform: capitalize;">${
+													payloads.destination
+												}</strong>, ready to champion your amazing potential.</p>
                          <p style="padding-bottom: 16px"> We wish you the best of luck in your future endeavors!</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -748,6 +766,7 @@ const requestReminderMessage = (
   `;
 	return html;
 };
+
 export {
 	forgotPasswordMessage,
 	EmailVerificationMessage,
