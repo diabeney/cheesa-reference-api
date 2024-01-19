@@ -86,7 +86,7 @@ async function handleRequestReference(
 
 			const _ = await RequestReference(payload);
 
-			const message = requestReferenceMessage(lecturer);
+			const message = requestReferenceMessage(lecturer, payload);
 			// Send email to lecturer that a request is made
 			const dispatchedMessages = submitRequestEmail({
 				to: lecturer.email,
