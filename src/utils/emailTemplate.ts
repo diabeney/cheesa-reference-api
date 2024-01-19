@@ -21,6 +21,13 @@ type PaymentInfo = {
 	email: string;
 };
 
+type Payloads = {
+	programme: string;
+	graduationYear: string;
+	destination: string;
+	expectedDate: Date;
+};
+
 type refDetails = {
 	id: Types.ObjectId;
 	name: string;
@@ -571,9 +578,9 @@ const isSubmittedMessage = (user: string) => {
 	return html;
 };
 
-const requestReferenceMessage = (lecturer: IUser) => {
+const requestReferenceMessage = (lecturer: IUser, payload: Payloads) => {
 	const html = `
-    <html xmlns="http://www.w3.org/1999/xhtml">
+  <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -599,7 +606,17 @@ const requestReferenceMessage = (lecturer: IUser) => {
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Notice</h1>
                         <h3>Dear ${lecturer.firstName} ${lecturer.lastName},</h3>
-                        <p style="padding-bottom: 16px">A student has submitted a reference letter request for their application. Please log in to your dashboard to review the request.</p>
+                        <p style="padding-bottom: 16px">A student has submitted a reference letter request for their application.<br /><br/> Find below the details of the request:</p>
+                        <p>Graduation Year: <strong>${payload.graduationYear}</strong></p>
+                         <p style="text-transform: capitalize;">Programme: <strong>${
+														payload.programme
+													} Engineering</strong></p>
+                         <p>Selected Institution: <strong>${payload.destination}</strong></p>
+                          <p>Expected Date: <strong>${format(
+														payload.expectedDate,
+														"dd/MM/yyyy",
+													)}</strong></p>
+                        <p style="padding-bottom: 16px"> Please log in to your dashboard to review the request.</p>
                         <p style="padding-bottom: 16px">Thank you for your time and consideration.</p>
                         </p>
                         <p style="padding-bottom: 16px">

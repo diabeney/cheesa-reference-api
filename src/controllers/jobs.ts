@@ -7,14 +7,14 @@ import { ReferenceResponse } from "../types/types";
 
 const sendLecturerReminder = async () => {
 	const reminderDaysFromNow = new Date();
-	reminderDaysFromNow.setDate(reminderDaysFromNow.getDate() + 10); // 10 days from now
+	reminderDaysFromNow.setDate(reminderDaysFromNow.getDate() + 1); // 1 day from now
 
 	try {
-		// Find references that have an expectedDate that is between now and 10 days from now and whose status is not 'submitted'
+		// Find references that have an expectedDate that is between now and 1 day from now and whose status is not 'submitted'
 		const references = await Reference.find<ReferenceResponse>({
 			accepted: "accepted",
 			transactionStatus: "paid",
-			//Expected date is between 10 days from now
+			//Expected date is between 1 day from now
 			expectedDate: { $lte: reminderDaysFromNow, $gt: new Date() },
 			status: { $ne: "submitted" },
 		}).populate({
