@@ -66,6 +66,7 @@ async function handleRequestReference(
 
 	try {
 		const lecturer = await getLecturerById(lecturerId);
+		const graduate = await Users.findById(graduateId);
 
 		if (!lecturer) return res.status(STATUS.NOT_FOUND.code).json(ErrorMsg(404));
 
@@ -85,8 +86,11 @@ async function handleRequestReference(
 			};
 
 			const _ = await RequestReference(payload);
-
-			const message = requestReferenceMessage(lecturer, payload);
+			const messagePayloads = {
+				data: payload,
+				fullName: `${graduate?.firstName} ${graduate?.lastName}`,
+			};
+			const message = requestReferenceMessage(lecturer, messagePayloads);
 			// Send email to lecturer that a request is made
 			const dispatchedMessages = submitRequestEmail({
 				to: lecturer.email,

@@ -19,13 +19,19 @@ type lecturer = {
 type PaymentInfo = {
 	name: string;
 	email: string;
+	graduateName?: string;
 };
 
-type Payloads = {
-	programme: string;
-	graduationYear: string;
-	destination: string;
-	expectedDate: Date;
+type MessagePayloads = {
+	data: {
+		graduateId: Types.ObjectId;
+		lecturerId: Types.ObjectId;
+		programme: string;
+		graduationYear: string;
+		destination: string;
+		expectedDate: Date;
+	};
+	fullName: string;
 };
 
 type MessageProps = {
@@ -283,7 +289,7 @@ const PaymentVerificationMessage = (
 
 const LecturerPaymentConfirmationMessage = (
 	paymentDetails: PaymentResponse,
-	lecturer: PaymentInfo,
+	data: PaymentInfo,
 ) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -310,9 +316,11 @@ const LecturerPaymentConfirmationMessage = (
                     </div>
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
-                        <p>Hello ${lecturer.name},</p>
+                        <p>Hello ${data.name},</p>
                         <h1 style="margin: 1rem 0">Payment Confirmed!</h1>
-                        <p style="padding-bottom: 16px">A payment has been made by a student for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> by you on the student dashboard.</p>
+                        <p style="padding-bottom: 16px">A payment has been made by ${
+													data.graduateName
+												} for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> t.</p>
                         <strong style="padding-bottom: 16px">Here are the details of the transaction:</strong>
                           <div style="padding-bottom: 16px; list-style: none;">
                               <p><strong>Payment Id:</strong> ${
@@ -332,6 +340,9 @@ const LecturerPaymentConfirmationMessage = (
 																paymentDetails.channel
 															}</p>
                           </div>
+                          <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/lecturer/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -405,7 +416,9 @@ const isAcceptedMessage = (payloads: MessageProps) => {
 												}</strong> has been <strong>ACCEPTED</strong> by your assigned lecturer, <strong>${
 													payloads.lecturerName
 												}</strong>, so kindly visit your dashboard to make payment.</p>
-                          
+                        <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -480,6 +493,10 @@ const isRejectedMessage = (payloads: MessageProps) => {
 												}</strong> has been <strong>DECLINED</strong> by the assigned lecturer, <strong>${
 													payloads.lecturerName
 												}</strong>.</p>
+    
+                        <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -555,6 +572,9 @@ const isSubmittedMessage = (payloads: MessageProps) => {
 												}</strong> has sent off your recommendation to <strong style="text-transform: capitalize;">${
 													payloads.destination
 												}</strong>, ready to champion your amazing potential.</p>
+                          <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                          <p style="padding-bottom: 16px"> We wish you the best of luck in your future endeavors!</p>
                         </p>
                         <p style="padding-bottom: 16px">
@@ -596,7 +616,7 @@ const isSubmittedMessage = (payloads: MessageProps) => {
 	return html;
 };
 
-const requestReferenceMessage = (lecturer: IUser, payload: Payloads) => {
+const requestReferenceMessage = (lecturer: IUser, payload: MessagePayloads) => {
 	const html = `
   <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -623,18 +643,27 @@ const requestReferenceMessage = (lecturer: IUser, payload: Payloads) => {
                     <div style=" padding: 20px; background-color: rgb(255, 255, 255); border-radius: 0.5rem;">
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Notice</h1>
-                        <h3>Dear ${lecturer.firstName} ${lecturer.lastName},</h3>
-                        <p style="padding-bottom: 16px">A student has submitted a reference letter request for their application.<br /><br/> Find below the details of the request:</p>
-                        <p>Graduation Year: <strong>${payload.graduationYear}</strong></p>
+                        <p>Dear ${lecturer.firstName} ${lecturer.lastName},</p>
+                        <p style="padding-bottom: 16px"><strong>${
+													payload.fullName
+												}</strong> has submitted a reference letter request for their application.<br /><br/> Find below the details of the request:</p>
+                        <p>Graduation Year: <strong>${
+													payload.data.graduationYear
+												}</strong></p>
                          <p style="text-transform: capitalize;">Programme: <strong>${
-														payload.programme
+														payload.data.programme
 													} Engineering</strong></p>
-                         <p>Selected Institution: <strong>${payload.destination}</strong></p>
+                         <p style="text-transform: capitalize;">Selected Institution: <strong >${
+														payload.data.destination
+													}</strong></p>
                           <p>Expected Date: <strong>${format(
-														payload.expectedDate,
+														payload.data.expectedDate,
 														"dd/MM/yyyy",
 													)}</strong></p>
                         <p style="padding-bottom: 16px"> Please log in to your dashboard to review the request.</p>
+                        <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/lecturer/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                         <p style="padding-bottom: 16px">Thank you for your time and consideration.</p>
                         </p>
                         <p style="padding-bottom: 16px">

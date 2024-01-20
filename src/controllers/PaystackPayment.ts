@@ -173,16 +173,17 @@ const payStack = {
 						model: Users,
 					});
 
-					// Extract lecturer's email
-					const lecturerInfo = {
-						email: reference?.lecturerId.email,
-						name: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
-					};
-
 					// Graduate info
 					const graduateInfo = {
 						email: reference?.graduateId.email,
 						name: `${reference?.graduateId.firstName} ${reference?.graduateId.lastName}`,
+					};
+
+					// Extract lecturer's email
+					const lecturerInfo = {
+						email: reference?.lecturerId.email,
+						name: `${reference?.lecturerId.firstName} ${reference?.lecturerId.lastName}`,
+						graduateName: graduateInfo.name,
 					};
 
 					const PaymentResponse = {
