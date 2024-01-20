@@ -233,7 +233,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 1. Request
     - Request parameter - `userId` is the user's id
-
+    - Request body
     ```json
     {
       "entryYear": "string",
