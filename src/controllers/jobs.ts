@@ -6,16 +6,18 @@ import { requestReminderMessage } from "../utils/emailTemplate";
 import { ReferenceResponse } from "../types/types";
 
 const sendLecturerReminder = async () => {
-	const reminderDaysFromNow = new Date();
-	reminderDaysFromNow.setDate(reminderDaysFromNow.getDate() + 1); // 1 day from now
+	const reminderDaysFromExpectedDate = new Date();
+	reminderDaysFromExpectedDate.setDate(
+		reminderDaysFromExpectedDate.getDate() - 1,
+	); // 1 day before the expected
 
 	try {
-		// Find references that have an expectedDate that is between now and 1 day from now and whose status is not 'submitted'
+		// Find references that have an expectedDate 1 day from it and whose status is not 'submitted'
 		const references = await Reference.find<ReferenceResponse>({
 			accepted: "accepted",
 			transactionStatus: "paid",
 			//Expected date is between 1 day from now
-			expectedDate: { $lte: reminderDaysFromNow, $gt: new Date() },
+			expectedDate: { $gte: reminderDaysFromExpectedDate, $lt: new Date() },
 			status: { $ne: "submitted" },
 		}).populate({
 			path: "lecturerId graduateId",
