@@ -56,6 +56,7 @@ async function handleRequestReference(
 		graduateId,
 		programme,
 		graduationYear,
+		purposeOfReference,
 		requests,
 	} = formObj;
 
@@ -80,6 +81,7 @@ async function handleRequestReference(
 				graduateId,
 				lecturerId,
 				programme,
+				purposeOfReference,
 				graduationYear,
 				destination,
 				expectedDate: new Date(expectedDate),
