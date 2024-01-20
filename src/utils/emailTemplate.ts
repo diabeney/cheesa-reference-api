@@ -27,6 +27,7 @@ type MessagePayloads = {
 		graduateId: Types.ObjectId;
 		lecturerId: Types.ObjectId;
 		programme: string;
+		purposeOfReference: string;
 		graduationYear: string;
 		destination: string;
 		expectedDate: Date;
@@ -655,6 +656,9 @@ const requestReferenceMessage = (lecturer: IUser, payload: MessagePayloads) => {
 													} Engineering</strong></p>
                          <p style="text-transform: capitalize;">Selected Institution: <strong >${
 														payload.data.destination
+													}</strong></p>
+                          <p style="text-transform: capitalize;">Purpose of Reference: <strong >${
+														payload.data.purposeOfReference
 													}</strong></p>
                           <p>Expected Date: <strong>${format(
 														payload.data.expectedDate,
