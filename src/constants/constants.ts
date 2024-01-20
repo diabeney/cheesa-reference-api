@@ -16,6 +16,12 @@ const SignUpShape = z.object({
 		.string()
 		.min(7, "Index number should be at least 8 characters")
 		.optional(),
+	entryYear: z.string().optional(),
+	graduationYear: z.string().optional(),
+	programme: z.string().optional(),
+	nss: z.string().optional(),
+	placeOfWork: z.string().optional(),
+	telephone: z.string().optional(),
 });
 
 const LoginShape = SignUpShape.pick({ email: true, password: true });
@@ -36,6 +42,7 @@ const ReferenceShape = z.object({
 	graduateId: z.custom<Types.ObjectId>(),
 	lecturerId: z.custom<Types.ObjectId>(),
 	programme: z.enum(["chemical", "petrochemical"]),
+	purposeOfReference: z.enum(["postgraduate-study", "scholarship", "job"]),
 	graduationYear: z.string({ required_error: "Graduation Year is required" }),
 	requests: z
 		.array(requestSchema, {
