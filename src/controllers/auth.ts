@@ -13,7 +13,7 @@ import { ZodError } from "zod";
 import crypto from "crypto";
 import Verification from "../models/verificationModel";
 import { EmailVerificationMessage } from "../utils/emailTemplate";
-import {  submitRequestEmail } from "../utils/sendEmail";
+import { submitRequestEmail } from "../utils/sendEmail";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
@@ -37,6 +37,7 @@ async function handleSignUp(
 			password,
 			referenceNumber,
 			indexNumber,
+			programme,
 		} = formObj;
 
 		const userExists = await getUserByEmail(email);
@@ -58,6 +59,7 @@ async function handleSignUp(
 			password: hashedPassword,
 			role,
 			referenceNumber,
+			programme,
 			indexNumber,
 		});
 
@@ -182,6 +184,5 @@ async function handleRefreshToken(req: Request, res: Response) {
 
 		res.status(500).json(ErrorMsg(500));
 	}
-
 }
 export { handleLogin, handleSignUp, handleRefreshToken };
