@@ -10,8 +10,14 @@ export type Transaction = {
 	status: TransactionStatus;
 };
 export type Programmes = "petrochemical" | "chemical";
+export type PurposeOfReference = "postgraduate-study" | "scholarship" | "job";
 
 export type resetToken = string;
+
+export type Projects = {
+	title: string;
+	supervisor: string;
+};
 
 export type IUser = {
 	firstName: string;
@@ -19,6 +25,15 @@ export type IUser = {
 	email: string;
 	password: string;
 	role: string;
+	programme?: string;
+	entryYear?: string;
+	graduationYear?: string;
+	projects?: {
+		year: Projects;
+	};
+	nss?: string;
+	placeOfWork?: string;
+	telephone?: string;
 	referenceNumber: string;
 	indexNumber?: string;
 	isVerified?: boolean;
@@ -31,6 +46,7 @@ export interface RequestReference {
 	graduateId: Types.ObjectId;
 	lecturerId: Types.ObjectId;
 	programme: Programmes;
+	purposeOfReference: PurposeOfReference;
 	graduationYear: string;
 	requests: { destination: string; expectedDate: string }[];
 }
