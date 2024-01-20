@@ -318,9 +318,9 @@ const LecturerPaymentConfirmationMessage = (
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <p>Hello ${data.name},</p>
                         <h1 style="margin: 1rem 0">Payment Confirmed!</h1>
-                        <p style="padding-bottom: 16px">A payment has been made by ${
+                        <p style="padding-bottom: 16px">A payment has been made by <strong>${
 													data.graduateName
-												} for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong> t.</p>
+												}</strong> for a recommendation letter after being notified that the request has been <strong>ACCEPTED</strong></p>
                         <strong style="padding-bottom: 16px">Here are the details of the transaction:</strong>
                           <div style="padding-bottom: 16px; list-style: none;">
                               <p><strong>Payment Id:</strong> ${
@@ -566,12 +566,12 @@ const isSubmittedMessage = (payloads: MessageProps) => {
                       <div style="color: rgb(46, 46, 46); text-align: left;">
                         <h1 style="margin: 1rem 0">Request Submission Notice</h1>
                         <h3>Hello ${payloads.graduateName},</h3>
-                        <p style="padding-bottom: 16px"><strong>Woohoo!🎊 Congrats on your successful recommendation submission!</strong></p>
-                        <p style="padding-bottom: 16px">Your request just got the green light! The assigned lecturer, <strong>${
+                        <p style="padding-bottom: 16px">Congratulations🎊</p>
+                        <p style="padding-bottom: 16px"><strong>${
 													payloads.lecturerName
-												}</strong> has sent off your recommendation to <strong style="text-transform: capitalize;">${
+												}</strong> has successfully submitted your recommendation letter to <strong style="text-transform: capitalize;">${
 													payloads.destination
-												}</strong>, ready to champion your amazing potential.</p>
+												}</strong>.</p>
                           <p style="padding-bottom: 16px">
                           <a href="https://cheesa-reference-web.vercel.app/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
                         </p>
