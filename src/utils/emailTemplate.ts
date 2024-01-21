@@ -27,7 +27,6 @@ type MessagePayloads = {
 		graduateId: Types.ObjectId;
 		lecturerId: Types.ObjectId;
 		purposeOfReference: string;
-		graduationYear: string;
 		destination: string;
 		expectedDate: Date;
 	};
@@ -647,9 +646,6 @@ const requestReferenceMessage = (lecturer: IUser, payload: MessagePayloads) => {
                         <p style="padding-bottom: 16px"><strong>${
 													payload.fullName
 												}</strong> has submitted a reference letter request for their application.<br /><br/> Find below the details of the request:</p>
-                        <p>Graduation Year: <strong>${
-													payload.data.graduationYear
-												}</strong></p>
                          <p style="text-transform: capitalize;">Selected Institution: <strong >${
 														payload.data.destination
 													}</strong></p>
