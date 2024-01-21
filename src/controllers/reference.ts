@@ -50,14 +50,8 @@ async function handleRequestReference(
 		console.log(formObj.issues);
 		return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
 	}
-	const {
-		quantity,
-		lecturerId,
-		graduateId,
-		graduationYear,
-		purposeOfReference,
-		requests,
-	} = formObj;
+	const { quantity, lecturerId, graduateId, purposeOfReference, requests } =
+		formObj;
 
 	if (quantity !== requests.length)
 		return res
@@ -80,7 +74,6 @@ async function handleRequestReference(
 				graduateId,
 				lecturerId,
 				purposeOfReference,
-				graduationYear,
 				destination,
 				expectedDate: new Date(expectedDate),
 			};

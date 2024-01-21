@@ -55,7 +55,6 @@ export interface IReferenceRequest {
 	id?: Types.ObjectId;
 	graduateId: Types.ObjectId;
 	lecturerId: Types.ObjectId;
-	graduationYear: string;
 	destination: string;
 	expectedDate: string | Date;
 	transactionStatus?: TransactionStatus;

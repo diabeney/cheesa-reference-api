@@ -42,7 +42,6 @@ const ReferenceShape = z.object({
 	graduateId: z.custom<Types.ObjectId>(),
 	lecturerId: z.custom<Types.ObjectId>(),
 	purposeOfReference: z.enum(["postgraduate-study", "scholarship", "job"]),
-	graduationYear: z.string({ required_error: "Graduation Year is required" }),
 	requests: z
 		.array(requestSchema, {
 			invalid_type_error: "Invalid request type received for 'requests'",
