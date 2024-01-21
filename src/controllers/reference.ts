@@ -82,6 +82,9 @@ async function handleRequestReference(
 			const messagePayloads = {
 				data: payload,
 				fullName: `${graduate?.firstName} ${graduate?.lastName}`,
+				programme: `${graduate?.programme}`,
+				entryYear: `${graduate?.entryYear}`,
+				graduationYear: `${graduate?.graduationYear}`,
 			};
 			const message = requestReferenceMessage(lecturer, messagePayloads);
 			// Send email to lecturer that a request is made

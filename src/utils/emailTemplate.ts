@@ -30,6 +30,9 @@ type MessagePayloads = {
 		destination: string;
 		expectedDate: Date;
 	};
+	programme: string;
+	entryYear: string;
+	graduationYear: string;
 	fullName: string;
 };
 
@@ -646,8 +649,17 @@ const requestReferenceMessage = (lecturer: IUser, payload: MessagePayloads) => {
                         <p style="padding-bottom: 16px"><strong>${
 													payload.fullName
 												}</strong> has submitted a reference letter request for their application.<br /><br/> Find below the details of the request:</p>
-                         <p style="text-transform: capitalize;">Selected Institution: <strong >${
+                         <p style="text-transform: capitalize;">Entry Year: <strong >${
+														payload.entryYear
+													}</strong></p>
+                          <p style="text-transform: capitalize;">Graduation Year: <strong >${
+														payload.graduationYear
+													}</strong></p>
+                          <p style="text-transform: capitalize;">Selected Institution: <strong >${
 														payload.data.destination
+													}</strong></p>
+                          <p style="text-transform: capitalize;">Programme: <strong >${
+														payload.programme
 													}</strong></p>
                           <p style="text-transform: capitalize;">Purpose of Reference: <strong >${
 														payload.data.purposeOfReference
