@@ -13,9 +13,10 @@ const BASE_URL = 'https://domain.com/api/v1'
    ```json
      "firstName": "string",
      "lastName": "string",
-   "password": "string",
+    "password": "string",
      "email": "string",
      "role": "lecturer | graduate"
+      "programme": "chemical" | "petrochemical"
    ```
 
 2. Response
@@ -27,7 +28,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 1. Request
 
    ```json
-     "email": "string",
+   "email": "string",
    "password": "string"
    ```
 
@@ -103,6 +104,21 @@ const BASE_URL = 'https://domain.com/api/v1'
     "lastName": "doe",
     "email": "johndoe@email.com",
     "role": "lecturer | graduate",
+    "entryYear": "2020",
+    "graduationYear": "2024",
+    "projects": {
+				"thirdYear": {
+					"title": "Comms",
+					"supervisor": "Levina"
+				},
+				"finalYear": {
+					"title": "Yooooo....",
+					"supervisor": "wai"
+				}
+			},
+    "nss": "GNPC",
+    "telephone": "0559237610",
+    "placeOfWork": "KNUST",
     "isVerified": true | false
    ```
 
@@ -126,7 +142,22 @@ const BASE_URL = 'https://domain.com/api/v1'
        lastName: 'doe',
        email: 'johndoe@email.com',
        role: 'lecturer',
-        isVerified: true | false
+      entryYear: "2020",
+      graduationYear: "2024",
+      projects: {
+				thirdYear: {
+					title: "Comms",
+					supervisor: "Levina"
+				},
+				finalYear: {
+					title: "Yooooo....",
+					supervisor: "wai"
+				}
+			},
+      nss: "GNPC",
+      telephone: "0559237610",
+      placeOfWork: "KNUST",
+      isVerified: true | false
      }
    ]
    ```
@@ -151,7 +182,22 @@ const BASE_URL = 'https://domain.com/api/v1'
        lastName: 'doe',
        email: 'johndoe@email.com',
        role: 'graduate',
-        isVerified: true | false
+       entryYear: "2020",
+       graduationYear: "2024",
+       projects: {
+				thirdYear: {
+					title: "Comms",
+					supervisor: "Levina"
+				},
+				finalYear: {
+					title: "Yooooo....",
+					supervisor: "wai"
+				}
+			},
+      nss: "GNPC",
+      telephone: "0559237610",
+      placeOfWork: "KNUST",
+      isVerified: true | false
      }
    ]
    ```
@@ -180,7 +226,63 @@ const BASE_URL = 'https://domain.com/api/v1'
      }
    ]
    ```
+### `PATCH => /users/:userId`
 
+
+#### _Update a user's (graduate) records_
+
+1. Request
+    - Request parameter - `userId` is the user's id
+    - Request body
+    ```json
+    {
+      "entryYear": "string",
+      "graduationYear": "string",
+      "projects": {
+        "thirdYear": {
+          "title": "string",
+          "supervisor": "string"
+        },
+        "finalYear": {
+          "title": "string",
+          "supervisor": "string"
+        }
+      },
+      "nss": "string",
+      "telephone": "string",
+      "placeOfWork": "string"
+    }
+    ```
+
+2. Response
+
+    - Successfull - `200 OK -`
+
+    ```json
+    {
+      "id": "string",
+      "firstName": "john",
+      "lastName": "doe",
+      "email": "example@mail.com",
+      "role": "graduate",
+      "entryYear": "string",
+      "graduationYear": "string",
+      "projects": {
+        "thirdYear": {
+          "title": "string",
+          "supervisor": "string"
+        },
+        "finalYear": {
+          "title": "string",
+          "supervisor": "string"
+        }
+      },
+      "nss": "string",
+      "telephone": "string",
+      "placeOfWork": "string"
+    }
+    ```
+    
    - Error - `4XX - {message: "error message here"}`
 
 ## References
@@ -196,7 +298,6 @@ const BASE_URL = 'https://domain.com/api/v1'
      quantity: number,
      lecturerId: 'string',
      graduateId: 'string',
-     programme: 'chemical' | 'petrochemical',
      graduationYear: 'string',
      requests: [
        {

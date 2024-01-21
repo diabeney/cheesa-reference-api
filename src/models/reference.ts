@@ -11,13 +11,11 @@ const ReferenceSchema = new mongoose.Schema({
 		ref: "User",
 		required: true,
 	},
-	programme: {
+
+	purposeOfReference: {
 		type: String,
-		required: true,
-	},
-	graduationYear: {
-		type: String,
-		required: true,
+		default: "null",
+		enum: ["postgraduate-study", "scholarship", "job"],
 	},
 	destination: {
 		type: String,

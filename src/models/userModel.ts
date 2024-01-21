@@ -13,6 +13,22 @@ const UsersSchema = new Schema({
 	resetPasswordToken: { type: String },
 	resetPasswordExpires: { type: Date },
 	isVerified: { type: Boolean, default: false },
+	programme: String,
+	entryYear: String,
+	graduationYear: String,
+	projects: {
+		thirdYear: {
+			title: String,
+			supervisor: String,
+		},
+		finalYear: {
+			title: String,
+			supervisor: String,
+		},
+	},
+	nss: String,
+	placeOfWork: String,
+	telephone: String,
 });
 
 UsersSchema.methods.getResetPasswordToken = function () {

@@ -2,6 +2,7 @@ import Users from "../models/userModel";
 import RefreshToken from "../models/refresh";
 import { Types } from "mongoose";
 import { IUser } from "../types/types";
+import { Request, Response } from "express";
 
 const getUserByEmail = async (email: string) => await Users.findOne({ email });
 const getLecturerById = async (id: Types.ObjectId) =>
@@ -15,6 +16,12 @@ const getUserByRole = async (role: string) =>
 			lastName: user.lastName,
 			email: user.email,
 			role: user.role,
+			programme: user.programme,
+			entryYear: user.entryYear,
+			graduationYear: user.graduationYear,
+			projects: user.projects,
+			nss: user.nss,
+			telephone: user.telephone,
 			isVerified: user.isVerified,
 		})),
 	);
@@ -27,11 +34,47 @@ const getAllUsers = async () =>
 			firstName: user.firstName,
 			lastName: user.lastName,
 			email: user.email,
+			programme: user.programme,
+			entryYear: user.entryYear,
+			graduationYear: user.graduationYear,
+			projects: user.projects,
+			nss: user.nss,
+			telephone: user.telephone,
+			placeOfWork: user.placeOfWork,
 			isVerified: user.isVerified,
 		})),
 	);
 
 const createUser = (userObject: Partial<IUser>) => new Users(userObject).save();
+
+// Update some user fields after signing up
+const handleUpdateUser = async (req: Request, res: Response) => {
+	const { userId } = req.params;
+
+	const { entryYear, graduationYear, telephone, nss, placeOfWork, projects } =
+		req.body;
+
+	const findUser = await Users.findById(userId);
+
+	if (!findUser) return res.status(404).json({ message: "User not found" });
+
+	await Users.updateOne(
+		{ _id: userId },
+		{
+			$set: {
+				entryYear,
+				graduationYear,
+				telephone,
+				nss,
+				placeOfWork,
+				projects,
+			},
+		},
+		{ upsert: true, new: true },
+	);
+
+	res.status(200).json({ message: "User records updated successfully" });
+};
 
 const getRefreshToken = async (id: Types.ObjectId) =>
 	await RefreshToken.findOne({ userId: id });
@@ -48,4 +91,4 @@ const saveRefreshToken = async (userId: Types.ObjectId, token: string) => {
 
 export { getUserByEmail, createUser, getRefreshToken, saveRefreshToken };
 
-export { getUserByRole, getAllUsers, getLecturerById };
+export { getUserByRole, getAllUsers, getLecturerById, handleUpdateUser };
