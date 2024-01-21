@@ -10,7 +10,8 @@ const getReferenceById = async (id: string) => {
 	const result = await Reference.findOne({ _id: id })
 		.populate({
 			path: "graduateId lecturerId",
-			select: "firstName lastName email indexNumber referenceNumber",
+			select:
+				"firstName lastName email indexNumber referenceNumber programme entryYear graduationYear",
 			model: Users,
 		})
 		.sort({ _id: -1 })
@@ -41,7 +42,8 @@ const getUsersReferenceByRole = async (
 		const result = await Reference.find({ graduateId: id })
 			.populate({
 				path: "graduateId lecturerId",
-				select: "indexNumber referenceNumber",
+				select:
+					"indexNumber referenceNumber programme entryYear graduationYear",
 				model: Users,
 			})
 			.sort({ _id: -1 })
@@ -65,7 +67,8 @@ const getUsersReferenceByRole = async (
 	const result = await Reference.find({ lecturerId: id })
 		.populate({
 			path: "lecturerId graduateId",
-			select: "referenceNumber indexNumber firstName lastName",
+			select:
+				"referenceNumber indexNumber firstName lastName programme entryYear graduationYear",
 			model: Users,
 		})
 		.sort({ _id: -1 })

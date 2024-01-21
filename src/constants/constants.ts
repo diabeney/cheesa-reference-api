@@ -18,7 +18,7 @@ const SignUpShape = z.object({
 		.optional(),
 	entryYear: z.string().optional(),
 	graduationYear: z.string().optional(),
-	programme: z.string().optional(),
+	programme: z.enum(["chemical", "petrochemical"]).optional(),
 	nss: z.string().optional(),
 	placeOfWork: z.string().optional(),
 	telephone: z.string().optional(),
@@ -41,7 +41,6 @@ const requestSchema = z.object({
 const ReferenceShape = z.object({
 	graduateId: z.custom<Types.ObjectId>(),
 	lecturerId: z.custom<Types.ObjectId>(),
-	programme: z.enum(["chemical", "petrochemical"]),
 	purposeOfReference: z.enum(["postgraduate-study", "scholarship", "job"]),
 	graduationYear: z.string({ required_error: "Graduation Year is required" }),
 	requests: z

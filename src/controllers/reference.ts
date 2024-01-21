@@ -54,7 +54,6 @@ async function handleRequestReference(
 		quantity,
 		lecturerId,
 		graduateId,
-		programme,
 		graduationYear,
 		purposeOfReference,
 		requests,
@@ -80,7 +79,6 @@ async function handleRequestReference(
 			const payload = {
 				graduateId,
 				lecturerId,
-				programme,
 				purposeOfReference,
 				graduationYear,
 				destination,

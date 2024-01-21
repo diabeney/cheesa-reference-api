@@ -22,6 +22,7 @@ async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 				email: userEmail,
 				entryYear,
 				graduationYear,
+				programme,
 				projects,
 				isVerified,
 			} = foundUser;
@@ -34,6 +35,7 @@ async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 				email: userEmail,
 				entryYear,
 				graduationYear,
+				programme,
 				projects,
 				isVerified,
 			});
