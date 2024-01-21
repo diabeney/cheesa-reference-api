@@ -26,7 +26,6 @@ type MessagePayloads = {
 	data: {
 		graduateId: Types.ObjectId;
 		lecturerId: Types.ObjectId;
-		programme: string;
 		purposeOfReference: string;
 		graduationYear: string;
 		destination: string;
@@ -651,9 +650,6 @@ const requestReferenceMessage = (lecturer: IUser, payload: MessagePayloads) => {
                         <p>Graduation Year: <strong>${
 													payload.data.graduationYear
 												}</strong></p>
-                         <p style="text-transform: capitalize;">Programme: <strong>${
-														payload.data.programme
-													} Engineering</strong></p>
                          <p style="text-transform: capitalize;">Selected Institution: <strong >${
 														payload.data.destination
 													}</strong></p>
