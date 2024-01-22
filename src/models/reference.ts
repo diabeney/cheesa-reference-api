@@ -21,6 +21,7 @@ const ReferenceSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	address: String,
 	expectedDate: {
 		type: String,
 		required: true,
