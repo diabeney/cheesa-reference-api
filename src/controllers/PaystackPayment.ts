@@ -2,7 +2,7 @@ require("dotenv").config();
 import https from "https";
 import { Response } from "express";
 import { getUserByEmail } from "../db/user";
-import { AuthRequest } from "../types/types";
+import { AuthRequest, ReferenceResponse } from "../types/types";
 import { ErrorMsg } from "../utils";
 import { TOTAL_AMOUNT, STATIC_AMOUNT } from "../constants/constants";
 import Payments from "../models/paymentModel";
@@ -163,7 +163,7 @@ const payStack = {
 					} = paymentData;
 
 					// Get Lecturer Email associated with a particular reference requested by a graduate
-					const reference = await Reference.findOne({
+					const reference = await Reference.findOne<ReferenceResponse>({
 						graduateId: id,
 						accepted: "accepted",
 						transactionStatus: "paid",
