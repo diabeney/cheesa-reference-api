@@ -70,7 +70,7 @@ export interface AuthRequest extends Request {
 }
 
 export type Options = {
-	to: string;
+	to: string | undefined;
 	subject: string;
 	message: string;
 };
