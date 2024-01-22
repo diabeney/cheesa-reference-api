@@ -34,6 +34,9 @@ const requestSchema = z.object({
 	expectedDate: z.string({
 		required_error: "Expected Date is required",
 	}),
+	address: z.string({
+		required_error: "Address is required",
+	}),
 });
 
 // Refactor the schema for the payload or reference

@@ -45,10 +45,9 @@ export interface RequestReference {
 	quantity: number;
 	graduateId: Types.ObjectId;
 	lecturerId: Types.ObjectId;
-	programme: Programmes;
 	purposeOfReference: PurposeOfReference;
-	graduationYear: string;
-	requests: { destination: string; expectedDate: string }[];
+	address: string;
+	requests: { destination: string; expectedDate: string; address: string }[];
 }
 
 export interface IReferenceRequest {
