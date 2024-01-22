@@ -298,15 +298,17 @@ const BASE_URL = 'https://domain.com/api/v1'
      quantity: number,
      lecturerId: 'string',
      graduateId: 'string',
-     graduationYear: 'string',
+     purposeOfReference: 'string',
      requests: [
        {
          destination: 'string',
-         expectedDate: 'string' | 'Date'
+         expectedDate: 'string' | 'Date',
+         address: 'string'
        },
        {
          destination: 'Georgia Tech',
-         expectedDate: 'string' | 'Date'
+         expectedDate: 'string' | 'Date',
+         address: 'string'
        }
      ]
    }
