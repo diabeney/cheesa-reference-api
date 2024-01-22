@@ -36,9 +36,11 @@ const verifyEmailToken = async (req: Request, res: Response) => {
 		});
 
 		// Delete verification token after successful verification
-		// await Verification.deleteOne({ token });
+		await Verification.deleteOne({ token });
 	} catch (error) {
-		res.status(500).json(ErrorMsg(500, "Error verifying user"));
+		if (error instanceof Error) {
+			res.status(500).json(ErrorMsg(500, error.message));
+		}
 	}
 };
 
