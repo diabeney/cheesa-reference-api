@@ -47,6 +47,8 @@ type refDetails = {
 	name: string;
 	destination: string;
 	status: string;
+	purposeOfReference?: string;
+	programme: string;
 	dueDate: string;
 };
 
@@ -755,9 +757,15 @@ const requestReminderMessage = (
                               <p><strong>Reference Id:</strong> ${
 																referenceDetails.id
 															}</p>
+                              <p style="text-transform: capitalize"><strong>Programme:</strong> ${
+																referenceDetails.programme
+															} Engineering</p>
                               <p style="text-transform: capitalize"><strong>Reference Status:</strong> ${
 																referenceDetails.status
 															}</p>
+                                <p style="text-transform: capitalize"><strong>Purpose of Reference:</strong> ${
+																	referenceDetails.purposeOfReference
+																}</p>
                               <p><strong>Destination:</strong> ${
 																referenceDetails.destination
 															}</p>
