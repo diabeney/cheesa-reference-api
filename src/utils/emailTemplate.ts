@@ -763,9 +763,12 @@ const requestReminderMessage = (
 															}</p>
                               <p><strong>Due Date:</strong> ${format(
 																referenceDetails.dueDate,
-																"EEEE",
+																"PPPP",
 															)}</p>
                           </div>
+                           <p style="padding-bottom: 16px">
+                          <a href="https://cheesa-reference-web.vercel.app/app/lecturer/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                        </p>
                          <p style="padding-bottom: 16px">Please log in to your dashboard to submit the reference.</p>
                         </p>
                         <p style="padding-bottom: 16px">
