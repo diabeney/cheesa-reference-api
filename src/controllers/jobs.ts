@@ -21,7 +21,8 @@ const sendLecturerReminder = async () => {
 			status: { $ne: "submitted" },
 		}).populate({
 			path: "lecturerId graduateId",
-			select: "firstName lastName email destination, status",
+			select:
+				"firstName lastName email destination, status purposeOfReference programme",
 			model: Users,
 		});
 
@@ -36,6 +37,8 @@ const sendLecturerReminder = async () => {
 				name: `${reference.graduateId.firstName} ${reference.graduateId.lastName}`,
 				destination: reference.destination,
 				status: reference.status,
+				purposeOfReference: reference.purposeOfReference,
+				programme: reference.graduateId.programme,
 				dueDate: reference.expectedDate,
 				id: reference._id,
 			};
