@@ -17,7 +17,7 @@ const sendLecturerReminder = async () => {
 			accepted: "accepted",
 			transactionStatus: "paid",
 			//Expected date is between 1 day from now
-			expectedDate: { $gte: reminderDaysFromExpectedDate, $lt: new Date() },
+			expectedDate: { $gte: reminderDaysFromExpectedDate },
 			status: { $ne: "submitted" },
 		}).populate({
 			path: "lecturerId graduateId",
@@ -28,7 +28,7 @@ const sendLecturerReminder = async () => {
 		for (const reference of references) {
 			//  Send email to lecturer
 			const lectuerInfo = {
-				name: `${reference.lecturerId.firstName}`,
+				name: `${reference.lecturerId.firstName} ${reference.lecturerId.lastName}`,
 				email: reference.lecturerId.email,
 			};
 
@@ -55,7 +55,7 @@ const sendLecturerReminder = async () => {
 				throw new Error("Error sending email");
 			}
 
-			console.log("Reminder Email sent to lecturer at 6:45am");
+			console.log("Reminder Email sent to lecturer");
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -65,5 +65,5 @@ const sendLecturerReminder = async () => {
 };
 
 export const startCron = (() => {
-	cron.schedule("45 6 * * *", sendLecturerReminder);
+	cron.schedule("50 6 * * *", sendLecturerReminder);
 })();
