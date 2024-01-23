@@ -80,6 +80,7 @@ export type ReferenceResponse = {
 	status: string;
 	_id: Types.ObjectId;
 	expectedDate: string;
+	purposeOfReference?: string;
 	lecturerId: {
 		firstName: string;
 		lastName: string;
@@ -89,5 +90,6 @@ export type ReferenceResponse = {
 		firstName: string;
 		lastName: string;
 		email: string;
+		programme: string;
 	};
 };
