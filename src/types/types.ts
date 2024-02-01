@@ -53,22 +53,12 @@ export interface RequestReference {
   graduateId: Types.ObjectId;
   lecturerId: Types.ObjectId;
   purposeOfReference: PurposeOfReference;
-  address: string;
-  requests: {
-    destination: string;
-    expectedDate: string;
-    address: string;
-    description?: string;
-  }[];
-  quantity: number;
-  graduateId: Types.ObjectId;
-  lecturerId: Types.ObjectId;
-  purposeOfReference: PurposeOfReference;
   requests: {
     destination: string;
     expectedDate: string;
     address: string;
     modeOfPostage: string;
+    description?: string;
   }[];
 }
 
