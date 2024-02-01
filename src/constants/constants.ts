@@ -35,6 +35,7 @@ const requestSchema = z.object({
 	address: z.string({
 		required_error: "Address is required",
 	}),
+	description: z.string().optional(),
 });
 
 // Refactor the schema for the payload or reference
@@ -46,7 +47,6 @@ const ReferenceShape = z.object({
 	requests: z
 		.array(requestSchema, {
 			invalid_type_error: "Invalid request type received for 'requests'",
-			required_error: "Requests field is required",
 		})
 		.min(1, "At least one request is required"),
 	quantity: z
