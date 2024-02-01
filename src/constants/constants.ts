@@ -37,6 +37,7 @@ const requestSchema = z.object({
   address: z.string({
     required_error: "Address is required",
   }),
+  description: z.string().optional(),
   modeOfPostage: z.enum(["online", "hard-copy", "scanned-letter"]),
 });
 

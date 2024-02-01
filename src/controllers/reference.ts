@@ -68,7 +68,8 @@ async function handleRequestReference(
     for (let i = 0; i < quantity; i++) {
       const request = requests[i];
 
-      const { destination, expectedDate, address, modeOfPostage } = request;
+      const { destination, expectedDate, address, modeOfPostage, description } =
+        request;
 
       const payload = {
         graduateId,
@@ -78,6 +79,7 @@ async function handleRequestReference(
         address,
         modeOfPostage,
         expectedDate: new Date(expectedDate),
+        description,
       };
 
       const _ = await RequestReference(payload);
