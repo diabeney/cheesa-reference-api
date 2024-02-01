@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../types/types";
+import { AdminResponse, IUser } from "../types/types";
 import { getUserByEmail, createUser, getRefreshToken } from "../db/user";
 import { ErrorMsg, generateTokens, validateObject } from "../utils";
 import { STATUS } from "../utils";
@@ -14,6 +14,7 @@ import crypto from "crypto";
 import Verification from "../models/verificationModel";
 import { EmailVerificationMessage } from "../utils/emailTemplate";
 import { submitRequestEmail } from "../utils/sendEmail";
+import Users from "../models/userModel";
 
 export const CHEESA_REFERNCE_JWT = "Cheesa-Reference-JWT";
 
@@ -68,6 +69,22 @@ async function handleSignUp(
 
 		// Create verification token document
 		await Verification.create({ token, userId: user._id });
+
+		// Get Admin's Email & notify admin when a graduate signs up
+		const admin_email = await Users.findOne<AdminResponse>({ role: "admin" });
+
+		if (user.role === "graduate") {
+			const adminMessage = `New user registered with email ${user.email}`;
+			const adminEmail = submitRequestEmail({
+				to: admin_email?.email,
+				subject: "New Account has been created",
+				message: adminMessage,
+			});
+
+			if (!adminEmail) return res.status(500).json(ErrorMsg(500));
+
+			await adminEmail;
+		}
 
 		// Create verification URL
 		const verificationURL = `${process.env.CLIENT_URL_LIVE}/verify-email/${token}`;
