@@ -8,10 +8,8 @@ const SignUpShape = z.object({
 	password: z
 		.string()
 		.min(8, { message: "Password must be at least 8 characters" }),
-	role: z.enum(["lecturer", "graduate"]),
-	referenceNumber: z
-		.string({ required_error: "Reference Number is required" })
-		.min(8, "Reference should be at least 8 characters"),
+	role: z.enum(["lecturer", "graduate", "admin"]),
+	referenceNumber: z.string().optional(),
 	indexNumber: z
 		.string()
 		.min(7, "Index number should be at least 8 characters")
