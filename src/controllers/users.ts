@@ -1,9 +1,10 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthRequest } from "../types/types";
 import { getUserByEmail } from "../db/user";
 import { getUserByRole } from "../db/user";
 import { getAllUsers } from "../db/user";
 import { ErrorMsg } from "../utils";
+import Users from "../models/userModel";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 	const user = req.userPayload;
@@ -80,4 +81,62 @@ async function handleGetUsers(req: AuthRequest, res: Response) {
 	}
 }
 
-export { handleGetLoggedInUser, handleGetUsers };
+async function handleAdminUpdateUser(req: Request, res: Response) {
+	try {
+		const { userId } = req.params;
+		const {
+			signature,
+			rankInClass,
+			classObtained,
+			numberOfGraduatedClass,
+			cwa,
+		} = req.body;
+		const findUser = await Users.findById(userId);
+
+		if (!findUser) return res.status(404).json({ message: "User not found" });
+
+		await Users.updateOne(
+			{ _id: userId },
+			{
+				$set: {
+					signature,
+					rankInClass,
+					classObtained,
+					numberOfGraduatedClass,
+					cwa,
+				},
+			},
+			{ upsert: true, new: true },
+		);
+
+		res.status(200).json({ message: "User bluesheet updated successfully" });
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function handleDeleteUser(req: Request, res: Response) {
+	try {
+		const { userId } = req.params;
+		const foundUser = await Users.findById(userId);
+
+		if (!foundUser) return res.status(404).json(ErrorMsg(404));
+		if (foundUser.role === "lecturer") {
+			await Users.deleteOne({ _id: userId });
+			return res.status(200).json({ message: "Lecturer deleted successfully" });
+		}
+		return res
+			.status(400)
+			.json(ErrorMsg(400, 'Only "lecturer" can be deleted'));
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(ErrorMsg(500));
+	}
+}
+
+export {
+	handleGetLoggedInUser,
+	handleGetUsers,
+	handleDeleteUser,
+	handleAdminUpdateUser,
+};

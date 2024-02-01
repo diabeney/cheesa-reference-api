@@ -4,6 +4,8 @@ import { Types } from "mongoose";
 
 export type TransactionStatus = "pending" | "paid";
 
+export type AdminResponse = Pick<IUser, "email">;
+
 export type Transaction = {
 	id: string;
 	dateInitatiad: Date;
@@ -34,11 +36,16 @@ export type IUser = {
 	nss?: string;
 	placeOfWork?: string;
 	telephone?: string;
-	referenceNumber: string;
+	referenceNumber?: string;
 	indexNumber?: string;
 	isVerified?: boolean;
 	resetPasswordToken?: resetToken;
 	resetPasswordExpires?: Date;
+	cwa?: string;
+	rankInClass?: string;
+	numberOfGraduatedClass?: string;
+	classObtained?: string;
+	signature?: string;
 };
 
 export interface RequestReference {
@@ -47,7 +54,12 @@ export interface RequestReference {
 	lecturerId: Types.ObjectId;
 	purposeOfReference: PurposeOfReference;
 	address: string;
-	requests: { destination: string; expectedDate: string; address: string }[];
+	requests: {
+		destination: string;
+		expectedDate: string;
+		address: string;
+		description?: string;
+	}[];
 }
 
 export interface IReferenceRequest {

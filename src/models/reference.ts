@@ -26,6 +26,7 @@ const ReferenceSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	description: String,
 	accepted: {
 		type: String,
 		default: "null",

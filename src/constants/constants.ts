@@ -8,10 +8,8 @@ const SignUpShape = z.object({
 	password: z
 		.string()
 		.min(8, { message: "Password must be at least 8 characters" }),
-	role: z.enum(["lecturer", "graduate"]),
-	referenceNumber: z
-		.string({ required_error: "Reference Number is required" })
-		.min(8, "Reference should be at least 8 characters"),
+	role: z.enum(["lecturer", "graduate", "admin"]),
+	referenceNumber: z.string().optional(),
 	indexNumber: z
 		.string()
 		.min(7, "Index number should be at least 8 characters")
@@ -37,6 +35,7 @@ const requestSchema = z.object({
 	address: z.string({
 		required_error: "Address is required",
 	}),
+	description: z.string().optional(),
 });
 
 // Refactor the schema for the payload or reference
@@ -48,7 +47,6 @@ const ReferenceShape = z.object({
 	requests: z
 		.array(requestSchema, {
 			invalid_type_error: "Invalid request type received for 'requests'",
-			required_error: "Requests field is required",
 		})
 		.min(1, "At least one request is required"),
 	quantity: z
