@@ -4,6 +4,8 @@ import { Types } from "mongoose";
 
 export type TransactionStatus = "pending" | "paid";
 
+export type AdminResponse = Pick<IUser, "email">;
+
 export type Transaction = {
 	id: string;
 	dateInitatiad: Date;
