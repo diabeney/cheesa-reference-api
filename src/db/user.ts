@@ -25,6 +25,11 @@ const getUserByRole = async (role: string) =>
 			nss: user.nss,
 			telephone: user.telephone,
 			isVerified: user.isVerified,
+			cwa: user.cwa,
+			rankInClass: user.rankInClass,
+			numberOfGraduatedClass: user.numberOfGraduatedClass,
+			classObtained: user.classObtained,
+			signature: user.signature,
 		})),
 	);
 
@@ -46,6 +51,11 @@ const getAllUsers = async () =>
 			telephone: user.telephone,
 			placeOfWork: user.placeOfWork,
 			isVerified: user.isVerified,
+			cwa: user.cwa,
+			rankInClass: user.rankInClass,
+			numberOfGraduatedClass: user.numberOfGraduatedClass,
+			classObtained: user.classObtained,
+			signature: user.signature,
 		})),
 	);
 
