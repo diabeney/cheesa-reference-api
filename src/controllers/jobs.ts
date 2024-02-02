@@ -6,10 +6,8 @@ import { requestReminderMessage } from "../utils/emailTemplate";
 import { ReferenceResponse } from "../types/types";
 
 const sendLecturerReminder = async () => {
-	const reminderDaysFromExpectedDate = new Date();
-	reminderDaysFromExpectedDate.setDate(
-		reminderDaysFromExpectedDate.getDate() - 1,
-	); // 1 day before the expected
+	// Get the current date
+	const currentDate = new Date();
 
 	try {
 		// Find references that have an expectedDate 1 day from it and whose status is not 'submitted'
@@ -17,7 +15,18 @@ const sendLecturerReminder = async () => {
 			accepted: "accepted",
 			transactionStatus: "paid",
 			//Expected date is between 1 day from now
-			expectedDate: { $gte: reminderDaysFromExpectedDate },
+			expectedDate: {
+				$gte: new Date(
+					currentDate.getFullYear(),
+					currentDate.getMonth(),
+					currentDate.getDate() + 1,
+				),
+				$lt: new Date(
+					currentDate.getFullYear(),
+					currentDate.getMonth(),
+					currentDate.getDate() + 2,
+				),
+			},
 			status: { $ne: "submitted" },
 		}).populate({
 			path: "lecturerId graduateId",
@@ -67,6 +76,6 @@ const sendLecturerReminder = async () => {
 	}
 };
 
-export const startCron = (() => {
+export const startCron = () => {
 	cron.schedule("50 6 * * *", sendLecturerReminder);
-})();
+};
