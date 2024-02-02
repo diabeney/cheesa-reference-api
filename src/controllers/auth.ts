@@ -12,7 +12,10 @@ import { SignUpShape, LoginShape } from "../constants/constants";
 import { ZodError } from "zod";
 import crypto from "crypto";
 import Verification from "../models/verificationModel";
-import { EmailVerificationMessage } from "../utils/emailTemplate";
+import {
+	EmailVerificationMessage,
+	adminNotification,
+} from "../utils/emailTemplate";
 import { submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
 
@@ -72,12 +75,16 @@ async function handleSignUp(
 
 		// Get Admin's Email & notify admin when a graduate signs up
 		const admin_email = await Users.findOne<AdminResponse>({ role: "admin" });
-
+		const graduateRecords = {
+			name: `${user.firstName} ${user.lastName}`,
+			email: user.email,
+			programme: user.programme,
+		};
 		if (user.role === "graduate") {
-			const adminMessage = `New user registered with email ${user.email}`;
+			const adminMessage = adminNotification(graduateRecords);
 			const adminEmail = submitRequestEmail({
 				to: admin_email?.email,
-				subject: "New Account has been created",
+				subject: "New User Notification",
 				message: adminMessage,
 			});
 
