@@ -67,7 +67,10 @@ const sendLecturerReminder = async () => {
 				throw new Error("Error sending email");
 			}
 
-			console.log("Reminder Email sent to lecturer");
+			console.log(
+				"\x1b[32m✓ \x1b[33m%s\x1b[0m",
+				"[Evans] Reminder Email sent to lecturer",
+			);
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -85,9 +88,14 @@ export const startCron = () => {
 		const currentHour = now.getHours();
 		const currentMinute = now.getMinutes();
 
-		// Check if it's 2:05 PM
-		if (currentHour === 14 && currentMinute === 5) {
+		// Check if it's 6:50 AM and
+		// Call the Reminder Function
+		if (currentHour === 6 && currentMinute === 50) {
 			sendLecturerReminder();
 		}
+		console.log(
+			"\x1b[32m✓ \x1b[35m%s\x1b[0m",
+			"[Evans] Searching for a job...",
+		);
 	}, interval);
 };
