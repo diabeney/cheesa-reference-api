@@ -1,4 +1,4 @@
-import cron from "node-cron";
+// import cron from "node-cron";
 import Reference from "../models/reference";
 import { submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
@@ -77,5 +77,17 @@ const sendLecturerReminder = async () => {
 };
 
 export const startCron = () => {
-	cron.schedule("01 11 * * *", sendLecturerReminder);
+	const interval = 60 * 1000; // 1 minute in milliseconds
+
+	// Check for reminder every minute
+	setInterval(() => {
+		const now = new Date();
+		const currentHour = now.getHours();
+		const currentMinute = now.getMinutes();
+
+		// Check if it's 2:05 PM
+		if (currentHour === 14 && currentMinute === 5) {
+			sendLecturerReminder();
+		}
+	}, interval);
 };
