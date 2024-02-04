@@ -77,5 +77,5 @@ const sendLecturerReminder = async () => {
 };
 
 export const startCron = () => {
-	cron.schedule("50 6 * * *", sendLecturerReminder);
+	cron.schedule("01 11 * * *", sendLecturerReminder);
 };
