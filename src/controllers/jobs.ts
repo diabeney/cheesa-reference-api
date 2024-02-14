@@ -17,14 +17,14 @@ const sendLecturerReminder = async () => {
 			//Expected date is between 1 day from now
 			expectedDate: {
 				$gte: new Date(
-					currentDate.getFullYear(),
-					currentDate.getMonth(),
 					currentDate.getDate() + 1,
+					currentDate.getMonth(),
+					currentDate.getFullYear(),
 				),
 				$lt: new Date(
-					currentDate.getFullYear(),
-					currentDate.getMonth(),
 					currentDate.getDate() + 2,
+					currentDate.getMonth(),
+					currentDate.getFullYear(),
 				),
 			},
 			status: { $ne: "submitted" },
@@ -79,7 +79,7 @@ const sendLecturerReminder = async () => {
 	}
 };
 
-export const startCron = () => {
+export const startCron = async () => {
 	const interval = 60 * 1000; // 1 minute in milliseconds
 
 	// Check for reminder every minute
@@ -88,9 +88,9 @@ export const startCron = () => {
 		const currentHour = now.getHours();
 		const currentMinute = now.getMinutes();
 
-		// Check if it's 6:50 AM and
+		// Check if it's 6:00 AM and
 		// Call the Reminder Function
-		if (currentHour === 6 && currentMinute === 50) {
+		if (currentHour === 6 && currentMinute === 0) {
 			sendLecturerReminder();
 		}
 		console.log(
