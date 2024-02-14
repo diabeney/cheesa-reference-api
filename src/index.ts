@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import router from "./routes/router";
 import { corsOptions } from "./utils";
 import { startCron } from "./controllers/jobs";
-startCron;
+startCron();
 
 const app = express();
 

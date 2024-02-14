@@ -1,6 +1,8 @@
-# Reference API
+# REFHUB REFERENCE API DOCUMENTATION
 
-```js
+### Reference API
+
+```Javascript
 const BASE_URL = 'https://domain.com/api/v1'
 ```
 
@@ -10,30 +12,34 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 1. Request
 
-   ```json
-     "firstName": "string",
-     "lastName": "string",
+```json
+{
+   	"firstName": "string",
+    "lastName": "string",
     "password": "string",
-     "email": "string",
-     "role": "lecturer | graduate"
-      "programme": "chemical" | "petrochemical"
-   ```
+    "email": "string",
+    "role": "lecturer | graduate",
+    "programme": "chemical | petrochemical"
+}
+```
 
 2. Response
-   - Successfull - `201 Created -` `{message: "string"}`
+   - Successful - `201 Created -` `{message: "string"}`
    - Error - `4XX -` `{message: "error message"}`
 
 ### `POST => /login`
 
 1. Request
 
-   ```json
+```json
+{
    "email": "string",
    "password": "string"
-   ```
+}
+```
 
 2. Response
-   - Successfull - `200 OK -` `{accessToken: "string"}`
+   - Successful - `200 OK -` `{accessToken: "string"}`
    - Error - `4XX -` `{message: "error message"}`
 
 ### `POST => /forgot-password`
@@ -41,7 +47,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 1. Request
 
    ```json
-      "email": "string"
+      { "email": "string" }
    ```
 
 2. Response
@@ -52,7 +58,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 1. Request
    ```json
-      "password": "string",
+     { "password": "string" }
    ```
 2. Response
    - Successful - `200 OK -` `{message: "Password reset successful"}`
@@ -74,12 +80,12 @@ const BASE_URL = 'https://domain.com/api/v1'
 1. Request
    - No request body, uses an `httpOnly` cookie to generate a new access token.
 2. Response
-   - Successfull - `200 OK -` `{accessToken: "string"}`
-   - Error - `4XX - {message: "Not Authorized}`
+   - Successful - `200 OK -` `{accessToken: "string"}`
+   - Error - `4XX - {message: "Not Authorized"}`
 
 ### The remaining endpoints require authorization field\*\*
 
-```js
+```Javascript
 // request header
 {
 "Authorization": "Bearer <token here>"
@@ -90,15 +96,16 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `GET => /users/me`
 
-#### _Gets the current logged in user info_
+#### _Gets the current logged-in user info_
 
 1. Request
    - No request body.
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-   ```json
+```json
+{
     "id": "string",
     "firstName": "john",
     "lastName": "doe",
@@ -107,22 +114,23 @@ const BASE_URL = 'https://domain.com/api/v1'
     "entryYear": "2020",
     "graduationYear": "2024",
     "projects": {
-				"thirdYear": {
-					"title": "Comms",
-					"supervisor": "Levina"
-				},
-				"finalYear": {
-					"title": "Yooooo....",
-					"supervisor": "wai"
-				}
-			},
+   			"thirdYear": {
+   				"title": "Comms",
+   				"supervisor": "Levina"
+   			},
+   			"finalYear": {
+   				"title": "Yooooo....",
+   				"supervisor": "wai"
+   			}
+   		},
     "nss": "GNPC",
     "telephone": "0559237610",
     "placeOfWork": "KNUST",
-    "isVerified": true | false
-   ```
+    "isVerified": "true | false"
+}
+```
 
-   - Error - `401 - {message: "Not Authorized}`
+- Error - `401 - {message: "Not Authorized"}`
 
 ### `GET => /users`
 
@@ -132,9 +140,9 @@ const BASE_URL = 'https://domain.com/api/v1'
    - No request body.
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    results: [
      {
        id: 'string',
@@ -145,15 +153,15 @@ const BASE_URL = 'https://domain.com/api/v1'
       entryYear: "2020",
       graduationYear: "2024",
       projects: {
-				thirdYear: {
-					title: "Comms",
-					supervisor: "Levina"
-				},
-				finalYear: {
-					title: "Yooooo....",
-					supervisor: "wai"
-				}
-			},
+   			thirdYear: {
+   				title: "Comms",
+   				supervisor: "Levina"
+   			},
+   			finalYear: {
+   				title: "Yooooo....",
+   				supervisor: "wai"
+   			}
+   		},
       nss: "GNPC",
       telephone: "0559237610",
       placeOfWork: "KNUST",
@@ -172,9 +180,9 @@ const BASE_URL = 'https://domain.com/api/v1'
    - No request body.
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    results: [
      {
        id: 'string',
@@ -185,15 +193,15 @@ const BASE_URL = 'https://domain.com/api/v1'
        entryYear: "2020",
        graduationYear: "2024",
        projects: {
-				thirdYear: {
-					title: "Comms",
-					supervisor: "Levina"
-				},
-				finalYear: {
-					title: "Yooooo....",
-					supervisor: "wai"
-				}
-			},
+   			thirdYear: {
+   				title: "Comms",
+   				supervisor: "Levina"
+   			},
+   			finalYear: {
+   				title: "Yooooo....",
+   				supervisor: "wai"
+   			}
+   		},
       nss: "GNPC",
       telephone: "0559237610",
       placeOfWork: "KNUST",
@@ -212,9 +220,9 @@ const BASE_URL = 'https://domain.com/api/v1'
    - No request body.
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    results: [
      {
        id: 'string',
@@ -226,63 +234,102 @@ const BASE_URL = 'https://domain.com/api/v1'
      }
    ]
    ```
-### `PATCH => /users/:userId`
 
+### `PATCH => /users/:userId`
 
 #### _Update a user's (graduate) records_
 
 1. Request
-    - Request parameter - `userId` is the user's id
-    - Request body
-    ```json
-    {
-      "entryYear": "string",
-      "graduationYear": "string",
-      "projects": {
-        "thirdYear": {
-          "title": "string",
-          "supervisor": "string"
-        },
-        "finalYear": {
-          "title": "string",
-          "supervisor": "string"
-        }
-      },
-      "nss": "string",
-      "telephone": "string",
-      "placeOfWork": "string"
-    }
-    ```
+
+   - Request parameter - `userId` is the user's id
+   - Request body
+
+   ```json
+   {
+     "entryYear": "string",
+     "graduationYear": "string",
+     "projects": {
+       "thirdYear": {
+         "title": "string",
+         "supervisor": "string"
+       },
+       "finalYear": {
+         "title": "string",
+         "supervisor": "string"
+       }
+     },
+     "nss": "string",
+     "telephone": "string",
+     "placeOfWork": "string"
+   }
+   ```
 
 2. Response
 
-    - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-    ```json
-    {
-      "id": "string",
-      "firstName": "john",
-      "lastName": "doe",
-      "email": "example@mail.com",
-      "role": "graduate",
-      "entryYear": "string",
-      "graduationYear": "string",
-      "projects": {
-        "thirdYear": {
-          "title": "string",
-          "supervisor": "string"
-        },
-        "finalYear": {
-          "title": "string",
-          "supervisor": "string"
-        }
-      },
-      "nss": "string",
-      "telephone": "string",
-      "placeOfWork": "string"
-    }
-    ```
-    
+   ```json
+   {
+     "id": "string",
+     "firstName": "john",
+     "lastName": "doe",
+     "email": "example@mail.com",
+     "role": "graduate",
+     "entryYear": "string",
+     "graduationYear": "string",
+     "projects": {
+       "thirdYear": {
+         "title": "string",
+         "supervisor": "string"
+       },
+       "finalYear": {
+         "title": "string",
+         "supervisor": "string"
+       }
+     },
+     "nss": "string",
+     "telephone": "string",
+     "placeOfWork": "string"
+   }
+   ```
+
+   - Error - `4XX - {message: "error message here"}`
+
+### `PATCH => /users/admin/update/:userId`
+
+#### _Admin update a user's (graduate) official records_
+
+1. Request
+
+   - Request parameter - `userId` is the user's id
+   - Request body
+
+   ```json
+   {
+     "cwa": "string",
+     "rankInClass": "string",
+     "numberOfGraduatedClass": "string",
+     "classObtained": "string",
+     "signature": "string"
+   }
+   ```
+
+2. Response
+
+   - Successful - `200 OK -` `{message: "User bluesheet updated successfully"}`
+
+### `DELETE => /users/admin/delete/:userId`
+
+#### _Admin delete a lecturer's account_
+
+1. Request
+
+   - Request parameter - `userId` is the user's id
+
+2. Response
+
+   - Successful - `200 OK -` `{message: "Lecturer deleted successfully"}`
+
    - Error - `4XX - {message: "error message here"}`
 
 ## References
@@ -293,7 +340,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 1. Request
 
-   ```js
+   ```Javascript
    const requestPayload = {
      quantity: number,
      lecturerId: 'string',
@@ -303,12 +350,14 @@ const BASE_URL = 'https://domain.com/api/v1'
        {
          destination: 'string',
          expectedDate: 'string' | 'Date',
-         address: 'string'
+         address: 'string',
+         description?: 'string'
        },
        {
          destination: 'Georgia Tech',
          expectedDate: 'string' | 'Date',
-         address: 'string'
+         address: 'string',
+         description?: 'string'
        }
      ]
    }
@@ -318,7 +367,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    const res = { message: 'Successfully created' }
    ```
 
@@ -326,14 +375,14 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `GET => /reference/:id`
 
-#### _Get a reference by Id to view it_
+#### _Get a reference by ID to view it_
 
 1. Request
 
    - No request body
    - Request parameter - `id` is the reference's id
 
-   ```js
+   ```Javascript
    const obj = { id: 'string' }
    ```
 
@@ -363,6 +412,7 @@ const BASE_URL = 'https://domain.com/api/v1'
      "graduationYear": "string",
       "destination": "string",
       "expectedDate": "string | Date",
+      "description": "string",
      "transactionStatus": "pending",
      "createdAt": "2024-01-06T00:09:55.417Z",
      "accepted": "null",
@@ -374,14 +424,14 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `POST => /lecturer?refId=<lecturerId>&accepted=<true | false>`
 
-#### _For lectuers to accept or decline requests_
+#### _For lecturers to accept or decline requests_
 
 1. Request
 
    - No request body.
    - Request Query parameters
 
-   ```js
+   ```Javascript
    const params = {
      refId: 'string',
      accepted: 'true' || 'false'
@@ -392,7 +442,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    const res = { message: 'Successful' }
    ```
 
@@ -407,9 +457,9 @@ const BASE_URL = 'https://domain.com/api/v1'
    - Request Parameter - `id` is the lecturer's id
 2. Response
 
-   - Successfull - `200 OK -`
+   - Successful - `200 OK -`
 
-   ```ts
+   ```Typescript
    type Response = {
      id: string
      graduateId: string
@@ -418,8 +468,8 @@ const BASE_URL = 'https://domain.com/api/v1'
      graduationYear: string
      referenceNumber: string
      indexNumber: string
-      destination: string,
-      expectedDate: 'string' | 'Date',
+     destination: string
+     expectedDate: 'string' | 'Date'
      transactionStatus: 'pending' | 'paid'
      status: 'not ready' | 'submitted'
      accepted: 'accepted' | 'declined' | 'null'
@@ -440,8 +490,9 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical' | 'petrochemical',
          graduationYear: 'string',
-          destination: 'string',
-             expectedDate: 'string' | 'Date',
+         destination: 'string',
+         expectedDate: 'string' | 'Date',
+         descripton: "string",
          createdAt: '2024-01-06T00:09:55.417Z',
          accepted: 'null',
          transactionStatus: 'pending',
@@ -460,8 +511,9 @@ const BASE_URL = 'https://domain.com/api/v1'
          },
          programme: 'chemical' | 'petrochemical',
          graduationYear: 'string',
-          destination: 'string',
-          expectedDate: 'string' | 'Date',
+         destination: 'string',
+         expectedDate: 'string' | 'Date',
+         descripton: "string",
          createdAt: '2024-01-06T00:09:54.873Z',
          accepted: 'null',
          transactionStatus: 'pending',
@@ -484,7 +536,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```ts
+   ```Typescript
    type Response = {
      id: string
      graduateId: string
@@ -562,7 +614,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```ts
+   ```Typescript
    export interface Main {
      allPayments: AllPayment[]
      totalAmount: number
@@ -604,11 +656,11 @@ const BASE_URL = 'https://domain.com/api/v1'
 
 ### `POST => /accept-payment`
 
-#### _Accept payments from logged in user_
+#### _Accept payments from logged-in user_
 
 1. Request
    - `TOTAL AMOUNT` is hard coded
-   ```js
+   ```Javascript
    const params = JSON.stringify({
      amount: quantity
        ? quantity * TOTAL_AMOUNT
@@ -640,7 +692,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 1. Request
    - No request body
    - Request Query parameters
-   ```js
+   ```Javascript
    const params = {
      reference: 'string'
    }
@@ -745,7 +797,7 @@ const BASE_URL = 'https://domain.com/api/v1'
 
    - Successful - `200 OK -`
 
-   ```js
+   ```Javascript
    {
       "payments": [
          {
