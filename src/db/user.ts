@@ -3,6 +3,9 @@ import RefreshToken from "../models/refresh";
 import { Types } from "mongoose";
 import { IUser } from "../types/types";
 import { Request, Response } from "express";
+import { ErrorMsg, STATUS, validateObject } from "../utils";
+import { updateUserInfoShape } from "../constants/constants";
+import { ZodError } from "zod";
 
 const getUserByEmail = async (email: string) => await Users.findOne({ email });
 const getLecturerById = async (id: Types.ObjectId) =>
@@ -63,31 +66,44 @@ const createUser = (userObject: Partial<IUser>) => new Users(userObject).save();
 
 // Update some user fields after signing up
 const handleUpdateUser = async (req: Request, res: Response) => {
-	const { userId } = req.params;
+	const formObj = validateObject(req.body, updateUserInfoShape);
 
-	const { entryYear, graduationYear, telephone, nss, placeOfWork, projects } =
-		req.body;
+	if (formObj instanceof ZodError) {
+		const { message } = formObj.issues[0];
+		return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
+	}
 
-	const findUser = await Users.findById(userId);
+	try {
+		const { userId } = req.params;
 
-	if (!findUser) return res.status(404).json({ message: "User not found" });
+		const { entryYear, graduationYear, telephone, nss, placeOfWork, projects } =
+			formObj;
 
-	await Users.updateOne(
-		{ _id: userId },
-		{
-			$set: {
-				entryYear,
-				graduationYear,
-				telephone,
-				nss,
-				placeOfWork,
-				projects,
+		const findUser = await Users.findById(userId);
+
+		if (!findUser) return res.status(404).json({ message: "User not found" });
+
+		await Users.updateOne(
+			{ _id: userId },
+			{
+				$set: {
+					entryYear,
+					graduationYear,
+					telephone,
+					nss,
+					placeOfWork,
+					projects,
+				},
 			},
-		},
-		{ upsert: true, new: true },
-	);
+			{ upsert: true, new: true },
+		);
 
-	res.status(200).json({ message: "User records updated successfully" });
+		res.status(200).json({ message: "User records updated successfully" });
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		}
+	}
 };
 
 const getRefreshToken = async (id: Types.ObjectId) =>
