@@ -135,7 +135,6 @@ async function handleAdminUpdateUser(req: Request, res: Response) {
 		const graduateInfo = {
 			name: `${firstName} ${lastName}`,
 			email,
-			// programme: graduate.programme,
 		};
 
 		const templateHandler = requestUpdateMessage(graduateInfo);
