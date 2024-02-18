@@ -7,6 +7,8 @@ import { ErrorMsg, STATUS, validateObject } from "../utils";
 import Users from "../models/userModel";
 import { adminUpdateShape } from "../constants/constants";
 import { ZodError } from "zod";
+import { submitRequestEmail } from "../utils/sendEmail";
+import { requestUpdateMessage } from "../utils/emailTemplate";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 	const user = req.userPayload;
@@ -118,7 +120,37 @@ async function handleAdminUpdateUser(req: Request, res: Response) {
 			{ upsert: true, new: true },
 		);
 
-		res.status(200).json({ message: "User bluesheet updated successfully" });
+		res
+			.status(200)
+			.json({ message: "User official details updated successfully" });
+
+		// Send email to the graduate if admin has updated the bluesheet
+		const graduate = await Users.findById(userId);
+
+		if (!graduate) return res.status(404).json(ErrorMsg(404));
+
+		const { email, firstName, lastName } = graduate;
+
+		// Send email to the graduate
+		const graduateInfo = {
+			name: `${firstName} ${lastName}`,
+			email,
+			// programme: graduate.programme,
+		};
+
+		const templateHandler = requestUpdateMessage(graduateInfo);
+		const dispatchedMessages = submitRequestEmail({
+			to: graduateInfo.email,
+			subject: "Official Details Updated",
+			message: templateHandler,
+		});
+
+		await dispatchedMessages;
+
+		console.log(
+			"\x1b[32m✓ \x1b[35m%s\x1b[0m",
+			`[Evans] Bluesheet Updated Email sent to ${graduateInfo.email}`,
+		);
 	} catch (error) {
 		console.log(error);
 	}
