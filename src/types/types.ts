@@ -46,6 +46,8 @@ export type IUser = {
 	numberOfGraduatedClass?: string;
 	classObtained?: string;
 	signature?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 };
 
 export interface RequestReference {
