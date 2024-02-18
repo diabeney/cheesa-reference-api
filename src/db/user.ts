@@ -33,6 +33,8 @@ const getUserByRole = async (role: string) =>
 			numberOfGraduatedClass: user.numberOfGraduatedClass,
 			classObtained: user.classObtained,
 			signature: user.signature,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
 		})),
 	);
 
@@ -59,6 +61,8 @@ const getAllUsers = async () =>
 			numberOfGraduatedClass: user.numberOfGraduatedClass,
 			classObtained: user.classObtained,
 			signature: user.signature,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
 		})),
 	);
 

@@ -34,6 +34,8 @@ const UsersSchema = new Schema({
 	numberOfGraduatedClass: String,
 	classObtained: String,
 	signature: String,
+	createdAt: { type: Date, default: Date.now },
+	updatedAt: { type: Date, default: Date.now },
 });
 
 UsersSchema.methods.getResetPasswordToken = function () {
