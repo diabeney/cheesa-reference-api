@@ -1,10 +1,9 @@
 import express from "express";
 import { AuthRoutes } from "./auth";
-import { isAdmin, verifyToken } from "../../middleware";
+import { verifyToken } from "../../middleware";
 import { UserRoutes } from "./users";
 import { ReferenceRoutes } from "./reference";
 import { PaymentRoutes } from "./payment";
-import { getComputedData } from "../../db/payment";
 import { SummaryRoutes } from "./summary";
 
 const router = express.Router();
