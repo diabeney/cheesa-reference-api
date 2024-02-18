@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("", handleGetUsers); // GET users with search parameters
 router.get("/me", handleGetLoggedInUser);
 router.patch("/update/:userId", handleUpdateUser);
-router.patch("/admin/update/:userId", isAdmin, handleAdminUpdateUser); // Only admins can update user's bluesheet
-router.delete("/admin/delete/:userId", isAdmin, handleDeleteUser); // Only admins can delete user
+router.patch("/admin/:userId", isAdmin, handleAdminUpdateUser); // Only admins can update user's bluesheet
+router.delete("/admin/:userId", isAdmin, handleDeleteUser); // Only admins can delete user
 
 export { router as UserRoutes };
