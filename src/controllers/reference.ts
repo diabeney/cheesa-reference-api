@@ -47,7 +47,6 @@ async function handleRequestReference(
 
   if (formObj instanceof ZodError) {
     const { message } = formObj.issues[0];
-    console.log(formObj.issues);
     return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
   }
   const { quantity, lecturerId, graduateId, purposeOfReference, requests } =
