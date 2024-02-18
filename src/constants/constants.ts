@@ -2,67 +2,71 @@ import { z } from "zod";
 import { Types } from "mongoose";
 
 const SignUpShape = z.object({
-	firstName: z.string({ required_error: "First Name is required" }),
-	lastName: z.string({ required_error: "Last Name is required" }),
-	email: z.string().email({ message: "Invalid email address" }),
-	password: z
-		.string()
-		.min(8, { message: "Password must be at least 8 characters" }),
-	role: z.enum(["lecturer", "graduate", "admin"]),
-	referenceNumber: z.string().optional(),
-	indexNumber: z
-		.string()
-		.min(7, "Index number should be at least 8 characters")
-		.optional(),
-	entryYear: z.string().optional(),
-	graduationYear: z.string().optional(),
-	programme: z.enum(["chemical", "petrochemical"]).optional(),
-	nss: z.string().optional(),
-	placeOfWork: z.string().optional(),
-	telephone: z.string().optional(),
+  firstName: z.string({ required_error: "First Name is required" }),
+  lastName: z.string({ required_error: "Last Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  role: z.enum(["lecturer", "graduate"]),
+  referenceNumber: z
+    .string({ required_error: "Reference Number is required" })
+    .min(8, "Reference should be at least 8 characters"),
+  indexNumber: z
+    .string()
+    .min(7, "Index number should be at least 8 characters")
+    .optional(),
+  entryYear: z.string().optional(),
+  graduationYear: z.string().optional(),
+  programme: z.enum(["chemical", "petrochemical"]).optional(),
+  nss: z.string().optional(),
+  placeOfWork: z.string().optional(),
+  telephone: z.string().optional(),
 });
 
 const LoginShape = SignUpShape.pick({ email: true, password: true });
 
 // Define the scheme for a single request
 const requestSchema = z.object({
-	destination: z.string({
-		required_error: "Destination is required",
-	}),
-	expectedDate: z.string({
-		required_error: "Expected Date is required",
-	}),
-	address: z.string({
-		required_error: "Address is required",
-	}),
-	description: z.string().optional(),
+  destination: z.string({
+    required_error: "Destination is required",
+  }),
+  expectedDate: z.string({
+    required_error: "Expected Date is required",
+  }),
+  address: z.string({
+    required_error: "Address is required",
+  }),
+  description: z.string().optional(),
+  modeOfPostage: z.enum(["online", "hard-copy", "scanned-letter"]),
 });
 
 // Refactor the schema for the payload or reference
 // shape to include the request schema
 const ReferenceShape = z.object({
-	graduateId: z.custom<Types.ObjectId>(),
-	lecturerId: z.custom<Types.ObjectId>(),
-	purposeOfReference: z.enum(["postgraduate-study", "scholarship", "job"]),
-	requests: z
-		.array(requestSchema, {
-			invalid_type_error: "Invalid request type received for 'requests'",
-		})
-		.min(1, "At least one request is required"),
-	quantity: z
-		.number({ required_error: "Quantity is required" })
-		.int()
-		.min(1, "At least 1 request is required"),
+  graduateId: z.custom<Types.ObjectId>(),
+  lecturerId: z.custom<Types.ObjectId>(),
+  purposeOfReference: z.enum(["postgraduate-study", "scholarship", "job"]),
+  requests: z
+    .array(requestSchema, {
+      invalid_type_error: "Invalid request type received for 'requests'",
+      required_error: "Requests field is required",
+    })
+    .min(1, "At least one request is required"),
+  quantity: z
+    .number({ required_error: "Quantity is required" })
+    .int()
+    .min(1, "At least 1 request is required"),
 });
 
 const RespondToReference = z.object({
-	refId: z.custom<Types.ObjectId>(),
-	accepted: z.string(),
+  refId: z.custom<Types.ObjectId>(),
+  accepted: z.string(),
 });
 
 const submitRequestedReference = z.object({
-	refId: z.custom<Types.ObjectId>(),
-	status: z.string(),
+  refId: z.custom<Types.ObjectId>(),
+  status: z.string(),
 });
 
 const adminUpdateShape = z.object({
