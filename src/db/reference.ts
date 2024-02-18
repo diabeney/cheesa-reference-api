@@ -11,7 +11,7 @@ const getReferenceById = async (id: string) => {
 		.populate({
 			path: "graduateId lecturerId",
 			select:
-				"firstName lastName email indexNumber referenceNumber programme entryYear graduationYear",
+				"firstName lastName email indexNumber referenceNumber programme entryYear graduationYear cwa rankInClass classObtained numberOfGraduatedClass nss placeOfWork telephone projects",
 			model: Users,
 		})
 		.sort({ _id: -1 })
