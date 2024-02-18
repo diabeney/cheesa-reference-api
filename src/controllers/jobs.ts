@@ -85,7 +85,7 @@ export const startCron = () => {
 		const currentMinute = now.getMinutes();
 
 		// Call the Reminder Function
-		if (currentHour === 18 && currentMinute === 0) {
+		if (currentHour === 20 && currentMinute === 0) {
 			sendLecturerReminder();
 		}
 		console.log(
