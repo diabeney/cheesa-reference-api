@@ -70,35 +70,43 @@ const submitRequestedReference = z.object({
 });
 
 const adminUpdateShape = z.object({
-	signature: z.string({ required_error: "Signature is required" }),
-	rankInClass: z.string({ required_error: "Rank in class is required" }),
-	classObtained: z.string({ required_error: "Class obtained is required" }),
-	numberOfGraduatedClass: z.string({
-		required_error: "Number of graduated class is required",
-	}),
-	cwa: z.string({ required_error: "CWA is required" }),
+  signature: z.string({ required_error: "Signature is required" }),
+  rankInClass: z.string({ required_error: "Rank in class is required" }),
+  classObtained: z.string({ required_error: "Class obtained is required" }),
+  numberOfGraduatedClass: z.string({
+    required_error: "Number of graduated class is required",
+  }),
+  cwa: z.string({ required_error: "CWA is required" }),
+});
+
+const ProjectsShape = z.object({
+  title: z.string(),
+  supervisor: z.string(),
 });
 
 const updateUserInfoShape = z.object({
-	entryYear: z.string({ required_error: "Entry year is required" }),
-	graduationYear: z.string({ required_error: "Graduation year is required" }),
-	telephone: z.string({ required_error: "Telephone is required" }),
-	nss: z.string({ required_error: "NSS is required" }),
-	placeOfWork: z.string({ required_error: "Place of work is required" }),
-	projects: z.string({ required_error: "Projects is required" }),
+  entryYear: z.string({ required_error: "Entry year is required" }),
+  graduationYear: z.string({ required_error: "Graduation year is required" }),
+  telephone: z.string({ required_error: "Telephone is required" }),
+  nss: z.string({ required_error: "NSS is required" }),
+  placeOfWork: z.string({ required_error: "Place of work is required" }),
+  projects: z.object({
+    thirdYear: ProjectsShape,
+    finalYear: ProjectsShape,
+  }),
 });
 const BY_HUNDRED = 100;
 const STATIC_AMOUNT = 30;
 const TOTAL_AMOUNT = STATIC_AMOUNT * BY_HUNDRED;
 
 export {
-	SignUpShape,
-	LoginShape,
-	ReferenceShape,
-	adminUpdateShape,
-	updateUserInfoShape,
-	RespondToReference,
-	submitRequestedReference,
-	TOTAL_AMOUNT,
-	STATIC_AMOUNT,
+  SignUpShape,
+  LoginShape,
+  ReferenceShape,
+  adminUpdateShape,
+  updateUserInfoShape,
+  RespondToReference,
+  submitRequestedReference,
+  TOTAL_AMOUNT,
+  STATIC_AMOUNT,
 };
