@@ -16,15 +16,15 @@ const sendLecturerReminder = async () => {
 			transactionStatus: "paid",
 			//Expected date is between 1 day from now
 			expectedDate: {
-				$gte: new Date(
-					currentDate.getFullYear(),
-					currentDate.getMonth(),
-					currentDate.getDate() + 1,
-				),
 				$lt: new Date(
 					currentDate.getFullYear(),
 					currentDate.getMonth(),
 					currentDate.getDate() + 2,
+				),
+				$gte: new Date(
+					currentDate.getFullYear(),
+					currentDate.getMonth(),
+					currentDate.getDate() + 1,
 				),
 			},
 			status: { $ne: "submitted" },
@@ -55,6 +55,7 @@ const sendLecturerReminder = async () => {
 				referenceDetails,
 				lectuerInfo,
 			);
+
 			const dispatchedMessages = submitRequestEmail({
 				to: lectuerInfo.email,
 				subject: "Reference Request Reminder",
@@ -62,14 +63,9 @@ const sendLecturerReminder = async () => {
 			});
 
 			await dispatchedMessages;
-
-			if (!dispatchedMessages) {
-				throw new Error("Error sending email");
-			}
-
 			console.log(
-				"\x1b[32m✓ \x1b[33m%s\x1b[0m",
-				"[Evans] Reminder Email sent to lecturer",
+				"\x1b[32m✓ \x1b[35m%s\x1b[0m",
+				`[Evans] Reminder Email sent to ${lectuerInfo.email}`,
 			);
 		}
 	} catch (error) {
@@ -80,7 +76,7 @@ const sendLecturerReminder = async () => {
 };
 
 export const startCron = () => {
-	const interval = 60 * 1000; // 1 minute in milliseconds
+	const interval = 60 * 1000;
 
 	// Check for reminder every minute
 	setInterval(() => {
@@ -88,9 +84,8 @@ export const startCron = () => {
 		const currentHour = now.getHours();
 		const currentMinute = now.getMinutes();
 
-		// Check if it's 6:50 AM and
 		// Call the Reminder Function
-		if (currentHour === 6 && currentMinute === 50) {
+		if (currentHour === 18 && currentMinute === 0) {
 			sendLecturerReminder();
 		}
 		console.log(

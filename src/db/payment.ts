@@ -3,6 +3,11 @@ import Payments from "../models/paymentModel";
 import Users from "../models/userModel";
 import { ErrorMsg } from "../utils";
 import mongoose from "mongoose";
+import Reference from "../models/reference";
+
+type ResponseId = {
+	referenceId: string;
+};
 
 const PaystackPayments = {
 	// Get all Payments by specific user by id
@@ -37,25 +42,53 @@ const PaystackPayments = {
 			return res.status(500).json(ErrorMsg(500));
 		}
 	},
-	getAllPayments: async (req: Request, res: Response) => {
+	getComputedData: async (req: Request, res: Response) => {
 		try {
+			const role = "admin";
+			const isAdmin = await Users.findOne({ role });
+
+			// TODO:
+			// Return total amount of all payments to the admin
 			const allPayments = await Payments.find().sort({ createdAt: -1 });
+			const allStudents = await Users.find({ role: "graduate" });
+			const allLecturers = await Users.find({ role: "lecturer" });
+			const allRequests = await Reference.find();
+			const acceptedRequests = await Reference.find({ accepted: "accepted" });
+			const declinedRequests = await Reference.find({ accepted: "declined" });
+			const notattendedRequests = await Reference.find({ accepted: "null" });
 
-			/*  Checking the length of the all payments tank
-          to return a reasonable reponse
-      */
-			if (allPayments.length <= 0) {
-				return res
-					.status(404)
-					.json(ErrorMsg(404, "There are no payments yet!"));
-			}
+			if (isAdmin?.role === role) {
+				if (
+					allPayments &&
+					allStudents &&
+					allLecturers &&
+					allRequests &&
+					acceptedRequests &&
+					declinedRequests &&
+					notattendedRequests
+				) {
+					// Get all the amounts from the payments
+					const amounts = allPayments.map((payment) => payment.amount);
+					// Sum up all the amounts
+					const totalAmount = amounts.reduce((a, b) => a + b, 0);
+					const totalStudents = allStudents.length;
+					const totalLecturers = allLecturers.length;
+					const totalRequests = allRequests.length;
+					const totalAcceptedRequests = acceptedRequests.length;
+					const totalDeclinedRequests = declinedRequests.length;
+					const totalNotAttendedRequests = notattendedRequests.length;
 
-			if (allPayments) {
-				// Get all the amounts from the payments
-				const amounts = allPayments.map((payment) => payment.amount);
-				// Sum up all the amounts
-				const totalAmount = amounts.reduce((a, b) => a + b, 0);
-				return res.status(200).json({ allPayments, totalAmount });
+					const data = {
+						totalAmount,
+						totalStudents,
+						totalLecturers,
+						totalRequests,
+						totalAcceptedRequests,
+						totalDeclinedRequests,
+						totalNotAttendedRequests,
+					};
+					return res.status(200).json({ data });
+				}
 			}
 		} catch (error) {
 			console.error(error);
@@ -72,7 +105,7 @@ const PaystackPayments = {
 		}
 
 		try {
-			const payment = await Payments.findOne({ userId });
+			const payment = await Payments.findOne<ResponseId>({ userId });
 
 			if (!payment) return res.status(404).json(ErrorMsg(404));
 
@@ -84,5 +117,5 @@ const PaystackPayments = {
 	},
 };
 
-export const { getPaymentsByUserId, getAllPayments, getPaymentReferenceId } =
+export const { getPaymentsByUserId, getComputedData, getPaymentReferenceId } =
 	PaystackPayments;

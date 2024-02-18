@@ -3,8 +3,10 @@ import { AuthRequest } from "../types/types";
 import { getUserByEmail } from "../db/user";
 import { getUserByRole } from "../db/user";
 import { getAllUsers } from "../db/user";
-import { ErrorMsg } from "../utils";
+import { ErrorMsg, STATUS, validateObject } from "../utils";
 import Users from "../models/userModel";
+import { adminUpdateShape } from "../constants/constants";
+import { ZodError } from "zod";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 	const user = req.userPayload;
@@ -82,6 +84,13 @@ async function handleGetUsers(req: AuthRequest, res: Response) {
 }
 
 async function handleAdminUpdateUser(req: Request, res: Response) {
+	const formObj = validateObject(req.body, adminUpdateShape);
+
+	if (formObj instanceof ZodError) {
+		const { message } = formObj.issues[0];
+		return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
+	}
+
 	try {
 		const { userId } = req.params;
 		const {
@@ -90,7 +99,7 @@ async function handleAdminUpdateUser(req: Request, res: Response) {
 			classObtained,
 			numberOfGraduatedClass,
 			cwa,
-		} = req.body;
+		} = formObj;
 		const findUser = await Users.findById(userId);
 
 		if (!findUser) return res.status(404).json({ message: "User not found" });
