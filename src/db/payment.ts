@@ -55,6 +55,7 @@ const PaystackPayments = {
 			const allRequests = await Reference.find();
 			const acceptedRequests = await Reference.find({ accepted: "accepted" });
 			const declinedRequests = await Reference.find({ accepted: "declined" });
+			const notattendedRequests = await Reference.find({ accepted: "null" });
 
 			if (isAdmin?.role === role) {
 				if (
@@ -63,7 +64,8 @@ const PaystackPayments = {
 					allLecturers &&
 					allRequests &&
 					acceptedRequests &&
-					declinedRequests
+					declinedRequests &&
+					notattendedRequests
 				) {
 					// Get all the amounts from the payments
 					const amounts = allPayments.map((payment) => payment.amount);
@@ -74,6 +76,7 @@ const PaystackPayments = {
 					const totalRequests = allRequests.length;
 					const totalAcceptedRequests = acceptedRequests.length;
 					const totalDeclinedRequests = declinedRequests.length;
+					const totalNotAttendedRequests = notattendedRequests.length;
 
 					const data = {
 						totalAmount,
@@ -82,6 +85,7 @@ const PaystackPayments = {
 						totalRequests,
 						totalAcceptedRequests,
 						totalDeclinedRequests,
+						totalNotAttendedRequests,
 					};
 					return res.status(200).json({ data });
 				}
