@@ -7,6 +7,8 @@ import { ErrorMsg, STATUS, validateObject } from "../utils";
 import Users from "../models/userModel";
 import { adminUpdateShape } from "../constants/constants";
 import { ZodError } from "zod";
+import { submitRequestEmail } from "../utils/sendEmail";
+import { requestUpdateMessage } from "../utils/emailTemplate";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
   const user = req.userPayload;
@@ -86,44 +88,73 @@ async function handleGetUsers(req: AuthRequest, res: Response) {
 }
 
 async function handleAdminUpdateUser(req: Request, res: Response) {
-  const formObj = validateObject(req.body, adminUpdateShape);
+	const formObj = validateObject(req.body, adminUpdateShape);
 
-  if (formObj instanceof ZodError) {
-    const { message } = formObj.issues[0];
-    return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
-  }
+	if (formObj instanceof ZodError) {
+		const { message } = formObj.issues[0];
+		return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
+	}
 
-  try {
-    const { userId } = req.params;
-    const {
-      signature,
-      rankInClass,
-      classObtained,
-      numberOfGraduatedClass,
-      cwa,
-    } = formObj;
-    const findUser = await Users.findById(userId);
+	try {
+		const { userId } = req.params;
+		const {
+			signature,
+			rankInClass,
+			classObtained,
+			numberOfGraduatedClass,
+			cwa,
+		} = formObj;
+		const findUser = await Users.findById(userId);
 
-    if (!findUser) return res.status(404).json({ message: "User not found" });
+		if (!findUser) return res.status(404).json({ message: "User not found" });
 
-    await Users.updateOne(
-      { _id: userId },
-      {
-        $set: {
-          signature,
-          rankInClass,
-          classObtained,
-          numberOfGraduatedClass,
-          cwa,
-        },
-      },
-      { upsert: true, new: true }
-    );
+		await Users.updateOne(
+			{ _id: userId },
+			{
+				$set: {
+					signature,
+					rankInClass,
+					classObtained,
+					numberOfGraduatedClass,
+					cwa,
+				},
+			},
+			{ upsert: true, new: true },
+		);
 
-    res.status(200).json({ message: "User bluesheet updated successfully" });
-  } catch (error) {
-    console.log(error);
-  }
+		res
+			.status(200)
+			.json({ message: "User official details updated successfully" });
+
+		// Send email to the graduate if admin has updated the bluesheet
+		const graduate = await Users.findById(userId);
+
+		if (!graduate) return res.status(404).json(ErrorMsg(404));
+
+		const { email, firstName, lastName } = graduate;
+
+		// Send email to the graduate
+		const graduateInfo = {
+			name: `${firstName} ${lastName}`,
+			email,
+		};
+
+		const templateHandler = requestUpdateMessage(graduateInfo);
+		const dispatchedMessages = submitRequestEmail({
+			to: graduateInfo.email,
+			subject: "Official Details Updated",
+			message: templateHandler,
+		});
+
+		await dispatchedMessages;
+
+		console.log(
+			"\x1b[32m✓ \x1b[35m%s\x1b[0m",
+			`[Evans] Bluesheet Updated Email sent to ${graduateInfo.email}`,
+		);
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 async function handleDeleteUser(req: Request, res: Response) {
