@@ -50,8 +50,14 @@ const PaystackPayments = {
 			// TODO:
 			// Return total amount of all payments to the admin
 			const allPayments = await Payments.find().sort({ createdAt: -1 });
-			const allStudents = await Users.find({ role: "graduate" });
-			const allLecturers = await Users.find({ role: "lecturer" });
+			const allStudents = await Users.find({
+				role: "graduate",
+				isVerified: true,
+			});
+			const allLecturers = await Users.find({
+				role: "lecturer",
+				isVerified: true,
+			});
 			const allRequests = await Reference.find();
 			const acceptedRequests = await Reference.find({ accepted: "accepted" });
 			const declinedRequests = await Reference.find({ accepted: "declined" });
