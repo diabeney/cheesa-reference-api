@@ -12,7 +12,7 @@ const getLecturerById = async (id: Types.ObjectId) =>
 	await Users.findOne({ _id: id, role: "lecturer" });
 
 const getUserByRole = async (role: string) =>
-	await Users.find({ role }).then((users) =>
+	await Users.find({ role, isVerified: true }).then((users) =>
 		users.map((user) => ({
 			id: user._id,
 			firstName: user.firstName,
@@ -39,7 +39,7 @@ const getUserByRole = async (role: string) =>
 	);
 
 const getAllUsers = async () =>
-	await Users.find().then((users) =>
+	await Users.find({ isVerified: true }).then((users) =>
 		users.map((user) => ({
 			id: user._id,
 			role: user.role,
