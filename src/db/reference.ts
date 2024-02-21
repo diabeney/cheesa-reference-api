@@ -30,6 +30,7 @@ const getReferenceById = async (id: string) => {
 					createdAt: reference.createdAt,
 					accepted: reference.accepted,
 					status: reference.status,
+					modeOfPostage: reference.modeOfPostage,
 				};
 			}
 		});
