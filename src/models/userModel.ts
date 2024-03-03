@@ -26,6 +26,11 @@ const UsersSchema = new Schema({
 			supervisor: String,
 		},
 	},
+	availability: {
+		isAvailable: { type: Boolean, default: false },
+		from: { type: String, required: false },
+		to: { type: String, required: false },
+	},
 	nss: String,
 	placeOfWork: String,
 	telephone: String,

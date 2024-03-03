@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import Reference from "../models/reference";
 import Users from "../models/userModel";
 import { IReferenceRequest } from "../types/types";
+import Payments from "../models/paymentModel";
 
 const RequestReference = async (payload: IReferenceRequest) =>
 	await new Reference(payload).save();
@@ -25,7 +26,6 @@ const getReferenceById = async (id: string) => {
 					destination: reference.destination,
 					address: reference.address,
 					expectedDate: reference.expectedDate,
-					description: reference.description,
 					transactionStatus: reference.transactionStatus,
 					createdAt: reference.createdAt,
 					accepted: reference.accepted,
@@ -49,6 +49,11 @@ const getUsersReferenceByRole = async (
 					"indexNumber referenceNumber programme entryYear graduationYear",
 				model: Users,
 			})
+			.populate({
+				path: "paymentId",
+				select: "amount",
+				model: Payments,
+			})
 			.sort({ _id: -1 })
 			.then((reference) => {
 				return reference.map((reference) => ({
@@ -59,7 +64,6 @@ const getUsersReferenceByRole = async (
 					destination: reference.destination,
 					address: reference.address,
 					expectedDate: reference.expectedDate,
-					descritpion: reference.description,
 					transactionStatus: reference.transactionStatus,
 					createdAt: reference.createdAt,
 					accepted: reference.accepted,
@@ -76,6 +80,11 @@ const getUsersReferenceByRole = async (
 				"referenceNumber indexNumber firstName lastName programme entryYear graduationYear",
 			model: Users,
 		})
+		.populate({
+			path: "paymentId",
+			select: "amount",
+			model: Payments,
+		})
 		.sort({ _id: -1 })
 		.then((reference) => {
 			return reference.map((reference) => ({
@@ -86,7 +95,6 @@ const getUsersReferenceByRole = async (
 				destination: reference.destination,
 				address: reference.address,
 				expectedDate: reference.expectedDate,
-				descritpion: reference.description,
 				transactionStatus: reference.transactionStatus,
 				createdAt: reference.createdAt,
 				accepted: reference.accepted,

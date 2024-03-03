@@ -4,7 +4,10 @@ import { Types } from "mongoose";
 import { IUser } from "../types/types";
 import { Request, Response } from "express";
 import { ErrorMsg, STATUS, validateObject } from "../utils";
-import { updateUserInfoShape } from "../constants/constants";
+import {
+	handleUpdateLecturerInfoShape,
+	updateUserInfoShape,
+} from "../constants/constants";
 import { ZodError } from "zod";
 
 const getUserByEmail = async (email: string) => await Users.findOne({ email });
@@ -25,6 +28,7 @@ const getUserByRole = async (role: string) =>
 			entryYear: user.entryYear,
 			graduationYear: user.graduationYear,
 			projects: user.projects,
+			availability: user.availability,
 			nss: user.nss,
 			telephone: user.telephone,
 			isVerified: user.isVerified,
@@ -67,6 +71,42 @@ const getAllUsers = async () =>
 	);
 
 const createUser = (userObject: Partial<IUser>) => new Users(userObject).save();
+
+// Update some lecturer fields after signing up
+const handleUpdateLecturer = async (req: Request, res: Response) => {
+	const formObj = validateObject(req.body, handleUpdateLecturerInfoShape);
+
+	if (formObj instanceof ZodError) {
+		const { message } = formObj.issues[0];
+		return res.status(STATUS.BAD_REQUEST.code).json(ErrorMsg(400, message));
+	}
+
+	try {
+		const { lecturerId } = req.params;
+
+		const { availability } = formObj;
+
+		const findUser = await Users.findById(lecturerId);
+
+		if (!findUser) return res.status(404).json({ message: "User not found" });
+
+		await Users.updateOne(
+			{ _id: lecturerId },
+			{
+				$set: {
+					availability,
+				},
+			},
+			{ upsert: true, new: true },
+		);
+
+		res.status(200).json({ message: "Lecturer records updated successfully" });
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		}
+	}
+};
 
 // Update some user fields after signing up
 const handleUpdateUser = async (req: Request, res: Response) => {
@@ -125,4 +165,10 @@ const saveRefreshToken = async (userId: Types.ObjectId, token: string) => {
 
 export { getUserByEmail, createUser, getRefreshToken, saveRefreshToken };
 
-export { getUserByRole, getAllUsers, getLecturerById, handleUpdateUser };
+export {
+	getUserByRole,
+	getAllUsers,
+	getLecturerById,
+	handleUpdateUser,
+	handleUpdateLecturer,
+};

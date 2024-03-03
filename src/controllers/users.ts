@@ -10,6 +10,7 @@ import { ZodError } from "zod";
 import { submitRequestEmail } from "../utils/sendEmail";
 import { requestUpdateMessage } from "../utils/emailTemplate";
 import Reference from "../models/reference";
+import LecturerEmails from "../models/lecturerEmails";
 
 async function handleGetLoggedInUser(req: AuthRequest, res: Response) {
 	const user = req.userPayload;
@@ -181,9 +182,34 @@ async function handleDeleteUser(req: Request, res: Response) {
 	}
 }
 
+async function addLecturerEmails(req: Request, res: Response) {
+	const { email } = req.body;
+
+	try {
+		const emailExist = await LecturerEmails.findOne({ email });
+
+		if (emailExist) {
+			return res.status(404).json(ErrorMsg(404, "Email already exist"));
+		}
+
+		const newEmail = await LecturerEmails.create({ email });
+
+		if (!newEmail) {
+			return res.status(500).json(ErrorMsg(500));
+		}
+
+		res.status(200).json({ message: "Email added successfully" });
+	} catch (error) {
+		if (error instanceof Error) {
+			console.log(error.message);
+		}
+	}
+}
+
 export {
 	handleGetLoggedInUser,
 	handleGetUsers,
 	handleDeleteUser,
 	handleAdminUpdateUser,
+	addLecturerEmails,
 };

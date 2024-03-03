@@ -4,13 +4,9 @@ import { submitRequestEmail } from "../utils/sendEmail";
 import Users from "../models/userModel";
 import { requestReminderMessage } from "../utils/emailTemplate";
 import { ReferenceResponse } from "../types/types";
-
+import { differenceInCalendarDays } from "date-fns";
 export const startCron = () => {
 	const sendLecturerReminder = async () => {
-		// Get the current date in a specific timezone
-		const currentDate = moment().tz("GMT");
-		const tomorrow = currentDate.clone().add(1, "days").startOf("day").toDate();
-
 		try {
 			const references = await Reference.find<ReferenceResponse>({
 				accepted: "accepted",
@@ -25,11 +21,15 @@ export const startCron = () => {
 
 			for (const reference of references) {
 				// Parse the expectedDate to a Date object
-				const expectedDate = new Date(reference.expectedDate);
-				expectedDate.setHours(0, 0, 0, 0);
+				const expectedDate = differenceInCalendarDays(
+					new Date(reference.expectedDate),
+					new Date(),
+				);
+
+				console.log("Expected Date", expectedDate);
 
 				// Check if the expectedDate is tomorrow
-				if (expectedDate.getTime() === tomorrow.getTime()) {
+				if (expectedDate === 1) {
 					// Send email to lecturer
 					const lectuerInfo = {
 						name: `${reference.lecturerId.firstName} ${reference.lecturerId.lastName}`,
@@ -59,7 +59,7 @@ export const startCron = () => {
 					await dispatchedMessages;
 					console.log(
 						"\x1b[32m✓ \x1b[35m%s\x1b[0m",
-						`[Evans] Reminder Email sent to ${lectuerInfo.email}`,
+						`[REFHUB] Reminder Email sent to ${lectuerInfo.email}`,
 					);
 				}
 			}
@@ -75,17 +75,20 @@ export const startCron = () => {
 
 	// Check for reminder every hour
 	setInterval(() => {
-		const now = moment().tz("GMT");
+		const now = moment().tz("Etc/GMT");
 		const currentHour = now.hour();
 		const currentMinute = now.minute();
 
+		console.log("Current Hour", currentHour);
+		console.log("Current Minute", currentMinute);
+
 		// Call the Reminder Function
-		if (currentHour === 15 && currentMinute === 0) {
+		if (currentHour === 21 && currentMinute === 0) {
 			sendLecturerReminder();
 		}
 		console.log(
 			"\x1b[32m✓ \x1b[35m%s\x1b[0m",
-			"[Evans] Searching for a job...",
+			"[REFHUB] Searching for a job...",
 		);
 	}, interval);
 };
