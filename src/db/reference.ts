@@ -49,11 +49,6 @@ const getUsersReferenceByRole = async (
 					"indexNumber referenceNumber programme entryYear graduationYear",
 				model: Users,
 			})
-			.populate({
-				path: "paymentId",
-				select: "amount",
-				model: Payments,
-			})
 			.sort({ _id: -1 })
 			.then((reference) => {
 				return reference.map((reference) => ({
@@ -79,11 +74,6 @@ const getUsersReferenceByRole = async (
 			select:
 				"referenceNumber indexNumber firstName lastName programme entryYear graduationYear",
 			model: Users,
-		})
-		.populate({
-			path: "paymentId",
-			select: "amount",
-			model: Payments,
 		})
 		.sort({ _id: -1 })
 		.then((reference) => {
