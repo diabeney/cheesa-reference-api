@@ -2,7 +2,6 @@ import { Types } from "mongoose";
 import Reference from "../models/reference";
 import Users from "../models/userModel";
 import { IReferenceRequest } from "../types/types";
-import Payments from "../models/paymentModel";
 
 const RequestReference = async (payload: IReferenceRequest) =>
 	await new Reference(payload).save();
