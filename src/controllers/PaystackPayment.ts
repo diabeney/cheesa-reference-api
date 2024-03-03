@@ -4,7 +4,7 @@ import { Response } from "express";
 import { getUserByEmail } from "../db/user";
 import { AuthRequest, ReferenceResponse } from "../types/types";
 import { ErrorMsg } from "../utils";
-import { TOTAL_AMOUNT, STATIC_AMOUNT } from "../constants/constants";
+import { TOTAL_AMOUNT, ADDONS } from "../constants/constants";
 import Payments from "../models/paymentModel";
 import Reference from "../models/reference";
 import Users from "../models/userModel";
@@ -13,6 +13,7 @@ import {
 	PaymentVerificationMessage,
 } from "../utils/emailTemplate";
 import { submitRequestEmail } from "../utils/sendEmail";
+import { differenceInCalendarDays } from "date-fns";
 
 const payStack = {
 	// Handle Payment Controller (Accept Payment)
@@ -34,9 +35,30 @@ const payStack = {
 				const { email: logged_in_user_email } = foundUser;
 				// params from the body
 
+				/*
+				checking the expected date of the reference request from the created at date and then calculate the amount to be paid based on the expected date the date created shoud be at least two weeks before expected date
+				*/
+				const getReference = await Reference.findOne<ReferenceResponse>({
+					graduateId: foundUser._id,
+					accepted: "accepted",
+					transactionStatus: "pending",
+				});
+
+				if (!getReference) return res.status(404).json(ErrorMsg(404));
+
+				// Get the expected date
+				const { expectedDate, createdAt } = getReference;
+
+				// Check if the date created is at least two weeks before the expected date
+				const days = differenceInCalendarDays(
+					new Date(expectedDate),
+					new Date(createdAt),
+				);
+
+				// Calculate the amount to be paid based on the expected date
 				const params = JSON.stringify({
 					email: logged_in_user_email,
-					amount: TOTAL_AMOUNT,
+					amount: days < 14 ? TOTAL_AMOUNT + ADDONS : TOTAL_AMOUNT,
 					callback_url:
 						"https://cheesa-reference-web.vercel.app/app/student/reference/verify-payment",
 				});
@@ -99,6 +121,17 @@ const payStack = {
 		if (!user) return res.status(404).json(ErrorMsg(404));
 
 		const { id } = user;
+
+		// Check the reference request id for this particular user with id
+		const referenceRequest = await Reference.findOne<ReferenceResponse>({
+			graduateId: id,
+		});
+
+		if (!referenceRequest) return res.status(404).json(ErrorMsg(404));
+
+		// Get the id of the reference made by the user
+		const { _id } = referenceRequest;
+
 		try {
 			const options = {
 				hostname: process.env.PAYSTACK_HOST,
@@ -140,7 +173,8 @@ const payStack = {
 						// Save payment to the database
 						const newPayment = new Payments({
 							userId: id,
-							amount: STATIC_AMOUNT,
+							refPaymentId: _id,
+							amount: amount / 100,
 						});
 
 						await newPayment.save();

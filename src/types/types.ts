@@ -33,6 +33,11 @@ export type IUser = {
 	projects?: {
 		year: Projects;
 	};
+	availability?: {
+		isAvailable: boolean;
+		from?: string;
+		to?: string;
+	};
 	nss?: string;
 	placeOfWork?: string;
 	telephone?: string;
@@ -94,6 +99,7 @@ export type ReferenceResponse = {
 	status: string;
 	_id: Types.ObjectId;
 	expectedDate: string;
+	createdAt: Date;
 	purposeOfReference?: string;
 	lecturerId: {
 		firstName: string;
@@ -106,4 +112,5 @@ export type ReferenceResponse = {
 		email: string;
 		programme: string;
 	};
+	description: string;
 };
