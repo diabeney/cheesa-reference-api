@@ -154,7 +154,7 @@ async function handleAdminUpdateUser(req: Request, res: Response) {
 
 		console.log(
 			"\x1b[32m✓ \x1b[35m%s\x1b[0m",
-			`[Evans] Bluesheet Updated Email sent to ${graduateInfo.email}`,
+			`[REFHUB] Bluesheet Updated Email sent to ${graduateInfo.email}`,
 		);
 	} catch (error) {
 		console.log(error);

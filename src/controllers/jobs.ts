@@ -26,8 +26,6 @@ export const startCron = () => {
 					new Date(),
 				);
 
-				console.log("Expected Date", expectedDate);
-
 				// Check if the expectedDate is tomorrow
 				if (expectedDate === 1) {
 					// Send email to lecturer
@@ -78,9 +76,6 @@ export const startCron = () => {
 		const now = moment().tz("Etc/GMT");
 		const currentHour = now.hour();
 		const currentMinute = now.minute();
-
-		console.log("Current Hour", currentHour);
-		console.log("Current Minute", currentMinute);
 
 		// Call the Reminder Function
 		if (currentHour === 21 && currentMinute === 0) {
