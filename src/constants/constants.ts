@@ -2,26 +2,26 @@ import { z } from "zod";
 import { Types } from "mongoose";
 
 const SignUpShape = z.object({
-	firstName: z.string({ required_error: "First Name is required" }),
-	lastName: z.string({ required_error: "Last Name is required" }),
-	email: z.string().email({ message: "Invalid email address" }),
-	password: z
-		.string()
-		.min(8, { message: "Password must be at least 8 characters" }),
-	role: z.enum(["lecturer", "graduate"]),
-	referenceNumber: z
-		.string({ required_error: "Reference Number is required" })
-		.min(8, "Reference should be at least 8 characters"),
-	indexNumber: z
-		.string()
-		.min(7, "Index number should be at least 8 characters")
-		.optional(),
-	entryYear: z.string().optional(),
-	graduationYear: z.string().optional(),
-	programme: z.enum(["chemical", "petrochemical"]).optional(),
-	nss: z.string().optional(),
-	placeOfWork: z.string().optional(),
-	telephone: z.string().optional(),
+  firstName: z.string({ required_error: "First Name is required" }),
+  lastName: z.string({ required_error: "Last Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  role: z.enum(["lecturer", "graduate", "admin"]),
+  referenceNumber: z
+    .string({ required_error: "Reference Number is required" })
+    .min(8, "Reference should be at least 8 characters"),
+  indexNumber: z
+    .string()
+    .min(7, "Index number should be at least 8 characters")
+    .optional(),
+  entryYear: z.string().optional(),
+  graduationYear: z.string().optional(),
+  programme: z.enum(["chemical", "petrochemical"]).optional(),
+  nss: z.string().optional(),
+  placeOfWork: z.string().optional(),
+  telephone: z.string().optional(),
 });
 
 const LoginShape = SignUpShape.pick({ email: true, password: true });
