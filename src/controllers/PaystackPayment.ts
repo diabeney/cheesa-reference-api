@@ -62,7 +62,7 @@ const payStack = {
 				// Calculate the amount to be paid based on the expected date
 				const params = JSON.stringify({
 					email: logged_in_user_email,
-					amount: calculateTotalAmountWithFee(TOTAL_AMOUNT, ADDONS, days),
+					amount: calculateTotalAmountWithFee(TOTAL_AMOUNT),
 					callback_url: `${process.env.CLIENT_URL_LIVE}/app/student/reference/verify-payment`,
 				});
 				// options
