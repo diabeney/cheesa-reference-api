@@ -4,7 +4,11 @@ import { Response } from "express";
 import { getUserByEmail } from "../db/user";
 import { AuthRequest, ReferenceResponse } from "../types/types";
 import { ErrorMsg } from "../utils";
-import { TOTAL_AMOUNT, ADDONS } from "../constants/constants";
+import {
+	TOTAL_AMOUNT,
+	ADDONS,
+	calculateTotalAmountWithFee,
+} from "../constants/constants";
 import Payments from "../models/paymentModel";
 import Reference from "../models/reference";
 import Users from "../models/userModel";
@@ -58,9 +62,8 @@ const payStack = {
 				// Calculate the amount to be paid based on the expected date
 				const params = JSON.stringify({
 					email: logged_in_user_email,
-					amount: days < 14 ? TOTAL_AMOUNT + ADDONS : TOTAL_AMOUNT,
-					callback_url:
-						"https://cheesa-reference-web.vercel.app/app/student/reference/verify-payment",
+					amount: calculateTotalAmountWithFee(TOTAL_AMOUNT, ADDONS, days),
+					callback_url: `${process.env.CLIENT_URL_LIVE}/app/student/reference/verify-payment`,
 				});
 				// options
 				const options = {
