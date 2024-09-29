@@ -114,16 +114,16 @@ const PLATFORM_FEE_PERCENTAGE = 0.5 * BY_HUNDRED;
 
 const calculateTotalAmountWithFee = (
 	totalAmount: number,
-	addons: number,
-	days: number,
+	// addons: number,
+	// days: number,
 ): number => {
-	if (days < 14) {
-		const baseAmount = totalAmount + addons;
-		return baseAmount + PLATFORM_FEE_PERCENTAGE;
-		// biome-ignore lint/style/noUselessElse: <explanation>
-	} else {
-		return totalAmount + PLATFORM_FEE_PERCENTAGE;
-	}
+	// if (days < 14) {
+	// 	const baseAmount = totalAmount + addons;
+	// 	return baseAmount + PLATFORM_FEE_PERCENTAGE;
+	// 	// biome-ignore lint/style/noUselessElse: <explanation>
+	// } else {
+	return totalAmount + PLATFORM_FEE_PERCENTAGE;
+	// }
 };
 
 export {
