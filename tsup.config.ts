@@ -6,4 +6,5 @@ export default defineConfig({
   splitting: false,
   target: "esnext",
   minify: true,
+  minifyIdentifiers: true,
 });
