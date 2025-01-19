@@ -248,7 +248,7 @@ const PaymentVerificationMessage = (
 															}</p>
                               <p><strong>Payment Amount:</strong> GHS ${
 																paymentDetails.amount / 100
-															}.00</p>
+															}</p>
                               <p><strong>Payment Date:</strong> ${format(
 																new Date(paymentDetails.paid_at),
 																"dd/MM/yyyy",
@@ -258,7 +258,7 @@ const PaymentVerificationMessage = (
 															}</p>
                           </div>
                           <p style="padding-bottom: 16px">
-                          <a href="https://cheesa-reference-web.vercel.app/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
+                          <a href="${process.env.CLIENT_LIVE_URL}/app/student/request" target="_blank" style="padding: 12px 24px; border-radius: 4px; color: #FFF; background: #2B52F5;display: inline-block; margin: 0.5rem 0; text-decoration: none">Go to Dashboard</a>
                         </p>
                          <p style="padding-bottom: 16px">If you have any questions or concerns, please don't hesitate to contact us.</p>
                         </p>
